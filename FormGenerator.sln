@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormGenerator.Client", "FormGenerator.Client\FormGenerator.Client.csproj", "{B50BA1EC-7CB7-4A38-86CC-65389DBA655B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95} = {BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}
+		{2BD50F7D-950E-49BC-A177-C28C0BC29625} = {2BD50F7D-950E-49BC-A177-C28C0BC29625}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormGenerator.Utilities", "FormGenerator.Utilities\FormGenerator.Utilities.csproj", "{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormGenerator.ServerBusinessLogic", "FormGenerator.ServerBusinessLogic\FormGenerator.ServerBusinessLogic.csproj", "{2BD50F7D-950E-49BC-A177-C28C0BC29625}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD} = {4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormGenerator.ServerDataAccess", "FormGenerator.ServerDataAccess\FormGenerator.ServerDataAccess.csproj", "{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95} = {BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B50BA1EC-7CB7-4A38-86CC-65389DBA655B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B50BA1EC-7CB7-4A38-86CC-65389DBA655B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B50BA1EC-7CB7-4A38-86CC-65389DBA655B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B50BA1EC-7CB7-4A38-86CC-65389DBA655B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEAA1853-8C34-4DE4-8E28-C80A41FB2A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD50F7D-950E-49BC-A177-C28C0BC29625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD50F7D-950E-49BC-A177-C28C0BC29625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD50F7D-950E-49BC-A177-C28C0BC29625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD50F7D-950E-49BC-A177-C28C0BC29625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
