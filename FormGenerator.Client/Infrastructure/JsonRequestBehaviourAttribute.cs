@@ -7,21 +7,16 @@ using System.Web.Mvc;
 
 namespace FormGenerator.Client
 {
+    /// <summary> Аттрибут, навешивающий AllowGet на результат действия
+    /// </summary>
     public class JsonRequestBehaviorAttribute : System.Web.Mvc.ActionFilterAttribute
     {
-        private JsonRequestBehavior _behavior { get; set; }
-
-        public JsonRequestBehaviorAttribute()
-        {
-            this._behavior = JsonRequestBehavior.AllowGet;
-        }
-
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             var result = filterContext.Result as JsonResult;
             if (result != null)
             {
-                result.JsonRequestBehavior = this._behavior;
+                result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             }
         }
     }

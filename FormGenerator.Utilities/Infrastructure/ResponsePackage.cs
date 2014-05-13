@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.Utilities
 {
+    /// <summary> Пакет с данными-результатами запроса
+    /// </summary>
     public class ResponsePackage
     {
         public int resultCode { get; set; }
@@ -20,6 +22,18 @@ namespace FormGenerator.Utilities
             {
                 throw new Exception(this.resultMessage);
             }
+        }
+
+        public string GetStringOrExceptionIfError()
+        {
+            this.ThrowExceptionIfError();
+            return this.resultString;
+        }
+
+        public int GetIdOrExceptionIfError()
+        {
+            this.ThrowExceptionIfError();
+            return this.resultID;
         }
     }
 }

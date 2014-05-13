@@ -12,7 +12,7 @@ namespace FormGenerator.Server.Test
     {
         public ResponsePackage DoSome(RequestPackage package)
         {
-            return new DBUtils().RunSqlAction(new SqlTest().DoSomeSql, package);
+            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new SqlTest().DoSomeSql, package);
         }
     }
 }

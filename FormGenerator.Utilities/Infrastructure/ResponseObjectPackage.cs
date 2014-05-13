@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.Utilities
 {
+    /// <summary> Сложный пакет с данными-результатами запроса
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ResponseObjectPackage<T>:ResponsePackage
     {
         public T resultData { get; set; }
+
+        public T GetDataOrExceptionIfError()
+        {
+            this.ThrowExceptionIfError();
+            return this.resultData;
+        }
     }
 }
