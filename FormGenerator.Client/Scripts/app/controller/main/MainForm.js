@@ -8,10 +8,10 @@
     init: function () {
         this.control({
             'MainForm button[action=onTest]': {
-                click: this.onTest
+                click: this.onTest2
             },
             'MainForm button[action=onTest1]': {
-                click: this.onTest1
+                click: this.onTest
             }
         });
     },
@@ -19,6 +19,11 @@
     onTest: function (button) {
         FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.Test');
         FormGenerator.utils.Windows.open('Test', {});
+    },
+
+    onTest2: function (button) {
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.FormEditor');
+        FormGenerator.utils.Windows.open('FormEditor', {});
     },
 
     onTest1: function (button) {

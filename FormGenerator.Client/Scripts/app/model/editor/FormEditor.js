@@ -13,12 +13,14 @@ Ext.define('FormGenerator.model.editor.Components', {
     extend: 'Ext.data.Model',
     fields: [
         'group',
+        'name',
         'component',
         'icon',
         'desc',
         'path',
         'properties',
         'sourceConfig',
+        'childComponents',
         'infoIcon'
     ]
 });
