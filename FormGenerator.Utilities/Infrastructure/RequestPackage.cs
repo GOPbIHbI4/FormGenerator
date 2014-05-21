@@ -12,5 +12,6 @@ namespace FormGenerator.Utilities
     {
         public int requestID { get; set; }
         public string requestString { get; set; }
+        public DateTime? requestDate { get; set; }
     }
 }

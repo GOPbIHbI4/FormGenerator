@@ -47,9 +47,16 @@
     <Compile Include="Infrastructure\DBOrmUtils.cs" />
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\FormGenerator\DictionaryDataCRUD.cs" />
+    <Compile Include="Repositories\FormGemerator\DictionariesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\DictionaryFieldsRepository.cs" />
     <Compile Include="Test\SqlTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">
+      <Project>{b0a5deea-a62f-4a64-b3d4-61ec3e0aebac}</Project>
+      <Name>FormGenerator.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">
       <Project>{beaa1853-8c34-4de4-8e28-c80a41fb2a95}</Project>
       <Name>FormGenerator.Utilities</Name>

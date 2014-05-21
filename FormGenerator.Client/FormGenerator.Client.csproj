@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\FormGenerator\DictionariesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -158,6 +159,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">
+      <Project>{b0a5deea-a62f-4a64-b3d4-61ec3e0aebac}</Project>
+      <Name>FormGenerator.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FormGenerator.ServerBusinessLogic\FormGenerator.ServerBusinessLogic.csproj">
       <Project>{2bd50f7d-950e-49bc-a177-c28c0bc29625}</Project>
       <Name>FormGenerator.ServerBusinessLogic</Name>

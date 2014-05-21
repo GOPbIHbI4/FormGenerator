@@ -14,13 +14,17 @@ namespace FormGenerator.ServerDataAccess
     /// <param name="request">пакет параметров запроса</param>
     /// <param name="connectionID"></param>
     /// <returns></returns>
-    public delegate ResponsePackage SqlAction(RequestPackage request, IDbConnection connectionID);
+    public delegate Out SqlAction<In, Out>(In request, IDbConnection connectionID) 
+    where In:RequestPackage 
+    where Out:ResponsePackage;
 
     /// <summary> Класс, описывающий утилиты для работы с базами данных
     /// </summary>
     public class DBUtils
     {
         private IConnectionFactory _connectionFactory;
+        public DBUtils() :this(new FireBirdConnectionFactory())
+        {}
         public DBUtils(IConnectionFactory connectionFactory_)
         {
             this._connectionFactory = connectionFactory_;
@@ -31,9 +35,11 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="action">ссыль на метод, который принимает как параметры пакет запроса и подключение к БД</param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public ResponsePackage RunSqlAction(SqlAction action, RequestPackage request)
+        public Out RunSqlAction<In, Out>(SqlAction<In, Out> action, In request)
+            where In : RequestPackage
+            where Out : ResponsePackage
         {
-            ResponsePackage response = null;
+            Out response = null;
             using (IDbConnection connectionID = this._connectionFactory.GetConnection())
             {
                 connectionID.Open();
@@ -65,6 +71,12 @@ namespace FormGenerator.ServerDataAccess
                     {
                         result.resultData = new DataTable();
                         result.resultData.Load(reader, LoadOption.OverwriteChanges);
+
+                        //чтоб лишнего базара не было, все будет в верхнем регистре
+                        foreach (DataColumn column in result.resultData.Columns)
+                        {
+                            column.ColumnName = column.ColumnName.ToUpper();
+                        }
                         reader.Close();
                     }
                 }
@@ -72,7 +84,7 @@ namespace FormGenerator.ServerDataAccess
             catch (Exception ex)
             {
                 result.resultCode = -1;
-                result.resultMessage = "Ошибка запроса:" + ex.Message;
+                result.resultMessage = "Ошибка запроса: '{0}'.{1}Текст запроса:'{2}'.".FormatString(ex.Message, Environment.NewLine, sql);
             }
             return result;
         }
@@ -102,7 +114,7 @@ namespace FormGenerator.ServerDataAccess
             catch (Exception ex)
             {
                 result.resultCode = -1;
-                result.resultMessage = "Ошибка запроса:" + ex.Message;
+                result.resultMessage = "Ошибка запроса: '{0}'.{1}Текст запроса:'{2}'.".FormatString(ex.Message, Environment.NewLine, sql);
             }
             return result;
         }
