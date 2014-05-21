@@ -44,7 +44,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="connectionID"></param>
         /// <param name="transactionID"></param>
         /// <returns></returns>
-        [Obsolete("Метод использует рефлексию, поэтому заметно тормозит при выборке больших наборов данных. Для маленьких наборов данных тормоза незаметны.")]
+        [Obsolete("Метод использует рефлексию, поэтому заметно тормозит при выборке больших наборов данных. Для маленьких наборов данных тормоза незаметны. Юзать OpenSqlList!")]
         public static List<T> OpenSql<T>(string sql, IDbConnection connectionID, IDbTransaction transactionID = null)
             where T : class, new()
         {
@@ -68,6 +68,15 @@ namespace FormGenerator.ServerDataAccess
             return list;
         }
 
+        /// <summary> Метод читает запрос sql и возвращает из запроса объект C# с теми же полями, что и поля запроса, 
+        /// т.е будет заполнен объект с такими же открытыми свойствами, что и результирующие поля запроса. 
+        /// Возвращает список
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="connectionID"></param>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
         public static List<T> OpenSqlList<T>(string sql, IDbConnection connectionID, IDbTransaction transactionID = null)
             where T : class, new()
         {
@@ -245,6 +254,7 @@ namespace FormGenerator.ServerDataAccess
             return new KeyValuePair<T, List<string>>(obj, errors);
         }
 
+        #region Вспомогательные методы, созданные для общего ускорения и оптимизации действия маппера
         private static KeyValuePair<Dictionary<string, TypeProperty>, List<string>> PrepareTypes<T>(DataTable table)
         {
             Dictionary<string, TypeProperty> properties = new Dictionary<string, TypeProperty>();
@@ -334,5 +344,6 @@ namespace FormGenerator.ServerDataAccess
             }
             return dictionary;
         }
+        #endregion Вспомогательные методы, созданные для общего ускорения и оптимизации действия маппера
     }
 }

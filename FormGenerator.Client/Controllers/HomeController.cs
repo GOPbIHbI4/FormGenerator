@@ -8,21 +8,31 @@ using System.Web.Mvc;
 
 namespace FormGenerator.Client.Controllers
 {
-    public class HomeController : Controller
+    /// <summary> Главная страничка (и по сути, едмнственная)
+    /// </summary>
+    public class HomeController : FormGeneratorController
     {
-        //
-        // GET: /Home/
+        /// <summary> точка входа в приложение
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
 
         [JsonRequestBehavior]
-        public ActionResult Test()
+        public JsonResult Test()
         {
-            RequestPackage package = new RequestPackage();
-            ResponsePackage result = new BLL_DataTest().DoSome(package);
-            return Json(result);
+            try
+            {
+                RequestPackage package = new RequestPackage();
+                ResponsePackage result = new BLL_DataTest().DoSome(package);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
         }
 
     }

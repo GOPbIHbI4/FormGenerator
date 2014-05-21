@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.Utilities
 {
+    /// <summary> Сложный пакет с данными-результатами запроса в виде таблицы DataTable
+    /// </summary>
     public class ResponseTablePackage:ResponseObjectPackage<DataTable>
     {
         

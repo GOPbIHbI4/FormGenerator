@@ -43,9 +43,6 @@
     <Compile Include="Test\DataTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FormGenerator.ServerDataAccess\FormGenerator.ServerDataAccess.csproj">
       <Project>{4155ad70-bc86-461b-9ad5-c3ad1bc79fad}</Project>
       <Name>FormGenerator.ServerDataAccess</Name>
