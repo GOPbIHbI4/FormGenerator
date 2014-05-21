@@ -22,15 +22,13 @@
     <favorites_list name="Scripts" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
     <splitter split-orientation="horizontal" split-proportion="0.7257717">
       <split-first>
         <leaf>
-      <file leaf-file-name="MainForm.js" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="MainForm.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/controller/main/MainForm.js">
-        <entry file="file://$PROJECT_DIR$/app/controller/main/MainForm.js">
               <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8394062" vertical-offset="24" max-vertical-offset="765">
-              <caret line="38" column="5" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
                 <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="561">
                   <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="3" />
                   <folding />
@@ -64,6 +62,42 @@
               </provider>
             </entry>
           </file>
+        </leaf>
+      </split-second>
+    </splitter>
+=======
+    <leaf>
+      <file leaf-file-name="MainForm.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/store/editor/FormEditor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
+              <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+              <folding />
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="4273" max-vertical-offset="10132">
+              <caret line="357" column="43" selection-start-line="357" selection-start-column="43" selection-end-line="357" selection-end-column="43" />
+                <marker date="1399913729715" expanded="false" signature="10010:10033" placeholder="..." />
+                <marker date="1400694173008" expanded="false" signature="10361:10384" placeholder="..." />
+      <file leaf-file-name="Test.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/view/editor/Test.js">
+            <state vertical-scroll-proportion="0.35246843" vertical-offset="1359" max-vertical-offset="10659">
+              <caret line="98" column="39" selection-start-line="98" selection-start-column="39" selection-end-line="98" selection-end-column="39" />
+                <marker date="1399916962600" expanded="true" signature="8761:8784" placeholder="..." />
+                <element signature="e#13037#14927#0" expanded="false" />
+                <element signature="e#15681#20875#0" expanded="false" />
+                <element signature="e#23760#24543#0" expanded="false" />
+                <element signature="e#27122#27531#0" expanded="false" />
+                <marker date="1400696167087" expanded="false" signature="5966:5995" placeholder="..." />
+      <file leaf-file-name="MainForm.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/view/main/MainForm.js">
+            <state vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="1088">
+              <caret line="38" column="50" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="WindowFactory.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/utils/components/WindowFactory.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -76,9 +110,8 @@
           </provider>
         </entry>
       </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    </leaf>
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -116,11 +149,17 @@
         <option value="$PROJECT_DIR$/app/view/editor/FormEditor.js" />
         <option value="$PROJECT_DIR$/app/utils/components/ComponentFactory.js" />
         <option value="$PROJECT_DIR$/app/store/editor/FormEditor.js" />
-        <option value="$PROJECT_DIR$/app/controller/editor/FormEditor.js" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/app/view/main/MainForm.js" />
         <option value="$PROJECT_DIR$/app/view/editor/Test.js" />
         <option value="$PROJECT_DIR$/app/utils/ControllerLoader.js" />
-        <option value="$PROJECT_DIR$/app/view/editor/Test.js" />
+        <option value="$PROJECT_DIR$/app/controller/main/MainForm.js" />
+        <option value="$PROJECT_DIR$/app/view/formGenerator/dictionaries/DictionariesAdministrator.js" />
         <option value="$PROJECT_DIR$/app/controller/formGenerator/dictionaries/DictionariesAdministrator.js" />
+=======
+        <option value="$PROJECT_DIR$/app/controller/editor/FormEditor.js" />
+        <option value="$PROJECT_DIR$/app/utils/ControllerLoader.js" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
       </list>
     </option>
   </component>
@@ -337,13 +376,22 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
+      <recent name="C:\Users\Андрей\Desktop\Diploma\FormGenerator\FormGenerator.Client\Scripts\app\view\formGenerator\dictionaries" />
       <recent name="C:\Users\Андрей\Desktop\Diploma\FormGenerator\FormGenerator.Client\Scripts\app\controller\formGenerator\dictionaries" />
       <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\view\editor" />
       <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\store\editor" />
       <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\model\editor" />
-      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app" />
+=======
+      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Diploma\FormGenerator\FormGenerator.Client\Scripts\app\utils\components" />
+      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\view\editor" />
+      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\store\editor" />
+      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\model\editor" />
+      <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Диплом\FormGenerator\FormGenerator.Client\Scripts\app\controller\editor" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\GOPbIHbI4_2D\Desktop\Diploma\FormGenerator\FormGenerator.Client\Scripts\app\utils\ux" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
     </key>
   </component>
   <component name="RunManager">
@@ -403,17 +451,24 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
+=======
+    <frame x="0" y="0" width="960" height="1040" extended-state="0" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32829374" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.155625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+<<<<<<< HEAD
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.129375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32829374" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17061612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23726977" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -506,6 +561,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/utils/MessageBox.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="3" />
           <folding />
@@ -566,17 +622,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controller/main/MainForm.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
+          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+          <folding />
+=======
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1054">
+          <caret line="0" column="32" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="32" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/utils/Windows.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46993318" vertical-offset="343" max-vertical-offset="1496">
-          <caret line="45" column="20" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
+<<<<<<< HEAD
+        <state vertical-scroll-proportion="0.0" vertical-offset="4273" max-vertical-offset="10132">
+          <caret line="357" column="43" selection-start-line="357" selection-start-column="43" selection-end-line="357" selection-end-column="43" />
           <folding>
-          <folding />
             <element signature="e#2331#3817#0" expanded="false" />
           </folding>
+=======
+        <state vertical-scroll-proportion="0.46993318" vertical-offset="343" max-vertical-offset="1496">
+          <caret line="45" column="20" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="20" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
@@ -632,10 +699,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/model/editor/FormEditor.js">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="25" />
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/app/app.js">
+=======
+    <entry file="file://$PROJECT_DIR$/extjs/src/FocusManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="8.704468" vertical-offset="0" max-vertical-offset="11900">
+          <caret line="317" column="18" selection-start-line="317" selection-start-column="18" selection-end-line="317" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/extjs/src/window/Window.js">
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.39175257" vertical-offset="10397" max-vertical-offset="14552">
           <caret line="644" column="20" selection-start-line="644" selection-start-column="20" selection-end-line="644" selection-end-column="20" />
@@ -677,11 +752,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/utils/Windows.js">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/app/utils/MessageBox.js">
+=======
+    <entry file="file://$PROJECT_DIR$/extjs/src/form/field/Trigger.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33255813" vertical-offset="4355" max-vertical-offset="8432">
           <caret line="292" column="18" selection-start-line="292" selection-start-column="4" selection-end-line="292" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/extjs/ext-all-debug.js">
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48139533" vertical-offset="788437" max-vertical-offset="2219758">
           <caret line="46403" column="9" selection-start-line="46401" selection-start-column="8" selection-end-line="46403" selection-end-column="9" />
@@ -745,18 +828,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/editor/FormEditor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.9706876" vertical-offset="1071" max-vertical-offset="4369">
-          <caret line="218" column="9" selection-start-line="218" selection-start-column="9" selection-end-line="218" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/store/editor/FormEditor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.5866667" vertical-offset="0" max-vertical-offset="2295">
           <caret line="84" column="86" selection-start-line="84" selection-start-column="86" selection-end-line="84" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/view/editor/Test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3778677" vertical-offset="441" max-vertical-offset="10659">
+          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+          <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/app/utils/components/ToolbarFactory.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5355893" vertical-offset="0" max-vertical-offset="857">
+          <caret line="29" column="55" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/utils/components/DatefieldFactory.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7024504" vertical-offset="27" max-vertical-offset="884">
+          <caret line="39" column="55" selection-start-line="39" selection-start-column="55" selection-end-line="39" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -796,20 +893,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="1088">
           <caret line="38" column="50" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/view/main/MainForm.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.64102566" vertical-offset="171" max-vertical-offset="1088">
           <caret line="38" column="50" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
+=======
+        <state vertical-scroll-proportion="0.094444446" vertical-offset="0" max-vertical-offset="900">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/app/controller/editor/FormEditor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.093406595" vertical-offset="0" max-vertical-offset="4369">
           <caret line="4" column="40" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
+=======
+    <entry file="file://$PROJECT_DIR$/app/controller/main/MainForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
+          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -860,18 +970,30 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.3337912" vertical-offset="1950" max-vertical-offset="9486">
           <caret line="167" column="46" selection-start-line="167" selection-start-column="46" selection-end-line="167" selection-end-column="46" />
           <folding>
+            <element signature="e#2331#3817#0" expanded="false" />
+          </folding>
+=======
+        <state vertical-scroll-proportion="0.0" vertical-offset="4273" max-vertical-offset="10132">
+          <caret line="357" column="43" selection-start-line="357" selection-start-column="43" selection-end-line="357" selection-end-column="43" />
+          <folding />
+            <marker date="1399913729715" expanded="false" signature="10010:10033" placeholder="..." />
+            <marker date="1400694173008" expanded="false" signature="10361:10384" placeholder="..." />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/utils/Windows.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.34412956" vertical-offset="0" max-vertical-offset="1496">
           <caret line="15" column="60" selection-start-line="15" selection-start-column="60" selection-end-line="15" selection-end-column="60" />
         </state>
@@ -881,11 +1003,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <caret line="27" column="3" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="3" />
+=======
+        <state vertical-scroll-proportion="0.35246843" vertical-offset="1359" max-vertical-offset="10659">
+          <caret line="98" column="39" selection-start-line="98" selection-start-column="39" selection-end-line="98" selection-end-column="39" />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/view/main/MainForm.js">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/app/model/editor/FormEditor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48178136" vertical-offset="0" max-vertical-offset="741">
           <caret line="23" column="3" selection-start-line="23" selection-start-column="3" selection-end-line="23" selection-end-column="3" />
@@ -896,14 +1023,47 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7005494" vertical-offset="153" max-vertical-offset="1649">
           <caret line="39" column="39" selection-start-line="39" selection-start-column="35" selection-end-line="39" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controller/main/MainForm.js">
+    <entry file="file://$PROJECT_DIR$/app/utils/ControllerLoader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25236169" vertical-offset="0" max-vertical-offset="741">
           <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+          <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/app/utils/components/WindowFactory.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="717" max-vertical-offset="1615">
+          <caret line="82" column="28" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
+            <marker date="1399916962600" expanded="true" signature="8761:8784" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/editor/Test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="44" max-vertical-offset="1479">
+          <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
           <folding>
+            <element signature="e#4483#4549#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controller/editor/FormEditor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4463277" vertical-offset="523" max-vertical-offset="6596">
+          <caret line="54" column="40" selection-start-line="54" selection-start-column="40" selection-end-line="54" selection-end-column="40" />
+          <folding>
+            <element signature="e#9384#12785#0" expanded="false" />
+            <element signature="e#13037#14927#0" expanded="false" />
+            <element signature="e#15681#20875#0" expanded="false" />
+            <element signature="e#23760#24543#0" expanded="false" />
+            <element signature="e#27122#27531#0" expanded="false" />
+            <marker date="1400696167087" expanded="false" signature="5966:5995" placeholder="..." />
+>>>>>>> 0975aae48f109bbd1ea4d05663239360b74e9b8c
         </state>
       </provider>
     </entry>
@@ -914,12 +1074,6 @@
           <folding>
             <element signature="e#2263#4212#0" expanded="false" />
           </folding>
-            <element signature="e#9384#12785#0" expanded="false" />
-            <element signature="e#13037#14927#0" expanded="false" />
-            <element signature="e#15681#20875#0" expanded="false" />
-            <element signature="e#23760#24543#0" expanded="false" />
-            <element signature="e#27122#27531#0" expanded="false" />
-            <marker date="1400696167087" expanded="false" signature="5966:5995" placeholder="..." />
         </state>
       </provider>
     </entry>

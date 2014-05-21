@@ -34,7 +34,7 @@
                                 {
                                     xtype:'button',
                                     width:100,
-                                    text:'Поиск',
+                                    text:'Sencha',
                                     iconAlign:'top',
                                     action:'onTest',
                                     icon:'Scripts/resources/icons/process.png'

@@ -1,4 +1,8 @@
-﻿Ext.override(Ext.view.DragZone, {
+﻿Ext.override(Ext.resizer.Resizer, {
+    transparent: true
+});
+
+Ext.override(Ext.view.DragZone, {
     getDragText:function () {
         if (this.dragField) {
             var fieldValue = this.dragData.records[0].get(this.dragField);
@@ -22,6 +26,7 @@ Ext.override(Ext.grid.plugin.DragDrop, {
                 dragField:me.dragField,
                 iconField:me.iconField
             });
+            view.dragZone = me.dragZone;
         }
 
         if (me.enableDrop) {
@@ -29,6 +34,7 @@ Ext.override(Ext.grid.plugin.DragDrop, {
                 view:view,
                 ddGroup:me.dropGroup || me.ddGroup
             });
+            view.dragZone = me.dropZone;
         }
     }
 });
@@ -57,19 +63,20 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 
     modal:true,
     constrain:true,
-    maximizable:true,
 
-    height:800,
+    height:700,
     width:1200,
-    minHeight:800,
+    minHeight:700,
     minWidth:1200,
+
+    mousedComponents: [],
 
     layout:{
         type:'border'
     },
 
     requires:[
-        'FormGenerator.utils.ClearButton'
+        'Scripts.app.utils.ux.ClearButton'
     ],
 
     initComponent:function () {
@@ -81,43 +88,43 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 
         Ext.applyIf(me, {
 
-            dockedItems:[
+            dockedItems: [
                 {
-                    xtype:'toolbar',
-                    dock:'top',
-                    items:[
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
                         {
-                            xtype:'button',
-                            scale:'medium',
-                            text:'Сохранить',
-                            action:'onSave',
-                            border:true,
-                            icon:'Scripts/ext/icons/save.png',
-                            iconAlign:'top'
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Сохранить',
+                            action: 'onSave',
+                            border: true,
+                            icon: 'Scripts/resources/icons/save.png',
+                            iconAlign: 'top'
                         },
                         {
-                            xtype:'tbseparator'
+                            xtype: 'tbseparator'
                         },
                         {
-                            xtype:'button',
-                            scale:'medium',
-                            text:'Настройки',
-                            action:'onEdit',
-                            border:true,
-                            icon:'Scripts/ext/icons/Sencha/edit.png',
-                            iconAlign:'top'
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Настройки',
+                            action: 'onEdit',
+                            border: true,
+                            icon: 'Scripts/resources/icons/edit.png',
+                            iconAlign: 'top'
                         },
                         {
-                            xtype:'tbseparator'
+                            xtype: 'tbseparator'
                         },
                         {
-                            xtype:'button',
-                            scale:'medium',
-                            text:'Закрыть',
-                            action:'onClose',
-                            border:true,
-                            icon:'Scripts/ext/icons/close.png',
-                            iconAlign:'top'
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Закрыть',
+                            action: 'onClose',
+                            border: true,
+                            icon: 'Scripts/resources/icons/close.png',
+                            iconAlign: 'top'
                         }
                     ]
                 }
@@ -214,13 +221,25 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                         dragField:'component',
                                         iconField:'icon',
                                         enableDrop:false,
-                                        ddGroup:'grid-to-panel'
+                                        ddGroup:'grid-to-window'
                                     }
                                 ]
                             },
 
-                            // группы
+                            // выбор строки, изменение dragZone
                             store:componentsStore,
+                            selModel: Ext.create('Ext.selection.RowModel', { mode: "SINGLE", ignoreRightMouseSelection: true }),
+                            listeners: {
+                                beforeselect: function (_grid, record, index, eOpts) {
+                                    var obj = this.getView().dragZone.groups;
+                                    for (var field in obj) {
+                                        this.getView().dragZone.removeFromGroup(field);
+                                    }
+                                    this.getView().dragZone.addToGroup('grid-to-' + record.get('component').toLowerCase());
+                                }
+                            },
+
+                            // группы
                             requires:[
                                 'Ext.grid.feature.Grouping'
                             ],
@@ -232,19 +251,8 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     id:'componentsGrouping'
                                 }
                             ],
-//                            plugins: [
-//                                {
-//                                    ptype: 'rowexpander',
-//                                    rowBodyTpl : new Ext.XTemplate(
-//                                        '<p><b>Name:</b> {component}</p>',
-//                                        '<p><b>Group:</b> {group}</p><br>',
-//                                        '<p><b>Summary:</b> {desc}</p>'
-//                                    )
-//                                }
-//                            ],
                             // колонки
-                            infoIcon:'Scripts/ext/icons/sencha/info.png',
-                            whiteIcon:'Scripts/ext/icons/sencha/white.gif',
+                            infoIcon:'Scripts/resources/icons/editor/info.png',
                             columns:[
                                 {
                                     width:25,
@@ -273,30 +281,6 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     }
                                 }
                             ]
-//                            listeners: {
-//                                selectionchange: function(view, record, item, index, e, options)
-//                                {
-//                                    var win = view.up('window');
-//                                    var grid = win.down('gridpanel[name=components]');
-//                                    var selection = grid.getSelectionModel().getSelection()[0];
-//                                    if (selection) {
-//                                        debugger;
-//                                        grid.getPlugin('ddid').dragText = selection.get('icon') + ' ' + selection.get('component');
-//                                    } else {
-//                                        grid.getPlugin('ddid').dragText = '';
-//                                    }
-//                                }
-//                                itemmouseenter: function(view, record, item, index, e, options)
-//                                {
-//                                    var win = view.up('window');
-//                                    record.set('infoIcon', win.infoIcon);
-//                                },
-//                                itemmouseleave: function(view, record, item, index, e, options)
-//                                {
-//                                    var win = view.up('window');
-//                                    record.set('infoIcon', win.whiteIcon);
-//                                }
-//                            }
                         }
                     ]
                 },
@@ -305,13 +289,124 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 //======================================================================================================================
                 {
                     xtype:'form',
-                    name:'mainPanel',
+                    name:'mainContainer',
                     region:'center',
                     split:true,
-                    autoScroll:true,
+                    flex:1,
                     layout:'anchor',
-                    flex:1
+                    dockedItems: [
+                        {
+                            xtype: 'toolbar',
+                            dock: 'top',
+                            defaults:{
+                                style:{
+                                    'border-color':'#9FC6F9'
+                                }
+                            },
+                            items: [
+                                {
+                                    xtype:'button',
+                                    scale: 'small',
+                                    action: 'onLabel',
+                                    text:'Сгенерированное JSON представление',
+                                    hidden:true,
+                                    readOnly:true,
+                                    border:false
+                                },
+                                {
+                                    xtype:'tbfill'
+                                },
+                                {
+                                    xtype: 'button',
+                                    scale: 'small',
+                                    text: 'Дизайн',
+                                    action: 'onDesign',
+                                    enableToggle: true,
+                                    toggleGroup:'DesignOrCode',
+                                    border: true
+                                },
+                                {
+                                    xtype: 'button',
+                                    scale: 'small',
+                                    text: 'Код',
+                                    action: 'onCode',
+                                    enableToggle: true,
+                                    toggleGroup:'DesignOrCode',
+                                    border: true
+                                }
+                            ]
+                        }
+                    ],
+                    items:[
+                        {
+                            xtype:'form',
+                            name:'mainPanel',
+                            border:false,
+                            anchor:'0 0',
+                            autoScroll:true,
+                            listeners: {
+                                render: function (form) {
+                                    var _this = this;
+                                    var body = form.body;
+                                    var win = form.up('window');
+                                    var gridComponents = win.down('gridpanel[name=components]');
+                                    var propertiesGrid = win.down('propertygrid[name=properties]');
+                                    _this.formPanelDropTarget = new Ext.dd.DropTarget(body, {
+                                        ddGroup: 'grid-to-window',
+                                        allowDrop: true,
+                                        notifyOver:function(ddSource, e, data){
+                                            var isOK = true; var target = null;
+                                            var draggedCmp = ddSource.dragData.records[0];
+                                            if (draggedCmp.get('component').toLowerCase() == 'window' && form.down('[name=senchawin]')){
+                                                isOK = false;
+                                            }
+                                            if (isOK) {
+                                                this.allowDrop = true;
+                                                return Ext.baseCSSPrefix + 'dd-drop-ok';
+                                            } else {
+                                                this.allowDrop = false;
+                                                return Ext.baseCSSPrefix + 'dd-drop-nodrop';
+                                            }
+                                        },
+                                        notifyEnter: function (ddSource, e, data) {
+                                            //Add some flare to invite drop.
+//                                        body.stopAnimation();
+//                                        body.highlight();
+                                        },
+                                        notifyDrop: function (ddSource, e, data) {
+                                            if (!this.allowDrop) return false;
+                                            var store = deepCloneStore(ddSource.view.getStore());
+                                            var selectedRecord = store.findRecord('component', ddSource.dragData.records[0].get('component'));
+                                            var item;
+                                            switch (selectedRecord.get('component')) {
+                                                case 'Window':
+                                                    item = windowFactory(win, form, selectedRecord);
+                                                    form.add(item.show());
+                                                    form.doLayout();
+                                                    form.fireEvent('ComponentAdded', form, form, item);
+                                                    return true;
+                                                default:
+                                                    return false;
+                                            }
+                                        }
+                                    });
+                                } // end of render
+                            } // end of listeners
+                        },
+                        {
+                            xtype:'textareafield',
+                            hidden:true,
+                            readOnly:true,
+                            border:false,
+                            margin:'-3 0 -3 0',
+                            fieldLabel:'',
+                            grow:true,
+                            name:'codeText',
+                            anchor:'0 0'
+                        }
+                    ]
                 },
+
 //======================================================================================================================
 //                                   Инспектор проекта
 //======================================================================================================================
@@ -322,7 +417,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                     region:'east',
                     layout:'border',
                     split:true,
-                    width:250,
+                    width:270,
                     items:[
                         {
                             xtype:'treepanel',
@@ -330,20 +425,34 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             region:'center',
                             split:true,
                             useArrows: true,
-                            multiSelect: false,
-                            singleExpand: false,
-                            allowDeselect: true,
                             flex:1,
-                            rootVisible:false,
+                            rootVisible:true,
+                            store:treeStore,
+                            listeners: {
+                                itemclick: function(tree, record, item, index, e, eOpts) {
+                                    try {
+                                        var name = record.get('id');
+                                        var win = tree.up('window[name=FormEditor]');
+                                        var form = win.down('form[name=mainPanel]');
+                                        var element = form.query('component[name=' + name + ']')[0];
+                                        if (element) {
+                                            Ext.FocusManager.fireEvent('componentfocus', Ext.FocusManager, element);
+                                        }
+                                    } catch(ex) {
+                                        console.log('Tree item click error. Element to focus :' + element + ' Error info: ' + ex);
+                                    }
+                                }
+                            }
 
-                            // Drag and Drop
-                            viewConfig:{
-                                plugins:{
-                                    ddGroup:'grid-to-panel',
-                                    ptype:'treeviewdragdrop'
-                                },
-                                listeners:{
-                                    beforedrop:function (nodeEl, data) {
+//                            // Drag and Drop
+//                            viewConfig:{
+//                                plugins:{
+//                                    ddGroup:'grid-to-panel',
+//                                    ptype:'treeviewdragdrop'
+//                                },
+//                                listeners:{
+//                                    beforedrop:function (nodeEl, data) {
+//                                        debugger;
 //                                        var record = data.records[0];
 //                                        if (record.store !== this.getStore()) {
 //                                            // Record from the grid. Take a copy ourselves
@@ -356,14 +465,13 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 //
 //                                            data.records = [copy];
 //                                        }
-                                        var selectedRecord = data.records[0];
-                                        FormGenerator.utils.MessageBox.show('Dragged ' + selectedRecord.get('component'));
-                                        return true;
-                                    }
-                                }
-                            },
+////                                        var selectedRecord = data.records[0];
+////                                        OSO.utils.MessageBox.show('Dragged ' + selectedRecord.get('component'));
+//                                        return true;
+//                                    }
+//                                }
+//                            },
 
-                            store:treeStore
 //                            listeners:{
 //                                itemclick:function (tree, record, item, index, e, options) {
 //
@@ -377,7 +485,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             region:'south',
                             split:true,
                             frame:false,
-                            height:300,
+                            height:350,
                             layout:'anchor',
                             items:[
 //------------------------------------------------Фильтр----------------------------------------------------------------
@@ -421,24 +529,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     bodyStyle:{
                                         'border-width':'1 0 0 0'
                                     },
-//                                    requires:[
-//                                        'Ext.grid.feature.Grouping'
-//                                    ],
-//                                    features:[
-//                                        {
-//                                            ftype:'grouping',
-//                                            groupHeaderTpl:'{group}',
-//                                            startCollapsed:false,
-//                                            collapsible:false,
-//                                            id:'propertiesGrouping'
-//                                        }
-//                                    ],
-                                    source:{
-                                        "Created":Ext.Date.parse('10/15/2006', 'm/d/Y'),
-                                        "Available":true,
-                                        "Version":"sdfsdfsdfsdf",
-                                        "Description":12
-                                    }
+                                    source:{}
                                 }
                             ]
                         }
@@ -448,144 +539,5 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
         });
 
         me.callParent(arguments);
-    },
-
-    afterFirstLayout:function () {
-        var _this = this;
-        this.callParent(arguments);
-        var form = this.down('form[name=mainPanel]');
-        var body = form.body;
-        var _win = form.up('window');
-        var gridComponents = _win.down('gridpanel[name=components]');
-        var propertiesGrid = _win.down('propertygrid[name=properties]');
-
-        this.formPanelDropTarget = new Ext.dd.DropTarget(body, {
-            ddGroup:'grid-to-panel',
-            notifyEnter:function (ddSource, e, data) {
-                //Add some flare to invite drop.
-                body.stopAnimation();
-                body.highlight();
-            },
-            notifyDrop:function (ddSource, e, data) {
-                // new Store
-                var store = deepCloneStore(ddSource.view.getStore());
-                var selectedRecord = store.findRecord('component', ddSource.dragData.records[0].get('component'));
-                var item;
-                switch (selectedRecord.get('component')) {
-                    case 'Panel':
-
-                        break;
-                    case 'Window':
-                        item = Ext.create('Ext.window.Window', {
-                            autoShow:true,
-                            name:'sencha' + 'win',
-                            width:200,
-                            height:200,
-                            minWidth:200,
-                            minHeight:200,
-                            margin:5,
-                            resizable:true,
-                            draggable:true,
-                            constrain:true,
-                            renderTo:body,
-                            mainWindow:true,
-                            closable:true,
-                            collapsible:true,
-                            record:selectedRecord,
-                            title:'My Window',
-                            items:[
-                                {
-                                    xtype:'toolbar',
-                                    record:store.findRecord('component', 'toolbar'),
-                                    name:'sencha' + 'toolbar',
-                                    items:[
-                                        {
-                                            xtype:'button',
-                                            record:store.findRecord('component', 'button'),
-                                            border:true,
-                                            name:'sencha' + 'button'
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype:'fieldset',
-                                    record:store.findRecord('component', 'fieldset'),
-                                    anchor:'100%',
-                                    margin:5,
-                                    padding:2,
-                                    title:'Общие данные',
-                                    name:'sencha' + 'fs',
-                                    border:true,
-                                    items:[
-                                        {
-                                            xtype:'textfield',
-                                            record:store.findRecord('component', 'textfield'),
-                                            readOnly:true,
-                                            name:'sencha' + 'txt'
-                                        }
-                                    ]
-                                }
-                            ],
-                            listeners:{
-                                afterrender:function (win) {
-//                                    // отменить нажатие на кнопку "Закрыть"
-                                    win.tools.close.clearListeners();
-                                    win.tools.close.clearManagedListeners();
-                                    win.tools['collapse-top'].hide();
-                                },
-                                resize:function( win, width, height, eOpts ){
-                                    win.record.get('properties')['width'] = width;
-                                    win.record.get('properties')['height'] = height;
-                                    propertiesGrid.setSource(win.record.get('properties'));
-                                }
-                            }
-                        });
-                        form.add(item);
-                        form.doLayout();
-                        _this.formPanelDropTarget.unreg();
-                        _this.formPanelDropTarget = null;
-                        form.fireEvent('ComponentAdded', form, item);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-    },
-
-    beforeDestroy:function () {
-        var target = this.formPanelDropTarget;
-        if (target) {
-            target.unreg();
-            this.formPanelDropTarget = null;
-        }
-        this.callParent();
     }
 });
-
-/**
- * Функция для рендеринга изображения
- * @param val url изображения
- * @return {String} строка с тегом <img> дял рендеринга изображения
- */
-function renderIcon(val) {
-    if (val) return '<img style="vertical-align: middle" src="' + val + '">'; else return '';
-}
-
-/**
- * Deep clone store
- * @param source old Store
- * @return {*} new Store
- */
-function deepCloneStore (source) {
-    var target = Ext.create ('Ext.data.Store', {
-        model: source.model
-    });
-    Ext.each (source.getRange (), function (record) {
-        var newRecordData = Ext.clone (record.copy().data);
-        var model = new source.model (newRecordData, newRecordData.id);
-        target.add (model);
-    });
-    return target;
-}
