@@ -13,17 +13,17 @@ namespace FormGenerator.ServerDataAccess
     {
         public static readonly Dictionary<string, string> mappingDictionary = new Dictionary<string, string>()
         {
-            {"ID","id"},
-            {"dictionaryID","dictionary_id"},
-            {"relationFieldName","rdb$relation_field_name"},
-            {"name","name"},
-            {"dataTypeID","data_type_id"},
+            {"ID","ID"},
+            {"name","NAME"},
+            {"columnName","COLUMN_NAME"},
+            {"dictionaryID","DICTIONARY_ID"},
+            {"domainValueTypeID","DOMAIN_VALUE_TYPE_ID"},
         };
         public static ResponseObjectPackage<List<DictionaryFieldModel>> GetBySearchTemplate(RequestObjectPackage<DictionaryFieldSearchTemplate> package, IDbConnection connectionID)
         {
             DictionaryFieldSearchTemplate obj = package.requestData;
             string sql = string.Format(
-                "select id, dictionary_id, rdb$relation_field_name, name, data_type_id " + Environment.NewLine +
+                "select ID, NAME, COLUMN_NAME, DICTIONARY_ID, DOMAIN_VALUE_TYPE_ID " + Environment.NewLine +
                 "from dictionary_fields " + Environment.NewLine +
                 "where {0}",
                 DictionaryFieldsRepository.ToSqlWhere(obj)
@@ -38,11 +38,11 @@ namespace FormGenerator.ServerDataAccess
         public static string ToSqlWhere(DictionaryFieldSearchTemplate obj)
         {
             string where = " 1 = 1";
-            where += DBOrmUtils.GetSqlWhereFromNumber(obj.ID, "id");
-            where += DBOrmUtils.GetSqlWhereFromNumber(obj.dictionaryID, "dictionary_id");
-            where += DBOrmUtils.GetSqlWhereFromString(obj.relationFieldName, "rdb$relation_field_name");
-            where += DBOrmUtils.GetSqlWhereFromString(obj.name, "name");
-            where += DBOrmUtils.GetSqlWhereFromNumber(obj.dataTypeID, "data_type_id");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.ID, "ID");
+            where += DBOrmUtils.GetSqlWhereFromString(obj.name, "NAME");
+            where += DBOrmUtils.GetSqlWhereFromString(obj.columnName, "COLUMN_NAME");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.dictionaryID, "DICTIONARY_ID");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.domainValueTypeID, "DOMAIN_VALUE_TYPE_ID");
             return where;
         }
     }

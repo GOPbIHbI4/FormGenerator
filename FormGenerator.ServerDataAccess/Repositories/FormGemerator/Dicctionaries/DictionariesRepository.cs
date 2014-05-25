@@ -13,16 +13,17 @@ namespace FormGenerator.ServerDataAccess
     {
         public static readonly Dictionary<string, string> mappingDictionary = new Dictionary<string, string>()
         {
-            {"ID","id"},
-            {"relationName","rdb$relation_name"},
-            {"name","name"},
+            {"ID","ID"},
+            {"tableName","TABLE_NAME"},
+            {"name","NAME"},
+            {"dictionaryGroupID","DICTIONARY_GROUP_ID"},
         };
 
-        public static ResponseObjectPackage<List<DictionaryModel>> GetBySearchModel(RequestObjectPackage<DictionarySearchTemplate> package, IDbConnection connectionID)
+        public static ResponseObjectPackage<List<DictionaryModel>> GetBySearchTemplate(RequestObjectPackage<DictionarySearchTemplate> package, IDbConnection connectionID)
         {
             DictionarySearchTemplate obj = package.requestData;
             string sql = string.Format(
-                "select id, rdb$relation_name, name " + Environment.NewLine +
+                "select ID, TABLE_NAME, NAME, DICTIONARY_GROUP_ID " + Environment.NewLine +
                 "from dictionaries " + Environment.NewLine + 
                 "where {0}",
                 DictionariesRepository.ToSqlWhere(obj)
@@ -37,20 +38,11 @@ namespace FormGenerator.ServerDataAccess
         public static string ToSqlWhere(DictionarySearchTemplate obj)
         {
             string where = " 1 = 1";
-            where += DBOrmUtils.GetSqlWhereFromNumber(obj.ID, "id");
-            where += DBOrmUtils.GetSqlWhereFromString(obj.name, "name");
-            where += DBOrmUtils.GetSqlWhereFromString(obj.relationName, "rdb$relation_name");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.ID, "ID");
+            where += DBOrmUtils.GetSqlWhereFromString(obj.tableName, "TABLE_NAME");
+            where += DBOrmUtils.GetSqlWhereFromString(obj.name, "NAME");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.dictionaryGroupID, "DICTIONARY_GROUP_ID");
             return where;
         }
-
-        //public static DictionaryModel ToDictionaryModel(DataRow row)
-        //{
-        //    DictionaryModel obj = new DictionaryModel();
-        //    obj.ID = DBOrmUtils.FieldValue<int>(row, "id", 0);
-        //    obj.relationName = DBOrmUtils.FieldValue<string>(row, "rdb$relation_name", "").TrimIfNotNull();
-        //    obj.name = DBOrmUtils.FieldValue<string>(row, "name", "").TrimIfNotNull();
-
-        //    return obj;
-        //}
     }
 }

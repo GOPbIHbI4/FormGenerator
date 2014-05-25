@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.Models
 {
-    public class DictionarySearchTemplate
+    public class DictionaryGruopModel
     {
-        public int? ID { get; set; }
-        public string relationName { get; set; }
+        public int ID { get; set; }
         public string name { get; set; }
+        public int? dictionaryGroupID_Parent { get; set; }
+        public int? dictionaryGroupID_Root { get; set; }
     }
 }

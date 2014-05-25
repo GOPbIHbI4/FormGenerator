@@ -126,6 +126,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\FormGeneratorController.cs" />
+    <Compile Include="Infrastructure\JsonNetResult.cs" />
     <Compile Include="Infrastructure\JsonRequestBehaviourAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

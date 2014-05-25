@@ -77,3 +77,7 @@ function deepCloneStore(source) {
 function isNumber(n) {
     return !isNaN(parseInt(n)) && isFinite(n);
 }
+
+function isArray(value) {
+    return value && Object.prototype.toString.call(value) === '[object Array]'
+}

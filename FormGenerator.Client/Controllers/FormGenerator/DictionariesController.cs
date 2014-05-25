@@ -12,11 +12,11 @@ namespace FormGenerator.Client
     public class DictionariesController : FormGeneratorController
     {
         [JsonRequestBehavior]
-        public JsonResult GetAllDictionaries()
+        public JsonResult GetDictionariesTree()
         {
             try
             {
-                ResponseObjectPackage<List<DictionaryModel>> result = new DictionariesLogic().GetAllDictionaries();
+                ResponseObjectPackage<List<DictionaryTreeItem>> result = new DictionaryGroupsLogic().GetDictionariesTree();
                 return Json(result);
             }
             catch (Exception ex)
@@ -26,11 +26,11 @@ namespace FormGenerator.Client
         }
 
         [JsonRequestBehavior]
-        public JsonResult GetDictionaryFieldsByDictionaryID(int dictionaryID)
+        public JsonResult GetDictionaryFieldsViewModel(int dictionaryID)
         {
             try
             {
-                ResponseObjectPackage<List<DictionaryFieldModel>> result = new DictionariesLogic().GetDictionaryFieldsByDictionaryID(dictionaryID);
+                ResponseObjectPackage<List<DictionaryField>> result = new DictionariesLogic().GetDictionaryFieldsViewModel(dictionaryID);
                 return Json(result);
             }
             catch (Exception ex)
@@ -39,7 +39,34 @@ namespace FormGenerator.Client
             }
         }
 
+        [JsonRequestBehavior]
+        public JsonResult GetDictionaryData(int dictionaryID)
+        {
+            try
+            {
+                ResponseObjectPackage<List<Dictionary<string, object>>> result = new DictionariesDataLogic().GetDictionaryData(dictionaryID);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SaveDictionaryData(Dictionary<string, object> row, int dictionaryID)
+        {
+            try
+            {
 
 
+                ResponsePackage result = new ResponsePackage();
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
     }
 }

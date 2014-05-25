@@ -42,6 +42,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Infrastructure\RequestPackage.cs" />
     <Compile Include="Infrastructure\ResponsePackage.cs" />
     <Compile Include="Infrastructure\ResponseTablePackage.cs" />

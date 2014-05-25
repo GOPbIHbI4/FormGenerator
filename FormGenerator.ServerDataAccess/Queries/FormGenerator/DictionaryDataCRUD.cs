@@ -1,4 +1,5 @@
-﻿using FormGenerator.Utilities;
+﻿using FormGenerator.Models;
+using FormGenerator.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,6 +11,14 @@ namespace FormGenerator.ServerDataAccess
 {
     public class DictionaryDataCRUD
     {
+        public ResponseObjectPackage<List<Dictionary<string, object>>> GetDictionaryData(RequestPackage package, IDbConnection connectionID)
+        {
+            string sql = package.requestString;
+            ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
+            res.ThrowExceptionIfError();
 
+            List<Dictionary<string, object>> list = res.GetDataOrExceptionIfError().ToListOfDictionaries();
+            return new ResponseObjectPackage<List<Dictionary<string, object>>>() { resultData = list };
+        }
     }
 }

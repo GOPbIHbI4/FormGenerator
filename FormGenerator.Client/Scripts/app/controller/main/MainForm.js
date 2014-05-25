@@ -11,7 +11,7 @@
                 click: this.onTest2
             },
             'MainForm button[action=onTest1]': {
-                click: this.onTest
+                click: this.onTest1
             }
         });
     },

@@ -9,9 +9,9 @@ namespace FormGenerator.Models
     public class DictionaryFieldSearchTemplate
     {
         public int? ID { get; set; }
-        public int? dictionaryID { get; set; }
-        public string relationFieldName { get; set; }
         public string name { get; set; }
-        public int? dataTypeID { get; set; }
+        public string columnName { get; set; }
+        public int? dictionaryID { get; set; }
+        public int? domainValueTypeID { get; set; }
     }
 }

@@ -51,7 +51,7 @@
                     name: 'dictionaries',
                     title: 'Словари',
                     region: 'west',
-                    split:true,
+                    split: true,
                     collapsible: true,
                     collapsed: false,
                     collapseDirection: 'left',
@@ -75,7 +75,7 @@
                     items: [
                         {
                             xtype: 'gridpanel',
-                            name:'dictionary',
+                            name: 'dictionary',
                             border: true,
                             columnLines: true,
                             autoScroll: true,
