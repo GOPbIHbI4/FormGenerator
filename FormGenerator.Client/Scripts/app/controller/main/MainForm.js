@@ -11,7 +11,7 @@
                 click: this.onTest2
             },
             'MainForm button[action=onTest1]': {
-                click: this.onTest
+                click: this.onTest1
             }
         });
     },
@@ -27,19 +27,7 @@
     },
 
     onTest1: function (button) {
-        Ext.Ajax.request({
-            url: 'Home/Test',
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            params: {
-            },
-            success: function (objServerResponse) {
-                var jsonResp = Ext.decode(objServerResponse.responseText);
-                FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, 1);
-            },
-            failure: function (objServerResponse) {
-                FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
-            }
-        });
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.formGenerator.dictionaries.DictionariesAdministrator');
+        FormGenerator.utils.Windows.open('DictionariesAdministrator', {});
     }
 });

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}</ProjectGuid>
+    <ProjectGuid>{2BD50F7D-950E-49BC-A177-C28C0BC29625}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FormGenerator.ServerDataAccess</RootNamespace>
-    <AssemblyName>FormGenerator.ServerDataAccess</AssemblyName>
+    <RootNamespace>FormGenerator.Server</RootNamespace>
+    <AssemblyName>FormGenerator.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,11 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FirebirdSql.Data.FirebirdClient">
-      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.1.5.0\lib\net45\FirebirdSql.Data.FirebirdClient.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,30 +39,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormEditor\FormEditorServerDataAccess.cs" />
-    <Compile Include="Infrastructure\ConnectionFactory.cs" />
-    <Compile Include="Infrastructure\DBOrmUtils.cs" />
-    <Compile Include="Infrastructure\DBUtils.cs" />
+<<<<<<< HEAD
+    <Compile Include="FormEditor\FormEditorBuisnessLogic.cs" />
+=======
+    <Compile Include="FormGenerator\Dictionaries\DictionariesDataLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionariesLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryGroupsLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryPrimaryKeysLogic.cs" />
+>>>>>>> origin/master
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\FormGenerator\DictionaryDataCRUD.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionariesRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
-    <Compile Include="Test\SqlTest.cs" />
+    <Compile Include="Test\DataTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">
       <Project>{b0a5deea-a62f-4a64-b3d4-61ec3e0aebac}</Project>
       <Name>FormGenerator.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FormGenerator.ServerDataAccess\FormGenerator.ServerDataAccess.csproj">
+      <Project>{4155ad70-bc86-461b-9ad5-c3ad1bc79fad}</Project>
+      <Name>FormGenerator.ServerDataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">
       <Project>{beaa1853-8c34-4de4-8e28-c80a41fb2a95}</Project>
       <Name>FormGenerator.Utilities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -40,10 +40,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormEditor\FormEditorBuisnessLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionariesDataLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionariesLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryGroupsLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryPrimaryKeysLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\DataTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">
+      <Project>{b0a5deea-a62f-4a64-b3d4-61ec3e0aebac}</Project>
+      <Name>FormGenerator.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FormGenerator.ServerDataAccess\FormGenerator.ServerDataAccess.csproj">
       <Project>{4155ad70-bc86-461b-9ad5-c3ad1bc79fad}</Project>
       <Name>FormGenerator.ServerDataAccess</Name>
@@ -53,6 +61,7 @@
       <Name>FormGenerator.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

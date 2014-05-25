@@ -22,7 +22,7 @@ namespace FormGenerator.Client
             {
                 return;
             }
-            
+
             filterContext.Result = this.HandleException(filterContext.Exception);
             filterContext.ExceptionHandled = true;
         }
@@ -32,6 +32,7 @@ namespace FormGenerator.Client
         /// <param name="controller"></param>
         /// <param name="ex"></param>
         /// <returns></returns>
+        [JsonRequestBehavior]
         public JsonResult HandleException(Exception ex)
         {
             //Этим можно было бы логировать ошибки
@@ -42,15 +43,20 @@ namespace FormGenerator.Client
             //MethodInfo method = controllerType.GetMethod(actionName);
             //Type returnType = method.ReturnType;
 
-            JsonResult result = new JsonResult()
+            ResponsePackage response = new ResponsePackage() 
             {
-                Data = new ResponsePackage() 
-                {
-                    resultCode = -1,
-                    resultMessage = ex.Message
-                }
+                resultCode = -1,
+                resultMessage = ex.Message
             };
-            return result;
+            return Json(response);
+        }
+
+        protected new JsonResult Json(Object obj)
+        {
+            JsonNetResult jsonNetResult = new JsonNetResult();
+            jsonNetResult.Formatting = Newtonsoft.Json.Formatting.Indented;
+            jsonNetResult.Data = obj;
+            return jsonNetResult;
         }
     }
 }

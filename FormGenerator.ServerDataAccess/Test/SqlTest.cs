@@ -13,15 +13,20 @@ namespace FormGenerator.ServerDataAccess
     {
         class test
         {
-            public int ID { get; set; }
-            public string NAME { get; set; }
+            public int id_ { get; set; }
+            public string Name { get; set; }
         }
         public ResponsePackage DoSomeSql(RequestPackage request, IDbConnection connectionID)
         {
             string sql =
                 "select * from Test";
 
-            List<test> list = DBOrmUtils.OpenSqlList<test>(sql, connectionID);
+            Dictionary<string, string> mapper = new Dictionary<string, string>() 
+            {
+                { "id_", "ID" },
+                { "Name", "NAME" }
+            };
+            List<test> list = DBOrmUtils.OpenSqlList<test>(sql, mapper, connectionID);
             return new ResponseObjectPackage<List<test>>() { resultData = list };
         }
     }
