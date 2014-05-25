@@ -18,5 +18,11 @@ namespace FormGenerator.Utilities
             this.ThrowExceptionIfError();
             return this.resultData;
         }
+
+        public new ResponseObjectPackage<T> GetSelfOrExceptionIfError()
+        {
+            this.ThrowExceptionIfError();
+            return this;
+        }
     }
 }

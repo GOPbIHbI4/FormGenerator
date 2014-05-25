@@ -39,21 +39,21 @@ Ext.override(Ext.grid.plugin.DragDrop, {
     }
 });
 
-Ext.define('My.App.Overrides', {}, function () {
-    Ext.require([
-        'Ext.window.Window'
-    ], function () {
-        Ext.window.Window.override({
-            initDraggable: function () {
-                this.callOverridden(arguments);
-                Ext.Window.prototype.floating = { shadow: false };
-                this.dd.on('drag', function () {
-                    this.ghostPanel.setZIndex(Ext.WindowManager.getActive().getEl().dom.style.zIndex);
-                }, this);
-            }
-        });
-    });
-});
+//Ext.define('My.App.Overrides', {}, function () {
+//    Ext.require([
+//        'Ext.window.Window'
+//    ], function () {
+//        Ext.window.Window.override({
+//            initDraggable: function () {
+//                this.callOverridden(arguments);
+//                Ext.Window.prototype.floating = { shadow: false };
+//                this.dd.on('drag', function () {
+//                    this.ghostPanel.setZIndex(Ext.WindowManager.getActive().getEl().dom.style.zIndex);
+//                }, this);
+//            }
+//        });
+//    });
+//});
 
 Ext.define('FormGenerator.view.editor.FormEditor', {
     extend:'Ext.window.Window',
@@ -70,6 +70,8 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
     minWidth:1200,
 
     mousedComponents: [],
+    form_id:undefined,
+    form_name:undefined,
 
     layout:{
         type:'border'
@@ -96,6 +98,18 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                         {
                             xtype: 'button',
                             scale: 'medium',
+                            text: 'Открыть',
+                            action: 'onOpen',
+                            border: true,
+                            icon: 'Scripts/resources/icons/open3.png',
+                            iconAlign: 'top'
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'button',
+                            scale: 'medium',
                             text: 'Сохранить',
                             action: 'onSave',
                             border: true,
@@ -105,18 +119,18 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                         {
                             xtype: 'tbseparator'
                         },
-                        {
-                            xtype: 'button',
-                            scale: 'medium',
-                            text: 'Настройки',
-                            action: 'onEdit',
-                            border: true,
-                            icon: 'Scripts/resources/icons/edit.png',
-                            iconAlign: 'top'
-                        },
-                        {
-                            xtype: 'tbseparator'
-                        },
+//                        {
+//                            xtype: 'button',
+//                            scale: 'medium',
+//                            text: 'Настройки',
+//                            action: 'onEdit',
+//                            border: true,
+//                            icon: 'Scripts/resources/icons/edit.png',
+//                            iconAlign: 'top'
+//                        },
+//                        {
+//                            xtype: 'tbseparator'
+//                        },
                         {
                             xtype: 'button',
                             scale: 'medium',
@@ -166,7 +180,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             name:'componentsGroups',
                             region:'west',
                             split:true,
-                            width:100,
+                            width:110,
                             hideHeaders:true,
 
                             collapsible:true,
@@ -194,12 +208,12 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                 {
                                     flex:1,
                                     dataIndex:'group'
-                                },
-                                {
-                                    width:30,
-                                    align:'right',
-                                    dataIndex:'count'
                                 }
+//                                {
+//                                    width:30,
+//                                    align:'right',
+//                                    dataIndex:'count'
+//                                }
                             ]
                         },
 //------------------------------------------------Компоненты------------------------------------------------------------

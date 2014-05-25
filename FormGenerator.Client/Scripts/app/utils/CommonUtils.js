@@ -77,3 +77,13 @@ function deepCloneStore(source) {
 function isNumber(n) {
     return !isNaN(parseInt(n)) && isFinite(n);
 }
+
+/**
+ * Функция, преобразовывающая первый символ строки к Uppercase
+ * @param string Строка типа "string"
+ * @returns {string} Строка типа "String"
+ */
+function capitalizeFirstLetter(string){
+    if (!string) return string;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

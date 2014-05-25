@@ -52,49 +52,49 @@ function afterFirstLayout(cmp) {
                     item = panelFactory(win, target, selectedRecord);
                     break;
                 case 'tabpanel':
-                    item = tabPanelFactory(win, target, selectedRecord);
+                    item = tabpanelFactory(win, target, selectedRecord);
                     break;
                 case 'newtab':
                     item = tabFactory(win, target, selectedRecord);
                     break;
                 case 'gridpanel':
-                    item = gridPanelFactory(win, target, selectedRecord);
+                    item = gridpanelFactory(win, target, selectedRecord);
                     break;
                 case 'gridcolumn':
-                    item = gridColumnFactory(win, target, selectedRecord);
+                    item = gridcolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'datecolumn':
-                    item = dateColumnFactory(win, target, selectedRecord);
+                    item = datecolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'numbercolumn':
-                    item = numberColumnFactory(win, target, selectedRecord);
+                    item = numbercolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'textfield':
-                    item = textFieldFactory(win, target, selectedRecord);
+                    item = textfieldFactory(win, target, selectedRecord);
                     break;
                 case 'fieldset':
-                    item = fieldSetFactory(win, target, selectedRecord);
+                    item = fieldsetFactory(win, target, selectedRecord);
                     break;
                 case 'container':
                     item = containerFactory(win, target, selectedRecord);
                     break;
                 case 'datefield':
-                    item = dateFieldFactory(win, target, selectedRecord);
+                    item = datefieldFactory(win, target, selectedRecord);
                     break;
                 case 'numberfield':
-                    item = numberFieldFactory(win, target, selectedRecord);
+                    item = numberfieldFactory(win, target, selectedRecord);
                     break;
                 case 'combobox':
-                    item = comboBoxFactory(win, target, selectedRecord);
+                    item = comboboxFactory(win, target, selectedRecord);
                     break;
                 case 'button':
                     item = buttonFactory(win, target, selectedRecord);
                     break;
                 case 'toolbar':
-                    item = toolBarFactory(win, target, selectedRecord);
+                    item = toolbarFactory(win, target, selectedRecord);
                     isDocked = true;
                     break;
                 default:

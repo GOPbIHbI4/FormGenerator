@@ -1,7 +1,7 @@
 //======================================================================================================================
 //                     Генератор колонки с данными типа Число
 //======================================================================================================================
-numberColumnFactory = function (win, cmp, selectedRecord) {
+numbercolumnFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
     var propertiesGrid = win.down('propertygrid[name=properties]');
@@ -21,8 +21,9 @@ numberColumnFactory = function (win, cmp, selectedRecord) {
         listeners:{
             afterrender: function (item) {
                 var i = item.body || item.el || item;
+                item.record.get('properties')['name'] = item.name;
+                selectedRecord.set('name', item.name);
                 i.on('mouseover', function(){
-                    selectedRecord.set('name', item.name);
                     win.mousedComponents.push(selectedRecord);
                 });
                 i.on('mouseout', function(){
@@ -31,7 +32,7 @@ numberColumnFactory = function (win, cmp, selectedRecord) {
                 i.on('contextmenu', function(e) {
                     var menu = getContextMenu();
                     menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.controller.editor.Focused.clearFocusedCmp();
+                        FormGenerator.editor.Focused.clearFocusedCmp();
                         form.fireEvent('ComponentRemoved', form, cmp, item);
                         cmp.headerCt.remove(item, true);
                         cmp.getView().refresh();
@@ -44,7 +45,7 @@ numberColumnFactory = function (win, cmp, selectedRecord) {
             },
             resize: function (col, width, height, oldWidth, oldHeight, eOpts) {
                 col.record.get('properties')['width'] = width;
-                var focusedCmp = FormGenerator.controller.editor.Focused.getFocusedCmp();
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
                 if (focusedCmp && focusedCmp.name && focusedCmp.name == col.name) {
                     propertiesGrid.setSource(col.record.get('properties'));
                 }

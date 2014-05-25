@@ -1,9 +1,10 @@
 //======================================================================================================================
 //                     Генератор текстового поля/поля даты
 //======================================================================================================================
-numberFieldFactory = function (win, cmp, selectedRecord) {
+numberfieldFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
+    var propertiesGrid = win.down('propertygrid[name=properties]');
     //шаблоны
     return Ext.create('Ext.form.field.Number', {
         xtype:'numberfield',
@@ -26,9 +27,14 @@ numberFieldFactory = function (win, cmp, selectedRecord) {
         listeners:{
             afterrender: function (item) {
                 item.triggerCell.show();
+                item.record.get('properties')['name'] = item.name;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
+                selectedRecord.set('name', item.name);
                 var iBody = item.body || item;
                 iBody.el.on('mouseover', function(){
-                    selectedRecord.set('name', item.name);
                     win.mousedComponents.push(selectedRecord);
                 });
                 iBody.el.on('mouseout', function(){
@@ -37,12 +43,21 @@ numberFieldFactory = function (win, cmp, selectedRecord) {
                 iBody.el.on('contextmenu', function(e) {
                     var menu = getContextMenu();
                     menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.controller.editor.Focused.clearFocusedCmp();
+                        FormGenerator.editor.Focused.clearFocusedCmp();
                         form.fireEvent('ComponentRemoved', form, cmp, item);
                         cmp.remove(item, true);
                     });
                     menu.showAt(e.getXY());
                 });
+            },
+            resize: function (item, width, height, eOpts) {
+                item.record.get('properties')['width'] = width;
+                item.record.get('properties')['height'] = height;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
+                form.doLayout();
             }
         }
     });

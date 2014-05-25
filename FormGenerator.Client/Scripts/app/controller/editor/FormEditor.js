@@ -1,34 +1,4 @@
-﻿Ext.define('FormGenerator.controller.editor.Focused', {
-    singleton: true,
-    focusedCmp: undefined,
-    getFocusedCmp: function () {
-        return this.focusedCmp;
-    },
-    setFocusedCmp: function (cmp) {
-        var _this = this;
-        _this.clearFocusedCmp();
-        try {
-            if (cmp) {
-                _this.focusedCmp = cmp;
-                _this.focusedCmp.addCls('z-focused-element');
-            }
-        } catch (ex) {
-            console.log('Deleted focusedCmp is empty. Error: ' + ex + ' Focused component: ' + this.focusedCmp);
-        }
-    },
-    clearFocusedCmp: function () {
-        try {
-            if (this.focusedCmp) {
-                this.focusedCmp.removeCls('z-focused-element');
-            }
-        } catch (ex) {
-            console.log('Deleted focusedCmp is empty. Error: ' + ex + ' Focused component: ' + this.focusedCmp);
-        }
-        this.focusedCmp = null;
-    }
-});
-
-Ext.define('FormGenerator.controller.editor.FormEditor', {
+﻿Ext.define('FormGenerator.controller.editor.FormEditor', {
     extend: 'Ext.app.Controller',
 
     views: [
@@ -44,7 +14,7 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
     ],
 
     requires: [
-        'FormGenerator.controller.editor.Focused'
+        'FormGenerator.editor.Focused'
     ],
 
     components: undefined,
@@ -53,6 +23,12 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
         this.control({
             'FormEditor': {
                 afterrender: this.onLoad
+            },
+            'FormEditor button[action=onSave]': {
+                click: this.onSave
+            },
+            'FormEditor button[action=onOpen]': {
+                click: this.onOpenForm
             },
             'FormEditor button[action=onCode]': {
                 click: this.onCode
@@ -78,9 +54,15 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
         });
     },
 
-    //==================================================================================================================
-    // Загрузка формы
-    //==================================================================================================================
+    /**
+     * Функция инициализации компонентов формы графического редактора. Вызывается сразу после загрузке формы (afterrender).
+     * В данной функции происходит установка исходных положений и значений всех элементов формы,
+     * активация объекта управления фокусом элементов (Ext.FocusManager) и управление его поведением,
+     * добавление классу String функции startsWith,
+     * описание логики визуального выделения элемента с фокусом на панели редактирования формы (обработка события componentfocus объекта Ext.FocusManager),
+     * обработка событий добавления и удаления элементов формы
+     * @param win
+     */
     onLoad: function (win) {
         Ext.FocusManager.enable();
         Ext.getBody().on("contextmenu", Ext.emptyFn, null, {preventDefault: true});
@@ -98,12 +80,15 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
         var btnCopyToClipboard = win.down('button[action=onCopyToClipboard]');
         var btnSaveOnFile = win.down('button[action=onSaveOnFile]');
         var btnLabel = win.down('button[action=onLabel]');
-        propertiesPanel.disable();
         this.components = componentsGrid.getStore().data.items;
         componentGroupGrid.getSelectionModel().select(componentGroupGrid.getStore().findRecord('group', 'Everything'));
         btnDesign.toggle(true);
 
         // Добавить функцию startsWith классу String
+        /**
+         * Функция возвращает логическое значение, определяющее, начинается ли текущая строка со строки str
+         * @param str Начальная подстрока для проверки
+         */
         if (typeof String.prototype.startsWith != 'function') {
             String.prototype.startsWith = function (str) {
                 return this.indexOf(str) == 0;
@@ -111,11 +96,12 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
         }
 
         // Фокус элементов основной формы
-        FormGenerator.controller.editor.Focused.clearFocusedCmp();
-        // rgb(153,188,232) - наша тема
+        FormGenerator.editor.Focused.clearFocusedCmp();
+        // создаем css стиль z-focused-element для выделения компонента с фокусом
         Ext.util.CSS.createStyleSheet('.z-focused-element { border-style:double ; border-width:1px; border-color: rgb(0,100,255); -webkit-box-shadow:0px 0px 30px 0px rgb(0,100,255); -moz-box-shadow:0px 0px 30px 0px rgb(0,100,255);' +
             ' box-shadow:-moz-box-shadow:0px 0px 30px 0px rgb(0,100,255);  }', 'z-focused-element');
-        // При фокусе одного из компонентов выделяем его
+        // При фокусе одного из компонентов формы выделяем его
+        Ext.FocusManager.clearListeners();
         Ext.FocusManager.on('componentfocus', function (fm, cmp, previousCmp) {
             var focused = null;
             if (cmp.name && cmp.name.substr(0, 6) == 'sencha') {
@@ -133,9 +119,9 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
                 (cmp.up().xtype == 'panel' || cmp.up().xtype == 'window' || cmp.up().xtype == 'tabpanel' || cmp.up().xtype == 'gridpanel')) {
                 focused = cmp.up();
             }
+            propertiesPanel = win.down('panel[name=propertiesPanel]');
             if (focused) {
-                FormGenerator.controller.editor.Focused.setFocusedCmp(focused);
-                if (propertiesPanel && propertiesPanel.disabled) propertiesPanel.enable();
+                FormGenerator.editor.Focused.setFocusedCmp(focused);
                 propertiesOwner.update('<span style="margin:3px;position:absolute;">' + renderIcon(focused.record.get('icon')) + '&nbsp' +
                     focused.record.get('component') + '&nbsp&nbsp' + '<i>' + focused.record.get('path') + '</i>&nbsp' + '</span>');
                 propertiesGrid.setSource(focused.record.get('properties'));
@@ -144,19 +130,84 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
                 if (treeEl) {
                     tree.getSelectionModel().select(treeEl);
                 }
-            } else if (!FormGenerator.controller.editor.Focused.getFocusedCmp()) {
+                propertiesPanel.setDisabled(false);
+            } else if (!FormGenerator.editor.Focused.getFocusedCmp()) {
                 propertiesGrid.setSource([]);
                 propertiesGrid.customEditors = [];
                 propertiesOwner.update('');
                 propertiesFilter.setValue('');
-                propertiesPanel.disable();
                 tree.getSelectionModel().deselectAll();
+                propertiesPanel.setDisabled(true);
             }
         });
 
         // При добавлении и удалении элементов формы перерисовываем дерево проекта
         form.on('ComponentAdded', _this.onAddComponent);
         form.on('ComponentRemoved', _this.onRemoveComponent);
+        // При закрытии формы дизактивируем объект управления фокусом элементов
+        win.on('beforeclose', function(){ Ext.FocusManager.disable(); });
+    },
+
+    /**
+     * Нарисовать форму, полученную в виде JSON объекта (res)
+     * @param win Окно редактора форм
+     * @param res Объект формы
+     */
+    drawForm:function(win, res){
+        var _this = this;
+        var form = win.down('form[name=mainPanel]');
+        var components = win.down('gridpanel[name=components]');
+        var store = deepCloneStore(components.getStore());
+        // рекурсивная функция создания объектов
+        var fn = function(obj, parent){
+            if (!obj || !parent) {
+                var error = 'При открытии формы на редактирование произошла ошибка: объект пуст.';
+                FormGenerator.utils.MessageBox.show(error, null, -1);
+                //console.error(error);
+                return;
+            }
+            if (!obj['xtype']){
+                var error ='При открытии формы на редактирование произошла ошибка: объект не имеет типа.' + obj['name'] ? obj['name'] : '';
+                FormGenerator.utils.MessageBox.show(error, null, -1);
+                //console.error(error);
+                return;
+            }
+            // выбираем объект из хранилища компонентов, соответствующий текущему
+            var selectedRecord = store.findRecord('component', obj['xtype']);
+            // создаем объект с помощью фабрик объектов
+            var item = eval(obj['xtype'] + 'Factory(win, parent, selectedRecord);');
+            item.name = obj['name'];
+            if (item.xtype == 'toolbar') {
+                parent.addDocked(item);
+            } else if (Ext.Array.contains(['gridcolumn', 'datecolumn', 'numbercolumn'], item.xtype)) {
+                parent.headerCt.insert(parent.columns.length, item);
+                parent.getView().refresh();
+            } else {
+                parent.add(item);
+            }
+            parent.add(item);
+            parent.doLayout();
+            form.doLayout();
+            form.fireEvent('ComponentAdded', form, parent, item);
+            // изменяем свойства объекта
+            FormGenerator.editor.Focused.setFocusedCmp(item);
+            for (var prop in obj) {
+                if (!(obj[prop] instanceof Array)){
+                    _this.onProperyChange(null, prop, obj[prop]);
+                }
+            }
+            FormGenerator.editor.Focused.clearFocusedCmp();
+            // рекурсия
+            for (var prop in obj) {
+                if ((obj[prop] instanceof Array) && obj[prop].length > 0){
+                    obj[prop].forEach(function(i){
+                        fn(i, item);
+                    });
+                }
+            }
+        };
+
+        fn(res, form);
     },
 
     /**
@@ -169,11 +220,77 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
         var form = mainContainer.down('form[name=mainPanel]');
         var codeText = mainContainer.down('textareafield[name=codeText]');
         var btnLabel = win.down('button[action=onLabel]');
+        if (!form.down('[name=senchawin]')){
+            console.warn('При попытке показать код создано предупреждение: Форма пустая.');
+            return;
+        }
         var obj = this.getJsonForm(form);
         form.hide();
         codeText.show();
         codeText.setValue(JSON.stringify(obj, null, '\t'));
         btnLabel.show();
+    },
+
+    /**
+     * Функция сохранения формы.
+     * @param btn
+     */
+    onSave:function(btn) {
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        // получить объект, хранящий в себе описание формы
+        var obj = this.getJsonForm(form);
+        if (obj == null || typeof obj == 'undefined'){
+            var error = 'Форма пустая.';
+            FormGenerator.utils.MessageBox.show(error, null, 0);
+            return;
+        }
+        // рекурсивная функция сохранения
+        var fn = function(item){
+            win.body.mask('Сохранение...');
+            Ext.Ajax.request({
+                url: 'FormEditor/Test',
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                params: {
+                    obj:item.name + ''
+                },
+                success: function (objServerResponse) {
+                    win.body.unmask();
+                    var jsonResp = Ext.decode(objServerResponse.responseText);
+                    if (jsonResp.resultCode == 0) {
+                        for (var prop in item) {
+                            if (!(item[prop] instanceof Array)) {
+                                // call server
+                            }
+                        }
+                        for (var prop in item) {
+                            if (item[prop] instanceof Array) {
+                                fn(item[prop]);
+                            }
+                        }
+                    } else {
+                        FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
+                    }
+                },
+                failure: function (objServerResponse) {
+                    win.body.unmask();
+                    FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
+                }
+            });
+        };
+        // Если форма новая и еще не сохранена
+        if (win.form_id == null || typeof (win.form_id) == 'undefined'){
+            FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.SaveFormDialog');
+            var saveFormDialog = FormGenerator.utils.Windows.open('SaveFormDialog', {}, null, true);
+            saveFormDialog.on('FormIsReadyToSave', function(winDialog, form_id, form_name){
+                win.form_id = form_id;
+                win.form_name = form_name;
+                fn(obj);
+            });
+        } else {
+            fn(obj);
+        }
     },
 
     /**
@@ -200,7 +317,7 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
      * @param eOpts The options object passed to Ext.util.Observable.addListener.
      */
     onProperyChange: function (source, recordId, value, oldValue, eOpts) {
-        var focused = FormGenerator.controller.editor.Focused.getFocusedCmp();
+        var focused = FormGenerator.editor.Focused.getFocusedCmp();
         var win = focused.up('window[name=FormEditor]');
         var form = win.down('form[name=mainPanel]');
         focused.record.get('properties')[recordId] = value;
@@ -257,7 +374,6 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
                     focused.setFieldLabel(focused.getFieldLabel());
                     break;
                 case 'labelWidth':
-                    debugger;
                     focused.labelWidth = value;
                     focused.labelCell.setWidth(focused.labelWidth);
                     break;
@@ -539,6 +655,9 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
             'panel', 'tab', 'tabpanel', 'textfield', 'toolbar'];
 
         var fn = function (item) {
+            if (item == null || typeof item == 'undefined'){
+                return null;
+            }
             var items = [];
             var dockedItems = [];
             var query = [];
@@ -592,6 +711,51 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
 
         var obj = fn(localWindow);
         return obj;
+    },
+
+    /**
+     * Функция, очищающая текущую редактируемую фрму.
+     * @param form Форма
+     */
+    clearCurrentForm:function(form){
+        form.removeAll();
+        form.doLayout();
+    },
+
+    /**
+     * Функция, открывающее диалоговое окно выбора формы для редактирования.
+     * @param btn Кнопка "Открыть", вызвавшая событие
+     */
+    onOpenForm:function (btn) {
+        var _this = this;
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.OpenFormDialog');
+        var openFormDialog = FormGenerator.utils.Windows.open('OpenFormDialog', {}, null, true);
+        openFormDialog.on('FormIsReadyToOpen', function(winDialog, form_id){
+            _this.clearCurrentForm(form);
+            // Ajax запрос на получение формы
+            win.body.mask('Загрузка...');
+            Ext.Ajax.request({
+                url: 'FormEditor/GetFormByID',
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                params: {
+                    id:form_id
+                },
+                success: function (objServerResponse) {
+                    var jsonResp = Ext.decode(objServerResponse.responseText);
+                    var res = jsonResp.resultData;
+                    // воссоздание формы с помощью рекурсивной функции
+                    _this.drawForm(win, res);
+                    win.body.unmask();
+                },
+                failure: function (objServerResponse) {
+                    win.body.unmask();
+                    FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
+                }
+            });
+        })
     },
 
     /**
@@ -697,10 +861,13 @@ Ext.define('FormGenerator.controller.editor.FormEditor', {
     },
 
     /**
-     * Закрытие окна
-     * @param btn Кнопка "Закрыть", вызвавшее событие
+     * Функция акрытия формы графического редактора.
+     * @param btn Кнопка "Закрыть", вызвавшая событие закрытия формы
      */
     onClose: function (btn) {
-        btn.up('FormEditor').close();
+        if (btn && btn.up('FormEditor') && btn.up('FormEditor').close) {
+            btn.up('FormEditor').close();
+        }
     }
+
 });

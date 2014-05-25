@@ -4,13 +4,12 @@
 
     border:false,
     autoShow:false,
-    ajaxTimeout:600000,
 
     margin:0,
     layout:{
         type:'absolute'
     },
-    //----------------------------------------------------------
+
     initComponent:function () {
         var me = this;
 

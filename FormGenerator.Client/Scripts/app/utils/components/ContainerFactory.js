@@ -4,6 +4,7 @@
 containerFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
+    var propertiesGrid = win.down('propertygrid[name=properties]');
     return Ext.create('Ext.container.Container', {
         xtype:'container',
         margin:5,
@@ -25,8 +26,13 @@ containerFactory = function (win, cmp, selectedRecord) {
         record:selectedRecord,
         listeners:{
             afterrender: function (item) {
+                item.record.get('properties')['name'] = item.name;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
+                selectedRecord.set('name', item.name);
                 item.el.on('mouseover', function(){
-                    selectedRecord.set('name', item.name);
                     win.mousedComponents.push(selectedRecord);
                 });
                 item.el.on('mouseout', function(){
@@ -35,7 +41,7 @@ containerFactory = function (win, cmp, selectedRecord) {
                 item.el.on('contextmenu', function(e) {
                     var menu = getContextMenu();
                     menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.controller.editor.Focused.clearFocusedCmp();
+                        FormGenerator.editor.Focused.clearFocusedCmp();
                         form.fireEvent('ComponentRemoved', form, cmp, item);
                         cmp.remove(item, true);
                     });
@@ -44,6 +50,14 @@ containerFactory = function (win, cmp, selectedRecord) {
             },
             render: function () {
                 afterFirstLayout(this);
+            },
+            resize: function (item, width, height, eOpts) {
+                item.record.get('properties')['width'] = width;
+                item.record.get('properties')['height'] = height;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
             }
         }
     });

@@ -1,7 +1,7 @@
 //======================================================================================================================
 //                     Генератор панели со вложенными табами
 //======================================================================================================================
-tabPanelFactory = function (win, cmp, selectedRecord) {
+tabpanelFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
     var propertiesGrid = win.down('propertygrid[name=properties]');
@@ -22,34 +22,42 @@ tabPanelFactory = function (win, cmp, selectedRecord) {
         form: form,
         record: selectedRecord,
         listeners: {
-            afterrender: function (panel) {
-                var b = panel.body || panel.el || panel;
-                selectedRecord.set('name', panel.name);
+            afterrender: function (item) {
+                var b = item.body || item.el || item;
+                selectedRecord.set('name', item.name);
+                item.record.get('properties')['name'] = item.name;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
                 b.on('mouseover', function () {
                     win.mousedComponents.push(selectedRecord);
                 });
                 b.on('mouseout', function () {
                     win.mousedComponents.pop(selectedRecord);
                 });
-                panel.tabBar.el.on('contextmenu', function (e) {
-                    if (FormGenerator.controller.editor.Focused.getFocusedCmp().record.get('component').toLowerCase() == 'tabpanel') {
+                item.tabBar.el.on('contextmenu', function (e) {
+                    if (FormGenerator.editor.Focused.getFocusedCmp().record.get('component').toLowerCase() == 'tabpanel') {
                         var menu = getContextMenu();
                         menu.down('menuitem[action=onDelete]').on('click', function () {
-                            FormGenerator.controller.editor.Focused.clearFocusedCmp();
-                            form.fireEvent('ComponentRemoved', form, cmp, panel);
-                            cmp.remove(panel, true);
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
                         });
                         menu.showAt(e.getXY());
                     }
                 });
             },
-            resize: function (win, width, height, eOpts) {
-                win.record.get('properties')['width'] = width;
-                win.record.get('properties')['height'] = height;
-                propertiesGrid.setSource(win.record.get('properties'));
+            resize: function (item, width, height, eOpts) {
+                item.record.get('properties')['width'] = width;
+                item.record.get('properties')['height'] = height;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
                 form.doLayout();
             },
-            render: function (panel) {
+            render: function (item) {
                 afterFirstLayout(this);
             }
         }

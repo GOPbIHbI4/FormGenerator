@@ -47,6 +47,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":100,
                 "maxHeight":1000,
                 "minHeight":100,
+                "name":'',
                 "resizable":false,
                 "rowLines":true,
                 "title":'My Panel',
@@ -67,6 +68,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxWidth":1000,
                 "minWidth":100,
                 "menuDisabled":false,
+                "name":'',
                 "resizable":true,
                 "sortable":true,
                 "text":'My GridColumn',
@@ -90,6 +92,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxWidth":1000,
                 "minWidth":50,
                 "menuDisabled":false,
+                "name":'',
                 "resizable":false,
                 "sortable":true,
                 "text":'My DateColumn',
@@ -112,6 +115,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxWidth":1000,
                 "minWidth":50,
                 "menuDisabled":false,
+                "name":'',
                 "resizable":true,
                 "sortable":true,
                 "text":'My NumberColumn',
@@ -145,6 +149,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minHeight":100,
                 "maximizable":false,
                 "minimizable":false,
+                "name":'',
                 "resizable":true,
                 "title":'My Panel',
                 "width":200
@@ -174,6 +179,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":100,
                 "maxHeight":1000,
                 "minHeight":100,
+                "name":'',
                 "resizable":true,
                 "title":'My Panel',
                 "width":200
@@ -192,6 +198,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "frame":true,
                 "hidden":false,
                 "margin":'0 0 0 0',
+                "name":'',
                 "title":'My TabPanel'
             }
         },
@@ -272,6 +279,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maskRe":'',
                 "maxWidth":1000,
                 "minWidth":100,
+                "name":'',
                 "readOnly":false,
                 "value":'',
                 "width":200
@@ -300,6 +308,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxValue":new Date(4000, 0, 1),
                 "minText":'Значение поля должно быть больше или равно {0}',
                 "maxText":'Значение поля должно быть меньше или равно {0}',
+                "name":'',
                 "readOnly":false,
                 "value":'',
                 "width":95
@@ -333,6 +342,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxText":'Значение поля должно быть меньше или равно {0}',
                 "mouseWheelEnabled":true,
                 "nanText":'Значение поля некорректно',
+                "name":'',
                 "step":1,
                 "readOnly":false,
                 "value":'',
@@ -361,6 +371,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "maxWidth":1000,
                 "minWidth":100,
                 "multiSelect":false,
+                "name":'',
                 "queryMode":'local',
                 "readOnly":false,
                 "value":'',
@@ -388,6 +399,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":20,
                 "maxHeight":1000,
                 "minHeight":20,
+                "name":'',
                 "padding":'2 2 2 2',
                 "title":'My FieldSet',
                 "width":50
@@ -411,6 +423,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":20,
                 "maxHeight":1000,
                 "minHeight":20,
+                "name":'',
                 "padding":'2 2 2 2',
                 "width":50
             }
@@ -431,6 +444,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":20,
                 "maxHeight":1000,
                 "minHeight":20,
+                "name":'',
                 "padding":'2 2 2 2',
                 "width":50
             }
@@ -447,6 +461,7 @@ Ext.define('FormGenerator.store.editor.Components', {
                 "minWidth":20,
                 "maxHeight":1000,
                 "minHeight":20,
+                "name":'',
                 "padding":'2 2 2 2',
                 "scale":'small',
                 "text":'My Button',
@@ -465,13 +480,12 @@ Ext.define('FormGenerator.store.editor.Groups', {
     model:'FormGenerator.model.editor.Groups',
     groupField:'type',
     data:[
-        {group:'Everything', count:8, type:'Default'},
-        {group:'Grid', count:3, type:'Default'},
-        {group:'Panel', count:5, type:'Default'},
-        {group:'Fields', count:1, type:'Default'},
-        {group:'Containers', count:1, type:'Default'},
-        {group:'Buttons', count:1, type:'Default'},
-        {group:'New', count:-1, type:'Custom'}
+        {group:'Everything', count:8, type:'Тип компонентов'},
+        {group:'Grid', count:3, type:'Тип компонентов'},
+        {group:'Panel', count:5, type:'Тип компонентов'},
+        {group:'Fields', count:1, type:'Тип компонентов'},
+        {group:'Containers', count:1, type:'Тип компонентов'},
+        {group:'Buttons', count:1, type:'Тип компонентов'}
     ]
 });
 
