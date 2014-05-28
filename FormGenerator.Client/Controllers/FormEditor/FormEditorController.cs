@@ -11,6 +11,75 @@ namespace FormGenerator.Client.Controllers
 {
     public class FormEditorController : FormGeneratorController
     {
+        #region Привязка к данным
+
+        /// <summary>
+        /// Получить список полей словаря
+        /// </summary>
+        /// <param name="dictionaryID">ID словаря</param>
+        /// <returns>Объект-оболочку ResponseObjectPackage в формате JSON, хранящего в поле resultData список полей словаря</returns>
+        [JsonRequestBehavior]
+        public JsonResult GetDictionaryFields(int dictionaryID)
+        {
+            try
+            {
+                RequestPackage request = new RequestPackage()
+                {
+                    requestID = dictionaryID
+                };
+                ResponseObjectPackage<OpenFormModel> response = new FormEditorLogic().GetFormByID(request).GetSelfOrExceptionIfError();
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Получить список полей выборки
+        /// </summary>
+        /// <param name="queryID">ID выборки</param>
+        /// <returns>Объект-оболочку ResponseObjectPackage в формате JSON, хранящего в поле resultData список полей выборки</returns>
+        [JsonRequestBehavior]
+        public JsonResult GetQueryFields(int queryID)
+        {
+            try
+            {
+                RequestPackage request = new RequestPackage()
+                {
+                    requestID = queryID
+                };
+                ResponseObjectPackage<OpenFormModel> response = new FormEditorLogic().GetFormByID(request).GetSelfOrExceptionIfError();
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Получить список выборок
+        /// </summary>
+        /// <returns>Объект-оболочку ResponseObjectPackage в формате JSON, хранящего в поле resultData список выборок</returns>
+        [JsonRequestBehavior]
+        public JsonResult GetQueryList()
+        {
+            try
+            {
+                RequestPackage request = new RequestPackage();
+                ResponseObjectPackage<OpenFormModel> response = new FormEditorLogic().GetFormByID(request).GetSelfOrExceptionIfError();
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Функция получения JSON представление формы по ее id
         /// </summary>

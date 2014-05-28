@@ -90,6 +90,10 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
         var componentsStore = Ext.create('FormGenerator.store.editor.Components');
         var groupsStore = Ext.create('FormGenerator.store.editor.Groups');
         var treeStore = Ext.create('FormGenerator.store.editor.TreeStore');
+        var dataBindingStore = Ext.create('FormGenerator.store.editor.DataBinding');
+        var queryStore = Ext.create('FormGenerator.store.editor.Query');
+        var queryFieldStore = Ext.create('FormGenerator.store.editor.QueryField');
+        var dictionaryFieldStore = Ext.create('FormGenerator.store.editor.DictionaryField');
 
         Ext.applyIf(me, {
 
@@ -276,11 +280,6 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     flex:1,
                                     dataIndex:'name'
                                 }
-//                                {
-//                                    width:30,
-//                                    align:'right',
-//                                    dataIndex:'count'
-//                                }
                             ]
                         },
 //------------------------------------------------Компоненты------------------------------------------------------------
@@ -603,14 +602,141 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                 },
 //------------------------------------------------Сами свойства---------------------------------------------------------
                                 {
-                                    xtype:'propertygrid',
-                                    name:'properties',
-                                    flex:1,
+                                    xtype: 'tabpanel',
+                                    activeTab: 0,
                                     anchor:'0 -57',
-                                    bodyStyle:{
-                                        'border-width':'1 0 0 0'
-                                    },
-                                    source:{}
+                                    flex:1,
+                                    name: 'propertiesTabpanel',
+                                    items:[
+                                        {
+                                            xtype:'propertygrid',
+                                            name:'properties',
+                                            title:'Свойства',
+                                            flex:1,
+                                            bodyStyle:{
+                                                'border-width':'1 0 0 0'
+                                            },
+                                            source:{},
+                                            listeners : {
+                                                beforerender : function() {
+                                                    var cols = this.getView().getHeaderCt().getGridColumns();
+                                                    cols[0].setText("Свойство");
+                                                    cols[1].setText("Значение");
+                                                }
+                                            }
+                                        },
+                                        {
+                                            xtype:'panel',
+                                            padding:2,
+                                            flex:1,
+                                            title:'Данные',
+                                            name:'data',
+                                            layout:'anchor',
+                                            items:[
+                                                {
+                                                    xtype:'fieldset',
+                                                    title: 'Запрос',
+                                                    anchor: '0',
+                                                    margin:5,
+                                                    padding:2,
+                                                    layout:'anchor',
+                                                    checkboxToggle: true,
+                                                    items:[
+                                                        {
+                                                            xtype:'container',
+                                                            anchor:'0',
+                                                            layout:{
+                                                                align:'stretch',
+                                                                type:'hbox'
+                                                            },
+                                                            items:[
+                                                                {
+                                                                    xtype: 'combobox',
+                                                                    flex:1,
+                                                                    margin: '5 5 5 5',
+                                                                    labelSeparator:'',
+                                                                    valueField: 'ID',
+                                                                    displayField: 'name',
+                                                                    queryMode: 'local',
+                                                                    editable: false,
+                                                                    fieldLabel: 'Запрос',
+                                                                    labelWidth: 50,
+                                                                    name: 'query',
+                                                                    store: queryStore
+                                                                },
+                                                                {
+                                                                    xtype:'button',
+                                                                    width:22,
+                                                                    height:22,
+                                                                    action:'onAddQuery',
+                                                                    margin:'5 5 5 0',
+                                                                    border:true,
+                                                                    iconAlign:'top',
+                                                                    icon:'Scripts/resources/icons/add_16.png'
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'combobox',
+                                                            anchor: '0',
+                                                            margin: '0 5 5 5',
+                                                            labelSeparator:'',
+                                                            valueField: 'ID',
+                                                            displayField: 'name',
+                                                            queryMode: 'local',
+                                                            editable: false,
+                                                            fieldLabel: 'Поле',
+                                                            labelWidth: 50,
+                                                            name: 'queryField',
+                                                            store: queryFieldStore
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    xtype:'fieldset',
+                                                    title: 'Словарь',
+                                                    anchor: '0',
+                                                    layout:'anchor',
+                                                    margin:5,
+                                                    padding:2,
+                                                    checkboxToggle: true,
+                                                    items:[
+                                                        {
+                                                            xtype: 'combobox',
+                                                            anchor: '0',
+                                                            margin: '5 5 5 5',
+                                                            labelSeparator:'',
+                                                            valueField: 'ID',
+                                                            displayField: 'name',
+                                                            queryMode: 'local',
+                                                            editable: false,
+                                                            fieldLabel: 'Поле',
+                                                            labelWidth: 50,
+                                                            name: 'dictionaryField',
+                                                            store: dictionaryFieldStore
+                                                        }
+                                                    ]
+                                                },
+
+
+
+//                                                {
+//                                                    xtype: 'combobox',
+//                                                    anchor: '0',
+//                                                    margin: '10 5 5 10',
+//                                                    labelSeparator:'',
+//                                                    valueField: 'ID',
+//                                                    displayField: 'name',
+//                                                    queryMode: 'local',
+//                                                    editable: false,
+//                                                    fieldLabel: 'Привязка к данным',
+//                                                    labelWidth: 50,
+//                                                    name: 'dataBinding',
+//                                                    store: dataBindingStore
+//                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
                             ]
                         }

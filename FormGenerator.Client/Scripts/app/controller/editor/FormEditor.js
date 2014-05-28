@@ -54,6 +54,9 @@
             'FormEditor propertygrid[name=properties]': {
                 propertychange: this.onProperyChange
             },
+            'FormEditor button[action=onAddQuery]': {
+                click: this.onAddQuery
+            },
             'FormEditor button[action=onClose]': {
                 click: this.onClose
             }
@@ -591,6 +594,29 @@
             parentNode.removeChild(removedNode);
             tree.doLayout();
         }
+    },
+
+
+    onAddQuery:function(btn){
+        var win = btn.up('window');
+        var query = win.down('combobox[name=query]');
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.CreateQuery');
+        var createQuery = FormGenerator.utils.Windows.open('CreateQuery',
+            {
+                dictionary_id:win.form_dictionary_id,
+                form_id:win.form_id
+            }, null, true);
+        createQuery.on('QuerySaved', function (winQuery, query_id, query) {
+            // перегрузить комбо с запросами
+            query.getStore().load({
+                callback:function(){
+                    var newQuery = query.getStore().findRecord('ID', query_id);
+                    if (newQuery) {
+                        query.getSelectionModel().select(query);
+                    }
+                }
+            });
+        });
     },
 
     /**

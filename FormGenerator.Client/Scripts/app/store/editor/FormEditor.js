@@ -52,15 +52,6 @@ Ext.define('FormGenerator.store.editor.Groups', {
             successProperty: 'resultCode'
         }
     }
-//    data:[
-//        {group:'Все', type:'Тип компонентов'},
-//        {group:'Таблицы', type:'Тип компонентов'},
-//        {group:'Панели', type:'Тип компонентов'},
-//        {group:'Поля', type:'Тип компонентов'},
-//        {group:'Контейнеры', type:'Тип компонентов'},
-//        {group:'Окна', type:'Тип компонентов'},
-//        {group:'Кнопки', type:'Тип компонентов'}
-//    ]
 });
 
 
@@ -74,5 +65,78 @@ Ext.define('FormGenerator.store.editor.TreeStore', {
         text:'View',
         icon:'Scripts/resources/icons/editor/w.png',
         children:[]
+    }
+});
+
+Ext.define('FormGenerator.store.editor.DataBinding', {
+    extend:'Ext.data.Store',
+    fields: [
+        {name: 'id', type: 'int'},
+        {name: 'name',  type: 'string'}
+    ],
+    data:[
+        { id:1, name:'Запрос'},
+        { id:2, name:'Значение'}
+    ]
+});
+
+Ext.define('FormGenerator.store.editor.Query', {
+    extend:'Ext.data.Store',
+    model:'FormGenerator.model.editor.Query',
+    groupField:'type',
+    autoLoad: false,
+
+    proxy: {
+        type: 'ajax',
+
+        api: {
+            read: 'FormEditor/GetQueryList'
+        },
+
+        reader: {
+            type: 'json',
+            root: 'resultData',
+            successProperty: 'resultCode'
+        }
+    }
+});
+Ext.define('FormGenerator.store.editor.QueryField', {
+    extend:'Ext.data.Store',
+    model:'FormGenerator.model.editor.QueryField',
+    groupField:'type',
+    autoLoad: false,
+
+    proxy: {
+        type: 'ajax',
+
+        api: {
+            read: 'FormEditor/GetQueryFields'
+        },
+
+        reader: {
+            type: 'json',
+            root: 'resultData',
+            successProperty: 'resultCode'
+        }
+    }
+});
+Ext.define('FormGenerator.store.editor.DictionaryField', {
+    extend:'Ext.data.Store',
+    model:'FormGenerator.model.editor.DictionaryField',
+    groupField:'type',
+    autoLoad: false,
+
+    proxy: {
+        type: 'ajax',
+
+        api: {
+            read: 'FormEditor/GetDictionaryFields'
+        },
+
+        reader: {
+            type: 'json',
+            root: 'resultData',
+            successProperty: 'resultCode'
+        }
     }
 });

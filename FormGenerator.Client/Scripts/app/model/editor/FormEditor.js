@@ -19,6 +19,7 @@ Ext.define('FormGenerator.model.editor.Components', {
         'description',
         'path',
         'properties',
+        'queryParams',
         'childComponents'
     ]
 });
@@ -32,5 +33,29 @@ Ext.define('FormGenerator.model.editor.Groups', {
         'ID',
         'name',
         'type'
+    ]
+});
+
+Ext.define('FormGenerator.model.editor.Query', {
+    extend: 'Ext.data.Model',
+    fields: [
+        'ID',
+        'name'
+    ]
+});
+
+Ext.define('FormGenerator.model.editor.QueryField', {
+    extend: 'Ext.data.Model',
+    fields: [
+        'ID',
+        'name'
+    ]
+});
+
+Ext.define('FormGenerator.model.editor.DictionaryField', {
+    extend: 'Ext.data.Model',
+    fields: [
+        'ID',
+        'name'
     ]
 });
