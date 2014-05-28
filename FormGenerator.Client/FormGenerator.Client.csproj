@@ -120,9 +120,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="Controllers\FormEditorController.cs" />
+    <Compile Include="Controllers\Control\ControlController.cs" />
+    <Compile Include="Controllers\FormEditor\FormEditorController.cs" />
     <Compile Include="Controllers\FormGenerator\DictionariesController.cs" />
+    <Compile Include="Controllers\Form\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Property\PropertyController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

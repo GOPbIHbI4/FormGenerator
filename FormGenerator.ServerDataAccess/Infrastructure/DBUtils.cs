@@ -96,7 +96,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="connectionID"></param>
         /// <param name="transactionID"></param>
         /// <returns></returns>
-        public static ResponseTablePackage ExecuteSQL(string sql, IDbConnection connectionID, IDbTransaction transactionID = null)
+        public static ResponseTablePackage ExecuteSQL(string sql, IDbConnection connectionID, bool returningID = false, IDbTransaction transactionID = null)
         {
             ResponseTablePackage result = new ResponseTablePackage();
             try
@@ -108,7 +108,14 @@ namespace FormGenerator.ServerDataAccess
                     command.CommandType = CommandType.Text;
                     command.Transaction = transactionID;
 
-                    result.resultID = (int)command.ExecuteScalar();
+                    if (returningID)
+                    {
+                        result.resultID = (int)command.ExecuteScalar();
+                    }
+                    else
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)

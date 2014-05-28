@@ -8,7 +8,7 @@
     init: function () {
         this.control({
             'SaveFormDialog button[action=onSave]': {
-                click: this.onSaveForm
+                click: this.onSave
             },
             'SaveFormDialog button[action=onClose]': {
                 click: this.onClose
@@ -20,7 +20,7 @@
      * Функция открытия выбранной формы
      * @param btn Кнопка "Открыть", вызвавшая событие
      */
-    onSaveForm:function(btn){
+    onSave:function(btn){
         var win = btn.up('window');
         var form = win.down('textfield[name=formName]');
         if (!form.getValue()){

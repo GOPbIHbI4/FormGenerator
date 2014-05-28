@@ -25,7 +25,7 @@ windowFactory = function (win, cmp, selectedRecord) {
         closable: false,
         collapsible: true,
         record: selectedRecord,
-        title: 'My Window',
+        title: 'Мое окно',
         items: [],
         tools: [
             {

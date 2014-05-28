@@ -12,16 +12,14 @@ Ext.define('FormGenerator.model.editor.FormEditor', {
 Ext.define('FormGenerator.model.editor.Components', {
     extend: 'Ext.data.Model',
     fields: [
+        'ID',
         'group',
-        'name',
         'component',
         'icon',
-        'desc',
+        'description',
         'path',
         'properties',
-        'sourceConfig',
-        'childComponents',
-        'infoIcon'
+        'childComponents'
     ]
 });
 
@@ -31,8 +29,8 @@ Ext.define('FormGenerator.model.editor.Components', {
 Ext.define('FormGenerator.model.editor.Groups', {
     extend: 'Ext.data.Model',
     fields: [
-        'group',
-        'type',
-        'count'
+        'ID',
+        'name',
+        'type'
     ]
 });

@@ -43,16 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormEditor\FormEditorServerDataAccess.cs" />
+    <Compile Include="Queries\FormEditor\FormEditorDataCRUD.cs" />
     <Compile Include="Infrastructure\ConnectionFactory.cs" />
     <Compile Include="Infrastructure\DBOrmUtils.cs" />
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\FormGenerator\DictionaryDataCRUD.cs" />
+    <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\Forms\FormsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionariesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
+    <Compile Include="Repositories\Properties\PropertiesRepository.cs" />
     <Compile Include="Test\SqlTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,9 +6,9 @@
 Ext.define('FormGenerator.model.editor.Form', {
     extend: 'Ext.data.Model',
     fields: [
-        'id',
-        'form',
-        'dictionary_id',
+        'ID',
+        'name',
+        'dictionaryID',
         'dictionary'
     ]
 });

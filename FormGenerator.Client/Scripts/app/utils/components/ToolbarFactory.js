@@ -31,13 +31,16 @@ toolbarFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 item.el.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.removeDocked(item, true);
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == selectedRecord.get('component').toLowerCase() && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.removeDocked(item, true);
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
             },
             render: function () {

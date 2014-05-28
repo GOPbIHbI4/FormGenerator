@@ -59,7 +59,7 @@
         } else {
             // Сгененировать событие, сообщающее основной форме о том,
             // что форма для открытия на редактирование выбрана
-            win.fireEvent('FormIsReadyToOpen', win, form.getValue());
+            win.fireEvent('FormIsReadyToOpen', win, form.getValue(), form.getRawValue(), win.dictionaryID);
             this.onClose(btn);
         }
     },
@@ -73,9 +73,11 @@
         var win = combo.up('window');
         var dictionary = win.down('textfield[name=dictionary]');
         if (!combo.getValue()){
+            win.dictionaryID = null;
             dictionary.setValue(null);
         } else {
             dictionary.setValue(records[0].get('dictionary'));
+            win.dictionaryID = records[0].get('dictionaryID');
         }
     },
 

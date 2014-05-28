@@ -18,7 +18,7 @@ tabpanelFactory = function (win, cmp, selectedRecord) {
         resizable: true,
         closable: false,
         collapsible: true,
-        title: 'MyTabPanel',
+        title: 'Моя панель с закладками',
         form: form,
         record: selectedRecord,
         listeners: {
@@ -37,7 +37,8 @@ tabpanelFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 item.tabBar.el.on('contextmenu', function (e) {
-                    if (FormGenerator.editor.Focused.getFocusedCmp().record.get('component').toLowerCase() == 'tabpanel') {
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == 'tabpanel' && focused.name == item.name) {
                         var menu = getContextMenu();
                         menu.down('menuitem[action=onDelete]').on('click', function () {
                             FormGenerator.editor.Focused.clearFocusedCmp();

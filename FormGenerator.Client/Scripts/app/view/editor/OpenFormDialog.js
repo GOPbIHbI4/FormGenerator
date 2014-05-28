@@ -15,6 +15,8 @@
     maxHeight: 140,
     maxWidth: 450,
 
+    dictionaryID:undefined,
+
     layout: {
         type: 'anchor'
     },
@@ -62,8 +64,8 @@
                     anchor: '0',
                     margin: '10 5 5 10',
                     labelSeparator:'',
-                    valueField: 'id',
-                    displayField: 'form',
+                    valueField: 'ID',
+                    displayField: 'name',
                     queryMode: 'local',
                     editable: false,
                     fieldLabel: 'Форма',

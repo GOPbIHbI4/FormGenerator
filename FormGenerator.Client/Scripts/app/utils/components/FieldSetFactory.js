@@ -11,7 +11,7 @@ fieldsetFactory = function (win, cmp, selectedRecord) {
         margin:5,
         padding:2,
         collapsible: true,
-        title:'My FieldSet',
+        title:'Моя группа',
         name:'sencha' + 'fieldset' + getRandomInt(),
         width: 200,
         height:100,
@@ -36,13 +36,16 @@ fieldsetFactory = function (win, cmp, selectedRecord) {
 //                    console.log(win.mousedComponents);
                 });
                 item.el.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.remove(item, true);
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == 'fieldset' && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
             },
             render: function () {

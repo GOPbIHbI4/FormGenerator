@@ -19,7 +19,7 @@ panelFactory = function (win, cmp, selectedRecord) {
         mainWindow: false,
         closable: false,
         collapsible: true,
-        title: 'My Panel',
+        title: 'Моя панель',
         layout:'anchor',
         form: form,
 //        renderTo: body,
@@ -68,13 +68,16 @@ panelFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 b.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.remove(item, true);
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == selectedRecord.get('component').toLowerCase() && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
             },
             resize: function (item, width, height, eOpts) {

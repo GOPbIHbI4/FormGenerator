@@ -16,7 +16,7 @@ buttonFactory = function (win, cmp, selectedRecord) {
         name: 'sencha' + 'button' + num,
         padding:2,
         margin:5,
-        text: 'My Button',
+        text: 'Моя кнопка',
         form: form,
         record: selectedRecord,
         listeners: {
@@ -35,13 +35,16 @@ buttonFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 b.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.remove(item, true);
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == 'button' && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
             },
             resize: function (item, width, height, eOpts) {

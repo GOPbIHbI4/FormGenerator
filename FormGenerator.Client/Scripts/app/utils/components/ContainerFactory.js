@@ -1,7 +1,7 @@
 //======================================================================================================================
 //                     Генератор группы полей
 //======================================================================================================================
-containerFactory = function (win, cmp, selectedRecord) {
+containerFactory = function (win, cmp, selectedRecord, layout) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
     var propertiesGrid = win.down('propertygrid[name=properties]');
@@ -16,7 +16,7 @@ containerFactory = function (win, cmp, selectedRecord) {
             borderWidth:'1px'
         },
         layout:{
-            type:'hbox'
+            type: layout || 'hbox'
         },
         name:'sencha' + 'container' + getRandomInt(),
         width: 200,
@@ -39,13 +39,16 @@ containerFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 item.el.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.remove(item, true);
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == selectedRecord.get('component').toLowerCase() && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
             },
             render: function () {

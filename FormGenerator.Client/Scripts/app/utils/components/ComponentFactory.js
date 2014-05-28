@@ -15,7 +15,14 @@ function afterFirstLayout(cmp) {
             if (win.mousedComponents.length > 0) {
                 var dragOn = win.mousedComponents[0].get('component');
                 var moused = win.mousedComponents[0];
-                var cmpType = moused.get('name') == 'senchawin' ? 'panel' : moused.get('component').toLowerCase();
+                var cmpType = moused.get('component').toLowerCase();
+                if (moused.get('name') == 'senchawin') {
+                    cmpType = 'panel';
+                } else if (moused.get('component').toLowerCase().startsWith('container')) {
+                    cmpType = 'container';
+                } else if (moused.get('component').toLowerCase() == 'newtab') {
+                    cmpType = 'panel';
+                }
                 target = win.query(cmpType + '[name=' + moused.get('name') + ']')[0];
                 var dragOnChildren = gridComponents.getStore().findRecord('component', dragOn).get('childComponents');
                 if (contains(dragOnChildren, draggedCmp.get('component'))) isOK = true;
@@ -40,7 +47,14 @@ function afterFirstLayout(cmp) {
         notifyDrop: function (ddSource, e, data) {
             if (!this.allowDrop || win.mousedComponents.length == 0) return false;
             var moused = win.mousedComponents[0];
-            var cmpType = moused.get('name') == 'senchawin' ? 'panel' : moused.get('component').toLowerCase();
+            var cmpType = moused.get('component').toLowerCase();
+            if (moused.get('name') == 'senchawin') {
+                cmpType = 'panel';
+            } else if (moused.get('component').toLowerCase().startsWith('container')) {
+                cmpType = 'container';
+            } else if (moused.get('component').toLowerCase() == 'newtab') {
+                cmpType = 'panel';
+            }
             var target = win.query(cmpType + '[name=' + moused.get('name') + ']')[0];
             var store = deepCloneStore(ddSource.view.getStore());
             var selectedRecord = store.findRecord('component', ddSource.dragData.records[0].get('component'));
@@ -78,8 +92,11 @@ function afterFirstLayout(cmp) {
                 case 'fieldset':
                     item = fieldsetFactory(win, target, selectedRecord);
                     break;
-                case 'container':
-                    item = containerFactory(win, target, selectedRecord);
+                case 'container (hbox)':
+                    item = containerFactory(win, target, selectedRecord, 'hbox');
+                    break;
+                case 'container (vbox)':
+                    item = containerFactory(win, target, selectedRecord, 'vbox');
                     break;
                 case 'datefield':
                     item = datefieldFactory(win, target, selectedRecord);
@@ -200,5 +217,13 @@ function setPadding(obj, value){
         obj.setStyle({'padding-right': array[1] + 'px'});
         obj.setStyle({'padding-bottom': array[2] + 'px'});
         obj.setStyle({'padding-left': array[3] + 'px'});
+    }
+}
+
+function iconMapping(component){
+    if (component) {
+        return 'Scripts/resources/icons/editor/' + component.toLowerCase() + '.png';
+    } else {
+        return component;
     }
 }

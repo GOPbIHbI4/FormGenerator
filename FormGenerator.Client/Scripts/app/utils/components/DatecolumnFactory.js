@@ -8,7 +8,7 @@ datecolumnFactory = function (win, cmp, selectedRecord) {
     var num = getRandomInt();
     return Ext.create('Ext.grid.column.Date', {
         xtype:'datecolumn',
-        header: 'My DateColumn',
+        header: 'Моя колонка',
         format: 'd.m.Y',
         width:90,
         sortable:true,
@@ -31,14 +31,17 @@ datecolumnFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 i.on('contextmenu', function(e) {
-                    var menu = getContextMenu();
-                    menu.down('menuitem[action=onDelete]').on('click', function(){
-                        FormGenerator.editor.Focused.clearFocusedCmp();
-                        form.fireEvent('ComponentRemoved', form, cmp, item);
-                        cmp.headerCt.remove(item, true);
-                        cmp.getView().refresh();
-                    });
-                    menu.showAt(e.getXY());
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
+                    if (focused && focused.record.get('component').toLowerCase() == 'datecolumn' && focused.name == item.name) {
+                        var menu = getContextMenu();
+                        menu.down('menuitem[action=onDelete]').on('click', function () {
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.headerCt.remove(item, true);
+                            cmp.getView().refresh();
+                        });
+                        menu.showAt(e.getXY());
+                    }
                 });
                 item.on('headerclick', function(ct, column, e, t, eOpts){
                     Ext.FocusManager.fireEvent('componentfocus', Ext.FocusManager, item);

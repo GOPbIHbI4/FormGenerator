@@ -12,7 +12,7 @@ Ext.define('FormGenerator.store.editor.Form', {
         type: 'ajax',
 
         api: {
-            read: 'FormEditor/GetFormsList'
+            read: 'Form/GetFormsList'
         },
 
         reader: {
