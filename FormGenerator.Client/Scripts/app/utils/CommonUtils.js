@@ -81,12 +81,12 @@ function isNumber(n) {
 /**
  * Функция, преобразовывающая первый символ строки к Uppercase
  * @param string Строка типа "string"
- * @returns {string} Строка типа "String"
+ * @returns {string} Строка типа "String" */
 function isArray(value) {
     return value && Object.prototype.toString.call(value) === '[object Array]'
 }
 
- */
+
 function capitalizeFirstLetter(string){
     if (!string) return string;
     return string.charAt(0).toUpperCase() + string.slice(1);

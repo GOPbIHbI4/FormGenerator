@@ -42,7 +42,6 @@
                                     xtype:'button',
                                     width:100,
                                     text:'Test',
-                                    hidden:true,
                                     iconAlign:'top',
                                     action:'onTest1',
                                     icon:'Scripts/resources/icons/process.png'
