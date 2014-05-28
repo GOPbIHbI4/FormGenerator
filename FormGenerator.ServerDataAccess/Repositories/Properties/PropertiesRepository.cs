@@ -20,7 +20,8 @@ namespace FormGenerator.ServerDataAccess
             {"value","VALUE_"},
             {"property","PROPERTY"},
             {"controlTypeID","CONTROL_TYPE_ID"},
-            {"logicValueTypeID","LOGIC_VALUE_TYPE_ID"}
+            {"logicValueTypeID","LOGIC_VALUE_TYPE_ID"},
+            {"DOMAIN_VALUE_TYPE_ID_LOGIC", "DOMAIN_VALUE_TYPE_ID_DATA"}
         };
 
         /// <summary>
@@ -54,10 +55,11 @@ namespace FormGenerator.ServerDataAccess
         {
             int formID = request.requestID;
             string sql = string.Format(
-                " select p.*, ct.name as property, ct.logic_value_type_id, t.control_type_id " +
+                " select p.*, ct.name as property, ct.logic_value_type_id, t.control_type_id, lt.DOMAIN_VALUE_TYPE_ID_DATA " +
                 " from control_properties p " +
                 " left join control_type_property_type t on p.control_property_type_id = t.id " +
                 " left join control_property_types ct on t.control_property_type_id = ct.id " +
+                " left join LOGIC_VALUE_TYPES lt on lt.ID = ct.logic_value_type_id " +
                 " left join controls c on p.control_id = c.id " +
                 " where c.form_id = {0} ",
                 formID

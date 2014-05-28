@@ -27,6 +27,9 @@ namespace FormGenerator.Models
                 case 4:
                     result = new DateValueType();
                     break;
+                case 5:
+                    result = new LogicValueType();
+                    break;
                 default:
                     result = new StringValueType();
                     break;

@@ -123,6 +123,8 @@
     <Compile Include="Controllers\Control\ControlController.cs" />
     <Compile Include="Controllers\FormEditor\FormEditorController.cs" />
     <Compile Include="Controllers\FormGenerator\DictionariesController.cs" />
+    <Compile Include="Controllers\FormGenerator\QueriesController.cs" />
+    <Compile Include="Controllers\FormGenerator\FormsController.cs" />
     <Compile Include="Controllers\Form\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Property\PropertyController.cs" />

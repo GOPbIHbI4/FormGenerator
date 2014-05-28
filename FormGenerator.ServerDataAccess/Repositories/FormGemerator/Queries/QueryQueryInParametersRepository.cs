@@ -34,7 +34,7 @@ namespace FormGenerator.ServerDataAccess
             List<QueryQueryInParameterModel> list = DBOrmUtils.OpenSqlList<QueryQueryInParameterModel>(sql, QueryQueryInParametersRepository.mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<QueryQueryInParameterModel>>() { resultData = list };
         }
-
+        
         public static string ToSqlWhere(QueryQueryInParameterSearchTemplate obj)
         {
             string where = " 1 = 1";

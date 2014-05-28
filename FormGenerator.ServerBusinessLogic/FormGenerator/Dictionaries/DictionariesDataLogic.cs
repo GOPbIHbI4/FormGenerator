@@ -24,7 +24,7 @@ namespace FormGenerator.ServerBusinessLogic
 
             RequestPackage request = new RequestPackage() { requestString = sql };
 
-            ResponseObjectPackage<List<Dictionary<string, object>>> response = new DBUtils().RunSqlAction(new DictionaryDataCRUD().GetDictionaryData, request);
+            ResponseObjectPackage<List<Dictionary<string, object>>> response = new DBUtils().RunSqlAction(new DynamicCRUD().GetDictionaryData, request);
             return response;
         }
 
@@ -87,7 +87,7 @@ namespace FormGenerator.ServerBusinessLogic
             }
 
             RequestPackage request = new RequestPackage() { requestString = sql, requestID = isEdit ? 0 : 1 };
-            ResponsePackage response = new DBUtils().RunSqlAction(new DictionaryDataCRUD().UpdateDictionaryData, request);
+            ResponsePackage response = new DBUtils().RunSqlAction(new DynamicCRUD().UpdateDictionaryData, request);
             if (isEdit)
             {
                 response.resultID = (int)pk.value.value;
@@ -112,7 +112,7 @@ namespace FormGenerator.ServerBusinessLogic
             }
 
             RequestPackage request = new RequestPackage() { requestString = sql };
-            ResponsePackage response = new DBUtils().RunSqlAction(new DictionaryDataCRUD().UpdateDictionaryData, request);
+            ResponsePackage response = new DBUtils().RunSqlAction(new DynamicCRUD().UpdateDictionaryData, request);
             return response;
         }
     }

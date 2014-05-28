@@ -45,6 +45,14 @@
                                     iconAlign:'top',
                                     action:'onTest1',
                                     icon:'Scripts/resources/icons/process.png'
+                                },
+                                {
+                                    xtype:'button',
+                                    width:100,
+                                    text:'Test2',
+                                    iconAlign:'top',
+                                    action:'onTest2',
+                                    icon:'Scripts/resources/icons/process.png'
                                 }
                             ]
                         }

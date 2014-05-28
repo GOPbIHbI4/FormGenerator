@@ -43,6 +43,8 @@
     <Compile Include="DomainModels\Controls\ControlType.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeGroup.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeDependencyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Mapping\ControlDictionaryMappingModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Mapping\ControlQueryMappingModel.cs" />
     <Compile Include="DomainModels\Forms\FormModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryPrimaryKeyModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryForeignKeyModel.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="DomainModels\FormGenerator\Queries\QueryQueryInParameterModel.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryForeignKeySearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryPrimaryKeySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Mapping\ControlDictionaryMappingSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Mapping\ControlQueryMappingSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QueryInParameterSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QueryQueryInParameterSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QuerySearchTemplate.cs" />
@@ -69,8 +73,17 @@
     <Compile Include="ViewModels\FormEditor\PropertyTypeListEntity.cs" />
     <Compile Include="ViewModels\FormEditor\ControlProperty.cs" />
     <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
+    <Compile Include="ViewModels\FormGenerator\FormControls\ControlProperty.cs" />
+    <Compile Include="ViewModels\FormGenerator\FormControls\Control.cs" />
+    <Compile Include="ViewModels\FormGenerator\FormControls\Form.cs" />
+    <Compile Include="ViewModels\FormGenerator\Queries\Query.cs" />
+    <Compile Include="ViewModels\FormGenerator\Queries\QueryInParameter.cs" />
+    <Compile Include="ViewModels\FormGenerator\Queries\QueryOutParameter.cs" />
+    <Compile Include="ViewModels\FormGenerator\Queries\QueryType.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypes\ValueTypes.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypes\ValueTypesConverter.cs" />
     <Compile Include="ViewModels\Form\FormList.cs" />
-    <Compile Include="ViewModels\FormGenerator\DictionariesTree.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\DictionariesTree.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryFieldModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryGroupModel.cs" />
@@ -78,12 +91,10 @@
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryGroupSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionarySearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryFieldSearchTemplate.cs" />
-    <Compile Include="ViewModels\FormGenerator\DictionaryField.cs" />
-    <Compile Include="ViewModels\FormGenerator\Dictionary.cs" />
-    <Compile Include="ViewModels\FormGenerator\DictionaryFieldValue.cs" />
-    <Compile Include="ViewModels\FormGenerator\DictionaryValue.cs" />
-    <Compile Include="ViewModels\FormGenerator\ValueTypes.cs" />
-    <Compile Include="ViewModels\FormGenerator\ValueTypesConverter.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\DictionaryField.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\Dictionary.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\DictionaryFieldValue.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\DictionaryValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">

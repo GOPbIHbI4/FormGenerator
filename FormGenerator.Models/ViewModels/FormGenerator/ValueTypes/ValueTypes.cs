@@ -109,4 +109,35 @@ namespace FormGenerator.Models
             return value != null && (DateTime?)value != DateTime.MinValue;
         }
     }
+    public class LogicValueType:AValueType
+    {
+        protected override void Init(string fromClient)
+        {
+            if (fromClient == null)
+            {
+                value = null;
+            }
+            else if (fromClient.Trim().ToLower() == "true")
+            {
+                value = true;
+            }
+            else if (fromClient.Trim().ToLower() == "false")
+            {
+                value = false;
+            }
+            value = null;
+        }
+        public override string ToSQL()
+        {
+            return value == null ? "NULL" : ((bool)value ? "true" : "false");
+        }
+        public override string Serialize()
+        {
+            return value != null ? null : ((bool)value ? "true" : "false");
+        }
+        public override bool IsNotDefault()
+        {
+            return value != null;
+        }
+    }
 }

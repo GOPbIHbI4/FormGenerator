@@ -13,6 +13,7 @@ namespace FormGenerator.Models
         public int logicValueTypeID { get; set; }
         // значение свойства в верном формате (верного типа)
         public object _value { get; set; }
+        public int DOMAIN_VALUE_TYPE_ID_LOGIC { get; set; }
 
         /// <summary>
         /// Функция, задающая верный тип значения свойства по умолчанию, т.к. в базе все хранится в формате строки

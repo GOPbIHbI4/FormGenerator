@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.ServerDataAccess
 {
-    public class DictionaryDataCRUD
+    public class DynamicCRUD
     {
         public ResponseObjectPackage<List<Dictionary<string, object>>> GetDictionaryData(RequestPackage package, IDbConnection connectionID)
         {

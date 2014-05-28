@@ -48,8 +48,10 @@
     <Compile Include="Infrastructure\DBOrmUtils.cs" />
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\FormGenerator\DictionaryDataCRUD.cs" />
+    <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
     <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />
     <Compile Include="Repositories\Forms\FormsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionariesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
