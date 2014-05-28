@@ -15,7 +15,14 @@ function afterFirstLayout(cmp) {
             if (win.mousedComponents.length > 0) {
                 var dragOn = win.mousedComponents[0].get('component');
                 var moused = win.mousedComponents[0];
-                var cmpType = moused.get('name') == 'senchawin' ? 'panel' : moused.get('component').toLowerCase();
+                var cmpType = moused.get('component').toLowerCase();
+                if (moused.get('name') == 'senchawin') {
+                    cmpType = 'panel';
+                } else if (moused.get('component').toLowerCase().startsWith('container')) {
+                    cmpType = 'container';
+                } else if (moused.get('component').toLowerCase() == 'newtab') {
+                    cmpType = 'panel';
+                }
                 target = win.query(cmpType + '[name=' + moused.get('name') + ']')[0];
                 var dragOnChildren = gridComponents.getStore().findRecord('component', dragOn).get('childComponents');
                 if (contains(dragOnChildren, draggedCmp.get('component'))) isOK = true;
@@ -40,7 +47,14 @@ function afterFirstLayout(cmp) {
         notifyDrop: function (ddSource, e, data) {
             if (!this.allowDrop || win.mousedComponents.length == 0) return false;
             var moused = win.mousedComponents[0];
-            var cmpType = moused.get('name') == 'senchawin' ? 'panel' : moused.get('component').toLowerCase();
+            var cmpType = moused.get('component').toLowerCase();
+            if (moused.get('name') == 'senchawin') {
+                cmpType = 'panel';
+            } else if (moused.get('component').toLowerCase().startsWith('container')) {
+                cmpType = 'container';
+            } else if (moused.get('component').toLowerCase() == 'newtab') {
+                cmpType = 'panel';
+            }
             var target = win.query(cmpType + '[name=' + moused.get('name') + ']')[0];
             var store = deepCloneStore(ddSource.view.getStore());
             var selectedRecord = store.findRecord('component', ddSource.dragData.records[0].get('component'));
@@ -52,49 +66,52 @@ function afterFirstLayout(cmp) {
                     item = panelFactory(win, target, selectedRecord);
                     break;
                 case 'tabpanel':
-                    item = tabPanelFactory(win, target, selectedRecord);
+                    item = tabpanelFactory(win, target, selectedRecord);
                     break;
                 case 'newtab':
                     item = tabFactory(win, target, selectedRecord);
                     break;
                 case 'gridpanel':
-                    item = gridPanelFactory(win, target, selectedRecord);
+                    item = gridpanelFactory(win, target, selectedRecord);
                     break;
                 case 'gridcolumn':
-                    item = gridColumnFactory(win, target, selectedRecord);
+                    item = gridcolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'datecolumn':
-                    item = dateColumnFactory(win, target, selectedRecord);
+                    item = datecolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'numbercolumn':
-                    item = numberColumnFactory(win, target, selectedRecord);
+                    item = numbercolumnFactory(win, target, selectedRecord);
                     isColumn = true;
                     break;
                 case 'textfield':
-                    item = textFieldFactory(win, target, selectedRecord);
+                    item = textfieldFactory(win, target, selectedRecord);
                     break;
                 case 'fieldset':
-                    item = fieldSetFactory(win, target, selectedRecord);
+                    item = fieldsetFactory(win, target, selectedRecord);
                     break;
-                case 'container':
-                    item = containerFactory(win, target, selectedRecord);
+                case 'container (hbox)':
+                    item = containerFactory(win, target, selectedRecord, 'hbox');
+                    break;
+                case 'container (vbox)':
+                    item = containerFactory(win, target, selectedRecord, 'vbox');
                     break;
                 case 'datefield':
-                    item = dateFieldFactory(win, target, selectedRecord);
+                    item = datefieldFactory(win, target, selectedRecord);
                     break;
                 case 'numberfield':
-                    item = numberFieldFactory(win, target, selectedRecord);
+                    item = numberfieldFactory(win, target, selectedRecord);
                     break;
                 case 'combobox':
-                    item = comboBoxFactory(win, target, selectedRecord);
+                    item = comboboxFactory(win, target, selectedRecord);
                     break;
                 case 'button':
                     item = buttonFactory(win, target, selectedRecord);
                     break;
                 case 'toolbar':
-                    item = toolBarFactory(win, target, selectedRecord);
+                    item = toolbarFactory(win, target, selectedRecord);
                     isDocked = true;
                     break;
                 default:
@@ -200,5 +217,13 @@ function setPadding(obj, value){
         obj.setStyle({'padding-right': array[1] + 'px'});
         obj.setStyle({'padding-bottom': array[2] + 'px'});
         obj.setStyle({'padding-left': array[3] + 'px'});
+    }
+}
+
+function iconMapping(component){
+    if (component) {
+        return 'Scripts/resources/icons/editor/' + component.toLowerCase() + '.png';
+    } else {
+        return component;
     }
 }

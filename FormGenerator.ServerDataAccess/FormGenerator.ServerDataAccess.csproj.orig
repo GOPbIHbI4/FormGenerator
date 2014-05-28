@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4155AD70-BC86-461B-9AD5-C3AD1BC79FAD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FormGenerator.ServerDataAccess</RootNamespace>
+    <AssemblyName>FormGenerator.ServerDataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirebirdSql.Data.FirebirdClient">
+      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.1.5.0\lib\net45\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Queries\FormEditor\FormEditorDataCRUD.cs" />
+    <Compile Include="Infrastructure\ConnectionFactory.cs" />
+    <Compile Include="Infrastructure\DBOrmUtils.cs" />
+    <Compile Include="Infrastructure\DBUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\FormGenerator\DictionaryDataCRUD.cs" />
+    <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\Forms\FormsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionariesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
+<<<<<<< HEAD
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryForeignKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryInParametersRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryOutParametersRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueriesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryQueryInParametersRepository.cs" />
+=======
+    <Compile Include="Repositories\Properties\PropertiesRepository.cs" />
+>>>>>>> origin/master
+    <Compile Include="Test\SqlTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">
+      <Project>{b0a5deea-a62f-4a64-b3d4-61ec3e0aebac}</Project>
+      <Name>FormGenerator.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">
+      <Project>{beaa1853-8c34-4de4-8e28-c80a41fb2a95}</Project>
+      <Name>FormGenerator.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

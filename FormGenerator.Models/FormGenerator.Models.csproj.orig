@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B0A5DEEA-A62F-4A64-B3D4-61EC3E0AEBAC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FormGenerator.Models</RootNamespace>
+    <AssemblyName>FormGenerator.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DomainModels\Controls\ControlModel.cs" />
+    <Compile Include="DomainModels\Controls\ControlType.cs" />
+    <Compile Include="DomainModels\Controls\ControlTypeGroup.cs" />
+    <Compile Include="DomainModels\Controls\ControlTypeDependencyModel.cs" />
+    <Compile Include="DomainModels\Forms\FormModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryPrimaryKeyModel.cs" />
+<<<<<<< HEAD
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryForeignKeyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryTypeModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryInParameterModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryOutParameterModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryQueryInParameterModel.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryForeignKeySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryPrimaryKeySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryInParameterSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryQueryInParameterSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QuerySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryTypeSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryOutParameterSearchTemplate.cs" />
+=======
+    <Compile Include="DomainModels\Properties\ControlPropertyTypeModel.cs" />
+    <Compile Include="DomainModels\Properties\ControlTypePropertyTypeModel.cs" />
+    <Compile Include="DomainModels\Properties\ControlPropertyModel.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryPrimaryKeySearchTemplate.cs" />
+    <Compile Include="ViewModels\Control\ControlList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeDependenciesList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeGroup.cs" />
+    <Compile Include="ViewModels\FormEditor\OpenForm\Control.cs" />
+    <Compile Include="ViewModels\FormEditor\PropertyTypeListEntity.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlProperty.cs" />
+    <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
+    <Compile Include="ViewModels\Form\FormList.cs" />
+>>>>>>> origin/master
+    <Compile Include="ViewModels\FormGenerator\DictionariesTree.cs" />
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryFieldModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryGroupModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryGroupSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionarySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryFieldSearchTemplate.cs" />
+    <Compile Include="ViewModels\FormGenerator\DictionaryField.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionary.cs" />
+    <Compile Include="ViewModels\FormGenerator\DictionaryFieldValue.cs" />
+    <Compile Include="ViewModels\FormGenerator\DictionaryValue.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypes.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypesConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">
+      <Project>{beaa1853-8c34-4de4-8e28-c80a41fb2a95}</Project>
+      <Name>FormGenerator.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

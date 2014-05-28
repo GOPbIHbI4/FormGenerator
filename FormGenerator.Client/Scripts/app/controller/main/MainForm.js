@@ -18,12 +18,12 @@
 
     onTest: function (button) {
         FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.Test');
-        FormGenerator.utils.Windows.open('Test', {});
+        FormGenerator.utils.Windows.open('Test', {}, null, true);
     },
 
     onTest2: function (button) {
         FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.FormEditor');
-        FormGenerator.utils.Windows.open('FormEditor', {});
+        FormGenerator.utils.Windows.open('FormEditor', {}, null, true);
     },
 
     onTest1: function (button) {

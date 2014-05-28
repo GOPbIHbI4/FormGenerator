@@ -39,10 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainModels\Controls\ControlModel.cs" />
+    <Compile Include="DomainModels\Controls\ControlType.cs" />
+    <Compile Include="DomainModels\Controls\ControlTypeGroup.cs" />
+    <Compile Include="DomainModels\Controls\ControlTypeDependencyModel.cs" />
+    <Compile Include="DomainModels\Forms\FormModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryPrimaryKeyModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryForeignKeyModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Queries\QueryTypeModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Queries\QueryInParameterModel.cs" />
+    <Compile Include="DomainModels\Properties\ControlPropertyTypeModel.cs" />
+    <Compile Include="DomainModels\Properties\ControlTypePropertyTypeModel.cs" />
+    <Compile Include="DomainModels\Properties\ControlPropertyModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Queries\QueryOutParameterModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Queries\QueryModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Queries\QueryQueryInParameterModel.cs" />
@@ -53,6 +61,15 @@
     <Compile Include="SearchTemplates\FormGenerator\Queries\QuerySearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QueryTypeSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QueryOutParameterSearchTemplate.cs" />
+    <Compile Include="ViewModels\Control\ControlList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeDependenciesList.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlTypeGroup.cs" />
+    <Compile Include="ViewModels\FormEditor\OpenForm\Control.cs" />
+    <Compile Include="ViewModels\FormEditor\PropertyTypeListEntity.cs" />
+    <Compile Include="ViewModels\FormEditor\ControlProperty.cs" />
+    <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
+    <Compile Include="ViewModels\Form\FormList.cs" />
     <Compile Include="ViewModels\FormGenerator\DictionariesTree.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryFieldModel.cs" />
@@ -74,6 +91,7 @@
       <Name>FormGenerator.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

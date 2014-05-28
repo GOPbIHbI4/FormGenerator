@@ -25,7 +25,7 @@ windowFactory = function (win, cmp, selectedRecord) {
         closable: false,
         collapsible: true,
         record: selectedRecord,
-        title: 'My Window',
+        title: 'Мое окно',
         items: [],
         tools: [
             {
@@ -51,12 +51,15 @@ windowFactory = function (win, cmp, selectedRecord) {
             }
         ],
         listeners: {
-            afterrender: function (panel) {
-                panel.tools['collapse-top'].hide();
-                panel.record.get('properties')['name'] = panel.name;
-                propertiesGrid.setSource(panel.record.get('properties'));
-                selectedRecord.set('name', panel.name);
-                var b = panel.body || panel.el || panel;
+            afterrender: function (item) {
+                item.tools['collapse-top'].hide();
+                item.record.get('properties')['name'] = item.name;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
+                selectedRecord.set('name', item.name);
+                var b = item.body || item.el || item;
                 b.on('mouseover', function () {
                     win.mousedComponents.push(selectedRecord);
                 });
@@ -64,22 +67,25 @@ windowFactory = function (win, cmp, selectedRecord) {
                     win.mousedComponents.pop(selectedRecord);
                 });
                 b.on('contextmenu', function(e) {
-                    var focused = FormGenerator.controller.editor.Focused.getFocusedCmp();
+                    var focused = FormGenerator.editor.Focused.getFocusedCmp();
                     if (focused.record.get('component').toLowerCase() == 'window') {
                         var menu = getContextMenu();
                         menu.down('menuitem[action=onDelete]').on('click', function(){
-                            FormGenerator.controller.editor.Focused.clearFocusedCmp();
-                            form.fireEvent('ComponentRemoved', form, cmp, panel);
-                            cmp.remove(panel, true);
+                            FormGenerator.editor.Focused.clearFocusedCmp();
+                            form.fireEvent('ComponentRemoved', form, cmp, item);
+                            cmp.remove(item, true);
                         });
                         menu.showAt(e.getXY());
                     }
                 });
             },
-            resize: function (panel, width, height, eOpts) {
-                panel.record.get('properties')['width'] = width;
-                panel.record.get('properties')['height'] = height;
-                propertiesGrid.setSource(panel.record.get('properties'));
+            resize: function (item, width, height, eOpts) {
+                item.record.get('properties')['width'] = width;
+                item.record.get('properties')['height'] = height;
+                var focusedCmp = FormGenerator.editor.Focused.getFocusedCmp();
+                if (focusedCmp && focusedCmp.name && focusedCmp.name == item.name) {
+                    propertiesGrid.setSource(item.record.get('properties'));
+                }
                 form.doLayout();
             },
             render: function () {

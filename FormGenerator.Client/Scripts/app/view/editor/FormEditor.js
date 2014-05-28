@@ -63,13 +63,18 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 
     modal:true,
     constrain:true,
+    title:'Визуальный редактор форм',
 
-    height:700,
+    height:750,
     width:1200,
-    minHeight:700,
+    minHeight:750,
     minWidth:1200,
 
     mousedComponents: [],
+
+    form_id:undefined,
+    form_name:undefined,
+    form_dictionary_id:undefined,
 
     layout:{
         type:'border'
@@ -96,10 +101,62 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                         {
                             xtype: 'button',
                             scale: 'medium',
-                            text: 'Сохранить',
-                            action: 'onSave',
+                            text: 'Форма',
+                            action: 'onForm',
                             border: true,
-                            icon: 'Scripts/resources/icons/save.png',
+                            icon: 'Scripts/resources/icons/form.png',
+                            iconAlign: 'top',
+                            width:80,
+                            arrowAlign:'right',
+                            menu: [
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onNewForm',
+                                    icon: 'Scripts/resources/icons/create_16.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Новая форма'
+                                },
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onOpenForm',
+                                    icon: 'Scripts/resources/icons/open_16.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Открыть форму'
+                                },
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onSaveForm',
+                                    icon: 'Scripts/resources/icons/save_16.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Сохранить форму'
+                                },
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onRenameForm',
+                                    icon: 'Scripts/resources/icons/edit_16.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Переименовать форму'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'tbseparator'
+                        },
+                        {
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Новая форма',
+                            action: 'onNewForm',
+                            border: true,
+                            icon: 'Scripts/resources/icons/new.png',
                             iconAlign: 'top'
                         },
                         {
@@ -108,15 +165,39 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                         {
                             xtype: 'button',
                             scale: 'medium',
-                            text: 'Настройки',
-                            action: 'onEdit',
+                            text: 'Открыть форму',
+                            action: 'onOpenForm',
                             border: true,
-                            icon: 'Scripts/resources/icons/edit.png',
+                            icon: 'Scripts/resources/icons/open3.png',
                             iconAlign: 'top'
                         },
                         {
                             xtype: 'tbseparator'
                         },
+                        {
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Сохранить форму',
+                            action: 'onSaveForm',
+                            border: true,
+                            icon: 'Scripts/resources/icons/save.png',
+                            iconAlign: 'top'
+                        },
+                        {
+                            xtype: 'tbfill'
+                        },
+//                        {
+//                            xtype: 'button',
+//                            scale: 'medium',
+//                            text: 'Настройки',
+//                            action: 'onEdit',
+//                            border: true,
+//                            icon: 'Scripts/resources/icons/edit.png',
+//                            iconAlign: 'top'
+//                        },
+//                        {
+//                            xtype: 'tbseparator'
+//                        },
                         {
                             xtype: 'button',
                             scale: 'medium',
@@ -166,7 +247,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             name:'componentsGroups',
                             region:'west',
                             split:true,
-                            width:100,
+                            width:110,
                             hideHeaders:true,
 
                             collapsible:true,
@@ -193,13 +274,13 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             columns:[
                                 {
                                     flex:1,
-                                    dataIndex:'group'
-                                },
-                                {
-                                    width:30,
-                                    align:'right',
-                                    dataIndex:'count'
+                                    dataIndex:'name'
                                 }
+//                                {
+//                                    width:30,
+//                                    align:'right',
+//                                    dataIndex:'count'
+//                                }
                             ]
                         },
 //------------------------------------------------Компоненты------------------------------------------------------------
@@ -273,9 +354,9 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     align:'center',
                                     renderer:function (value, metaData, record, row, col, store, gridView) {
                                         var grid = this;
-                                        var name = '<b>Name:</b> ' + record.get('component') + '<br>';
-                                        var group = '<b>Group:</b> ' + record.get('group') + '<br>';
-                                        var desc = '<b>Descrition:</b> ' + record.get('desc') + '';
+                                        var name = '<b>Компонент:&nbsp</b> ' + record.get('component') + '<br>';
+                                        var group = '<b>Группа:&nbsp</b> ' + record.get('group') + '<br>';
+                                        var desc = '<b>Описание:&nbsp</b> ' + record.get('description') + '';
                                         metaData.tdAttr = 'data-qtip="' + name + group + desc + '"';
                                         return renderIcon(grid.infoIcon);
                                     }

@@ -1,3 +1,11 @@
+Ext.override(Ext.window.MessageBox, {
+    buttonText: {
+        yes: 'Да',
+        no: 'Нет',
+        cancel: 'Отмена'
+    }
+});
+
 Ext.define('FormGenerator.utils.MessageBox', {
     extend: 'Ext.window.MessageBox',
     singleton: true,

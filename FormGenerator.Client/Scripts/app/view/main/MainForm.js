@@ -4,13 +4,12 @@
 
     border:false,
     autoShow:false,
-    ajaxTimeout:600000,
 
     margin:0,
     layout:{
         type:'absolute'
     },
-    //----------------------------------------------------------
+
     initComponent:function () {
         var me = this;
 
@@ -43,6 +42,7 @@
                                     xtype:'button',
                                     width:100,
                                     text:'Test',
+                                    hidden:true,
                                     iconAlign:'top',
                                     action:'onTest1',
                                     icon:'Scripts/resources/icons/process.png'
