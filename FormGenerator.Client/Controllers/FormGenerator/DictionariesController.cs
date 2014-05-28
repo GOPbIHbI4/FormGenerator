@@ -30,7 +30,7 @@ namespace FormGenerator.Client
         {
             try
             {
-                ResponseObjectPackage<List<DictionaryField>> result = new DictionariesLogic().GetDictionaryFieldsViewModel(dictionaryID);
+                ResponseObjectPackage<List<DictionaryField>> result = new DictionaryFieldsLogic().GetDictionaryFieldsViewModel(dictionaryID);
                 return Json(result);
             }
             catch (Exception ex)
@@ -54,13 +54,25 @@ namespace FormGenerator.Client
         }
 
         [HttpPost]
-        public JsonResult SaveDictionaryData(Dictionary<string, object> row, int dictionaryID)
+        public JsonResult SaveDictionaryData(Dictionary<string, string> row, int dictionaryID)
         {
             try
             {
+                ResponsePackage result = new DictionariesDataLogic().SaveDictionaryData(row, dictionaryID);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
 
-
-                ResponsePackage result = new ResponsePackage();
+        [HttpPost]
+        public JsonResult DeleteDictionaryData(Dictionary<string, string> row, int dictionaryID)
+        {
+            try
+            {
+                ResponsePackage result = new DictionariesDataLogic().DeleteDictionaryData(row, dictionaryID);
                 return Json(result);
             }
             catch (Exception ex)

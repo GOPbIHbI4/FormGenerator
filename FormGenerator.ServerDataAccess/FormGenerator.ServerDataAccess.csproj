@@ -52,6 +52,12 @@
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryForeignKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryInParametersRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryOutParametersRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueriesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Queries\QueryQueryInParametersRepository.cs" />
     <Compile Include="Test\SqlTest.cs" />
   </ItemGroup>
   <ItemGroup>

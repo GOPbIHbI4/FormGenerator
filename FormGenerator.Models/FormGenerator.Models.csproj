@@ -40,7 +40,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryPrimaryKeyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryForeignKeyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryTypeModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryInParameterModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryOutParameterModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Queries\QueryQueryInParameterModel.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryForeignKeySearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryPrimaryKeySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryInParameterSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryQueryInParameterSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QuerySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryTypeSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Queries\QueryOutParameterSearchTemplate.cs" />
     <Compile Include="ViewModels\FormGenerator\DictionariesTree.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Dictionaries\DictionaryFieldModel.cs" />
@@ -51,6 +63,16 @@
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryFieldSearchTemplate.cs" />
     <Compile Include="ViewModels\FormGenerator\DictionaryField.cs" />
     <Compile Include="ViewModels\FormGenerator\Dictionary.cs" />
+    <Compile Include="ViewModels\FormGenerator\DictionaryFieldValue.cs" />
+    <Compile Include="ViewModels\FormGenerator\DictionaryValue.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypes.cs" />
+    <Compile Include="ViewModels\FormGenerator\ValueTypesConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FormGenerator.Utilities\FormGenerator.Utilities.csproj">
+      <Project>{beaa1853-8c34-4de4-8e28-c80a41fb2a95}</Project>
+      <Name>FormGenerator.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

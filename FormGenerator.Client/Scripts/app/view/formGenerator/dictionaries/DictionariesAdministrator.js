@@ -30,16 +30,27 @@
                             text: 'Закрыть',
                             name: 'close',
                             border: true,
-                            icon: 'Scripts/ext/icons/close.png',
+                            icon: 'Scripts/resources/icons/close.png',
                             iconAlign: 'top'
                         },
                         {
                             xtype: 'button',
                             scale: 'medium',
-                            text: 'Тест',
-                            name: 'test',
+                            text: 'Добавить',
+                            name: 'add',
+                            disabled:true,
                             border: true,
-                            icon: 'Scripts/ext/icons/close.png',
+                            icon: 'Scripts/resources/icons/add.png',
+                            iconAlign: 'top'
+                        },
+                        {
+                            xtype: 'button',
+                            scale: 'medium',
+                            text: 'Удалить',
+                            name: 'delete',
+                            disabled:true,
+                            border: true,
+                            icon: 'Scripts/resources/icons/delete.png',
                             iconAlign: 'top'
                         }
                     ]
@@ -79,6 +90,7 @@
                             border: true,
                             columnLines: true,
                             autoScroll: true,
+                            title:'Данные',
                             columns: [
                             ]
                         }

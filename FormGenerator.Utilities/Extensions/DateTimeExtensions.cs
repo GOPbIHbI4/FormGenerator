@@ -15,14 +15,14 @@ namespace FormGenerator.Utilities
 
         public static string ToDMY(this DateTime? t)
         {
-            return t.IsMinValueOrNull() ? t.Value.ToString("dd.MM.yyyy") : null;
+            return t.IsMinValueOrNull() ? null : t.Value.ToString("dd.MM.yyyy");
         }
-        
+
         public static string ToDMYOrEmpty(this DateTime? t)
         {
             return t.ToDMY() ?? "";
         }
-        
+
         public static string ToDMY(this DateTime t)
         {
             return ((DateTime?)t).ToDMY();

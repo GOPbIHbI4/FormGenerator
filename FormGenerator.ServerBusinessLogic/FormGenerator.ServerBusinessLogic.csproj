@@ -43,6 +43,8 @@
     <Compile Include="FormGenerator\Dictionaries\DictionariesLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryGroupsLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryPrimaryKeysLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryForeignKeysLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\DictionaryFieldsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\DataTest.cs" />
   </ItemGroup>

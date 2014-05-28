@@ -35,31 +35,10 @@ namespace FormGenerator.ServerBusinessLogic
             return new ResponseObjectPackage<DictionaryModel>() { resultData = dictionary };
         }
 
-        public ResponseObjectPackage<List<DictionaryFieldModel>> GetDictionaryFieldsByDictionaryID(int dictionaryID)
-        {
-            RequestObjectPackage<DictionaryFieldSearchTemplate> request = new RequestObjectPackage<DictionaryFieldSearchTemplate>()
-            {
-                requestData = new DictionaryFieldSearchTemplate() 
-                {
-                    dictionaryID = dictionaryID
-                }
-            };
-            ResponseObjectPackage<List<DictionaryFieldModel>> response = new DBUtils().RunSqlAction(DictionaryFieldsRepository.GetBySearchTemplate, request);
-            return response;
-        }
-
-        public ResponseObjectPackage<List<DictionaryField>> GetDictionaryFieldsViewModel(int dictionaryID)
-        {
-            List<DictionaryFieldModel> fields = this.GetDictionaryFieldsByDictionaryID(dictionaryID).GetDataOrExceptionIfError();
-            DictionaryPrimaryKeyModel pk = new DictionaryPrimaryKeysLogic().GetDictionaryPrimaryKeyByDictionaryID(dictionaryID).GetDataOrExceptionIfError();
-            List<DictionaryField> fieldsWithPk = fields.Select(e => new DictionaryField(e, e.ID == pk.dictionaryFieldID)).ToList();
-            return new ResponseObjectPackage<List<DictionaryField>>() { resultData = fieldsWithPk };
-        }
-
         public ResponseObjectPackage<Dictionary> GetDictionaryViewModel(int dictionaryID)
         {
             DictionaryModel dict = this.GetDictionaryByID(dictionaryID).GetDataOrExceptionIfError();
-            List<DictionaryField> fields = this.GetDictionaryFieldsViewModel(dictionaryID).GetDataOrExceptionIfError();
+            List<DictionaryField> fields = new DictionaryFieldsLogic().GetDictionaryFieldsViewModel(dictionaryID).GetDataOrExceptionIfError();
             Dictionary dictionary = new Dictionary(dict, fields);
             return new ResponseObjectPackage<Dictionary>() { resultData = dictionary };
         }

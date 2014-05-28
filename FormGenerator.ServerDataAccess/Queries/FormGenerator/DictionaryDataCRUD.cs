@@ -16,9 +16,17 @@ namespace FormGenerator.ServerDataAccess
             string sql = package.requestString;
             ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
             res.ThrowExceptionIfError();
-
             List<Dictionary<string, object>> list = res.GetDataOrExceptionIfError().ToListOfDictionaries();
             return new ResponseObjectPackage<List<Dictionary<string, object>>>() { resultData = list };
+        }       
+        
+        public ResponsePackage UpdateDictionaryData(RequestPackage package, IDbConnection connectionID)
+        {
+            string sql = package.requestString;
+            bool returningID = package.requestID == 1;
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, returningID);
+            res.ThrowExceptionIfError();
+            return res;
         }
     }
 }
