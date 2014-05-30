@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace FormGenerator.Models
 {
-    public class ControlQueryMappingModel
+    public class FormOutParameterModel
     {
         public int ID { get; set; }
+        public string name { get; set; }
         public int controlID { get; set; }
-        public int queryID { get; set; }
-        public int queryOutParameterID { get; set; }
-        public int queryMappingRoleID { get; set; }
     }
 }

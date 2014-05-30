@@ -47,6 +47,7 @@
     <Compile Include="FormGenerator\Dictionaries\DictionaryPrimaryKeysLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryForeignKeysLogic.cs" />
     <Compile Include="FormGenerator\FormControls\ControlPropertiesLogic.cs" />
+    <Compile Include="FormGenerator\FormControls\FormActionLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueriesLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueryInParametersLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueryOutParametersLogic.cs" />

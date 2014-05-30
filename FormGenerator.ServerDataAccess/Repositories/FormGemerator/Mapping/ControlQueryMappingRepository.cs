@@ -17,13 +17,14 @@ namespace FormGenerator.ServerDataAccess
             {"controlID","CONTROL_ID"},
             {"queryOutParameterID","QUERY_OUT_PARAMETER_ID"},
             {"queryID","QUERY_ID"},
+            {"queryMappingRoleID","QUERY_MAPPING_ROLE_ID"},
         };
 
         public static ResponseObjectPackage<List<ControlQueryMappingModel>> GetBySearchTemplate(RequestObjectPackage<ControlQueryMappingSearchTemplate> package, IDbConnection connectionID)
         {
             ControlQueryMappingSearchTemplate obj = package.requestData;
             string sql = string.Format(
-                "select m.ID, m.CONTROL_ID, m.QUERY_OUT_PARAMETER_ID, m.QUERY_ID " + Environment.NewLine +
+                "select m.ID, m.CONTROL_ID, m.QUERY_OUT_PARAMETER_ID, m.QUERY_ID, m.QUERY_MAPPING_ROLE_ID " + Environment.NewLine +
                 "from CONTROL_QUERY_MAPPING m " + Environment.NewLine + 
                 "where {0}",
                 ControlQueryMappingRepository.ToSqlWhere(obj)
@@ -39,7 +40,7 @@ namespace FormGenerator.ServerDataAccess
         {
             int formID = package.requestID;
             string sql = string.Format(
-                "select m.ID, m.CONTROL_ID, m.QUERY_OUT_PARAMETER_ID, m.QUERY_ID " + Environment.NewLine +
+                "select m.ID, m.CONTROL_ID, m.QUERY_OUT_PARAMETER_ID, m.QUERY_ID, m.QUERY_MAPPING_ROLE_ID " + Environment.NewLine +
                 "from CONTROL_QUERY_MAPPING m " + Environment.NewLine +
                 "inner join CONTROLS c on c.ID = m.CONTROL_ID " +
                 "where c.FORM_ID = {0} ",
@@ -48,7 +49,7 @@ namespace FormGenerator.ServerDataAccess
             ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
             res.ThrowExceptionIfError();
 
-            List<ControlQueryMappingModel> list = DBOrmUtils.OpenSqlList<ControlQueryMappingModel>(sql, ControlDictionaryMappingRepository.mappingDictionary, connectionID);
+            List<ControlQueryMappingModel> list = DBOrmUtils.OpenSqlList<ControlQueryMappingModel>(sql, ControlQueryMappingRepository.mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<ControlQueryMappingModel>>() { resultData = list };
         }
 
@@ -59,6 +60,7 @@ namespace FormGenerator.ServerDataAccess
             where += DBOrmUtils.GetSqlWhereFromNumber(obj.controlID, "m.CONTROL_ID");
             where += DBOrmUtils.GetSqlWhereFromNumber(obj.queryOutParameterID, "m.QUERY_OUT_PARAMETER_ID");
             where += DBOrmUtils.GetSqlWhereFromNumber(obj.queryID, "m.QUERY_ID");
+            where += DBOrmUtils.GetSqlWhereFromNumber(obj.queryMappingRoleID, "m.QUERY_MAPPING_ROLE_ID");
             return where;
         }
     }

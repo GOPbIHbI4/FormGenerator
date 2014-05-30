@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
     <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Forms\FormOutParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />
     <Compile Include="Repositories\Forms\FormsRepository.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryForeignKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Forms\FormInParametersRepository.cs" />
     <Compile Include="Repositories\Properties\PropertiesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryTypesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryInParametersRepository.cs" />

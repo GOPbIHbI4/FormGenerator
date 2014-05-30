@@ -1,6 +1,6 @@
 ﻿Ext.define('FormGenerator.controller.main.MainForm', {
     extend: 'Ext.app.Controller',
-    requires:[
+    requires: [
         'FormGenerator.utils.formGenerator.GeneratorFormFactory'
     ],
 
@@ -11,7 +11,7 @@
     init: function () {
         this.control({
             'MainForm button[action=onTest]': {
-                click: this.onTest2
+                click: this.onTest
             },
             'MainForm button[action=onTest1]': {
                 click: this.onTest1
@@ -23,12 +23,17 @@
     },
 
     onTest: function (button) {
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.Test');
-        FormGenerator.utils.Windows.open('Test', {}, null, true);
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.FormEditor');
+        FormGenerator.utils.Windows.open('FormEditor', {}, null, true);
     },
 
     onTest2: function (button) {
-        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(25);
+        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(30, [
+            {
+                ID: 2,
+                value: 1
+            }
+        ]);
     },
 
     onTest1: function (button) {

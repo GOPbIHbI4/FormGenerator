@@ -43,6 +43,8 @@
     <Compile Include="DomainModels\Controls\ControlType.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeGroup.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeDependencyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Forms\FormInParameterModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\Forms\FormOutParameterModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Mapping\ControlDictionaryMappingModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Mapping\ControlQueryMappingModel.cs" />
     <Compile Include="DomainModels\Forms\FormModel.cs" />
@@ -58,6 +60,8 @@
     <Compile Include="DomainModels\FormGenerator\Queries\QueryQueryInParameterModel.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryForeignKeySearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Dictionaries\DictionaryPrimaryKeySearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Forms\FormInParameterSearchTemplate.cs" />
+    <Compile Include="SearchTemplates\FormGenerator\Forms\FormOutParameterSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Mapping\ControlDictionaryMappingSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Mapping\ControlQueryMappingSearchTemplate.cs" />
     <Compile Include="SearchTemplates\FormGenerator\Queries\QueryInParameterSearchTemplate.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="ViewModels\FormGenerator\Queries\QueryInParameter.cs" />
     <Compile Include="ViewModels\FormGenerator\Queries\QueryOutParameter.cs" />
     <Compile Include="ViewModels\FormGenerator\Queries\QueryType.cs" />
+    <Compile Include="ViewModels\FormGenerator\Queries\ComboboxModel.cs" />
     <Compile Include="ViewModels\FormGenerator\ValueTypes\ValueTypes.cs" />
     <Compile Include="ViewModels\FormGenerator\ValueTypes\ValueTypesConverter.cs" />
     <Compile Include="ViewModels\Form\FormList.cs" />
