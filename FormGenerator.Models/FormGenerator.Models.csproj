@@ -43,6 +43,7 @@
     <Compile Include="DomainModels\Controls\ControlType.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeGroup.cs" />
     <Compile Include="DomainModels\Controls\ControlTypeDependencyModel.cs" />
+    <Compile Include="DomainModels\FormGenerator\DomainValueTypeModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Forms\FormInParameterModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Forms\FormOutParameterModel.cs" />
     <Compile Include="DomainModels\FormGenerator\Mapping\ControlDictionaryMappingModel.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ViewModels\FormEditor\PropertyTypeListEntity.cs" />
     <Compile Include="ViewModels\FormEditor\ControlProperty.cs" />
     <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
+    <Compile Include="ViewModels\FormGenerator\Dictionaries\Administrator\DictionaryField.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\ControlProperty.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\Control.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\Form.cs" />

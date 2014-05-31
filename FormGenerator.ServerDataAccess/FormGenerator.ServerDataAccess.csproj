@@ -49,7 +49,9 @@
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
+    <Compile Include="Queries\FormGenerator\DictionaryTypesAdministrator.cs" />
     <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\DomainValueTypesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Forms\FormOutParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />

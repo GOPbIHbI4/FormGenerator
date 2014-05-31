@@ -18,8 +18,10 @@ namespace FormGenerator.Models
             this.name = dictionaryField_.name;
             this.primaryKey = primaryKey_;
             this.foreignKey = dictionaryFieldModelForeignKey_;
+            this.foreignKeyColumnName = this.foreignKey == null ? null : this.foreignKey.name;
         }
         public bool primaryKey { get; set; }
         public DictionaryFieldModel foreignKey { get; set; }
+        public string foreignKeyColumnName { get; set; }
     }
 }

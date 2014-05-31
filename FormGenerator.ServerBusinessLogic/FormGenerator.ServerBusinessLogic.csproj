@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Controls\ControlsLogic.cs" />
     <Compile Include="FormEditor\FormEditorLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\Administrator\DictionaryTypesAdministratorLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionariesDataLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionariesLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryGroupsLogic.cs" />

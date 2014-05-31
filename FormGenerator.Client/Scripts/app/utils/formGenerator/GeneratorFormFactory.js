@@ -15,6 +15,7 @@
                 var jsonResp = Ext.decode(objServerResponse.responseText);
                 if (jsonResp.resultCode == 0) {
                     var window = jsonResp.resultData;
+                    console.log(window);
                     window = _this._parseBuildFormResult(window, formInParameters);
                     _this._initializeDictionaryObject(window);
                     window.query('combobox, textfield, datefield, gridpanel').forEach(function (item) {
@@ -195,6 +196,7 @@
         if (control.initialized) {
             return;
         }
+        debugger;
 
         if (control.QUERY_MAPPINGS != null && control.QUERY_MAPPINGS.length > 0) {
             switch (control.CONTROL_TYPE_ID) {

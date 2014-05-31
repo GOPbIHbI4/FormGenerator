@@ -18,6 +18,9 @@
             },
             'MainForm button[action=onTest2]': {
                 click: this.onTest2
+            },
+            'MainForm button[action=onTest3]': {
+                click: this.onTest3
             }
         });
     },
@@ -27,17 +30,22 @@
         FormGenerator.utils.Windows.open('FormEditor', {}, null, true);
     },
 
+    onTest1: function (button) {
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.formGenerator.dictionaries.DictionariesAdministrator');
+        FormGenerator.utils.Windows.open('DictionariesAdministrator', {});
+    },
+
     onTest2: function (button) {
-        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(30, [
+        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(29, [
             {
-                ID: 2,
-                value: 1
+                ID:1,
+                value:1
             }
         ]);
     },
 
-    onTest1: function (button) {
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.formGenerator.dictionaries.DictionariesAdministrator');
-        FormGenerator.utils.Windows.open('DictionariesAdministrator', {});
+    onTest3: function (button) {
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.formGenerator.dictionaries.DictionaryTypesAdministrator');
+        FormGenerator.utils.Windows.open('DictionaryTypesAdministrator', {});
     }
 });

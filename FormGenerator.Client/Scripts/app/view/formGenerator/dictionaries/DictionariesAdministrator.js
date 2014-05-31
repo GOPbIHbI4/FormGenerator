@@ -83,6 +83,9 @@
                     xtype: 'panel',
                     region: 'center',
                     name: 'main',
+                    layout: {
+                        type: 'fit'
+                    },
                     items: [
                         {
                             xtype: 'gridpanel',
