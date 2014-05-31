@@ -57,6 +57,15 @@
     <Compile Include="Repositories\FormGemerator\Controls\ControlTypeRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlTypeGroupRepository.cs" />
     <Compile Include="Repositories\FormGemerator\DomainValueTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\EventsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\EventTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionParametersRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionParameterTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionKindsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionTypePropertiesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Events\ActionKindPropertiesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Forms\FormOutParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />
@@ -75,7 +84,6 @@
     <Compile Include="Repositories\FormGemerator\Queries\QueryOutParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueriesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryQueryInParametersRepository.cs" />
-    <Compile Include="Test\SqlTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FormGenerator.Models\FormGenerator.Models.csproj">

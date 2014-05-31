@@ -363,19 +363,14 @@ namespace FormGenerator.ServerDataAccess
             {
                 case 1:
                     return "varchar(200)";
-                    break;
                 case 2:
                     return "decimal";
-                    break;
                 case 3:
                     return "integer";
-                    break;
                 case 4:
                     return "date";
-                    break;
                 default:
                     return "varchar(100)";
-                    break;
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using FormGenerator.Server.Test;
-using FormGenerator.Utilities;
+﻿using FormGenerator.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -21,21 +20,6 @@ namespace FormGenerator.Client.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        [JsonRequestBehavior]
-        public JsonResult Test()
-        {
-            try
-            {
-                RequestPackage package = new RequestPackage();
-                ResponsePackage result = new BLL_DataTest().DoSome(package);
-                return Json(result);
-            }
-            catch (Exception ex)
-            {
-                return this.HandleException(ex);
-            }
         }
 
         [JsonRequestBehavior]
