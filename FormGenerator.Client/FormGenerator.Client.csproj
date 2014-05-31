@@ -126,8 +126,10 @@
     <Compile Include="Controllers\FormGenerator\QueriesController.cs" />
     <Compile Include="Controllers\FormGenerator\FormsController.cs" />
     <Compile Include="Controllers\FormEditor\Form\FormController.cs" />
+    <Compile Include="Controllers\FormGenerator\AdministratorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FormEditor\Property\PropertyController.cs" />
+    <Compile Include="Controllers\Property\PropertyController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

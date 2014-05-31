@@ -14,17 +14,18 @@ namespace FormGenerator.ServerDataAccess
     /// <param name="request">пакет параметров запроса</param>
     /// <param name="connectionID"></param>
     /// <returns></returns>
-    public delegate Out SqlAction<In, Out>(In request, IDbConnection connectionID) 
-    where In:RequestPackage 
-    where Out:ResponsePackage;
+    public delegate Out SqlAction<In, Out>(In request, IDbConnection connectionID)
+        where In : RequestPackage
+        where Out : ResponsePackage;
 
     /// <summary> Класс, описывающий утилиты для работы с базами данных
     /// </summary>
     public class DBUtils
     {
         private IConnectionFactory _connectionFactory;
-        public DBUtils() :this(new FireBirdConnectionFactory())
-        {}
+        public DBUtils()
+            : this(new FireBirdConnectionFactory())
+        { }
         public DBUtils(IConnectionFactory connectionFactory_)
         {
             this._connectionFactory = connectionFactory_;
@@ -124,6 +125,22 @@ namespace FormGenerator.ServerDataAccess
                 result.resultMessage = "Ошибка запроса: '{0}'.{1}Текст запроса:'{2}'.".FormatString(ex.Message, Environment.NewLine, sql);
             }
             return result;
+        }
+    }
+
+    public static class SQL
+    {
+        public static string FromString(string obj)
+        {
+            return obj == null ? "NULL" : "'" + obj + "'";
+        }
+        public static string FromNumber(decimal? obj)
+        {
+            return obj == null ? "NULL" : obj.ToString();
+        }
+        public static string FromDate(DateTime? obj)
+        {
+            return obj == null ? "NULL" : "'" + obj.ToDMY() + "'";
         }
     }
 }

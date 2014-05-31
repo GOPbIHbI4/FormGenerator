@@ -16,7 +16,21 @@ namespace FormGenerator.Client
         {
             try
             {
-                ResponseObjectPackage<Form> result = new ControlPropertiesLogic().BuildForm(formID);
+                ResponseObjectPackage<Form> result = new FormActionLogic().BuildForm(formID);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        [JsonRequestBehavior]
+        public JsonResult GetDictionaryObjectByID(int dictionaryID, int pkValue)
+        {
+            try
+            {
+                ResponseObjectPackage<Dictionary<int, object>> result = new FormActionLogic().GetDictionaryObjectByID(dictionaryID, pkValue);
                 return Json(result);
             }
             catch (Exception ex)

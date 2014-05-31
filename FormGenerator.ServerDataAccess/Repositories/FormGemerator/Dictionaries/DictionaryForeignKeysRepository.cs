@@ -33,7 +33,6 @@ namespace FormGenerator.ServerDataAccess
             List<DictionaryForeignKeyModel> list = DBOrmUtils.OpenSqlList<DictionaryForeignKeyModel>(sql, DictionaryForeignKeysRepository.mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<DictionaryForeignKeyModel>>() { resultData = list };
         }
-
         public static ResponseObjectPackage<List<DictionaryForeignKeyModel>> GetByDictionaryIDSource(RequestPackage package, IDbConnection connectionID)
         {
             int dictionaryID = package.requestID;
@@ -50,8 +49,6 @@ namespace FormGenerator.ServerDataAccess
             List<DictionaryForeignKeyModel> list = DBOrmUtils.OpenSqlList<DictionaryForeignKeyModel>(sql, DictionaryForeignKeysRepository.mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<DictionaryForeignKeyModel>>() { resultData = list };
         }
-
-
         public static string ToSqlWhere(DictionaryForeignKeySearchTemplate obj)
         {
             string where = " 1 = 1";
@@ -60,5 +57,60 @@ namespace FormGenerator.ServerDataAccess
             where += DBOrmUtils.GetSqlWhereFromNumber(obj.dictionaryFieldIDDestination, "DICTIONARY_FIELD_ID_DESTINATION");
             return where;
         }
+
+
+        public static ResponsePackage SaveForeignKey(RequestObjectPackage<DictionaryForeignKeyModel> request, IDbConnection connectionID)
+        {
+            return SaveForeignKey(request, connectionID, null);
+        }
+        public static ResponsePackage SaveForeignKey(RequestObjectPackage<DictionaryForeignKeyModel> request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            DictionaryForeignKeyModel obj = request.requestData;
+            bool isEdit = obj.ID > 0;
+
+            string sql = null;
+            if (isEdit)
+            {
+                sql = string.Format(
+                    "update DICTIONARY_FOREIGN_KEYS " + Environment.NewLine +
+                    "set ID = {0}, DICTIONARY_FIELD_ID_SOURCE = {1}, DICTIONARY_FIELD_ID_DESTINATION = {2} " + Environment.NewLine +
+                    "where ID = {0} ",
+                        SQL.FromNumber(obj.ID),
+                        SQL.FromNumber(obj.dictionaryFieldIDSource),
+                        SQL.FromNumber(obj.dictionaryFieldIDDestination)
+                );
+            }
+            else
+            {
+                sql = string.Format(
+                   "insert into DICTIONARY_FOREIGN_KEYS " + Environment.NewLine +
+                   "(DICTIONARY_FIELD_ID_SOURCE, DICTIONARY_FIELD_ID_DESTINATION) " + Environment.NewLine +
+                   "values ({0}, {1}) returning ID",
+                        SQL.FromNumber(obj.dictionaryFieldIDSource),
+                        SQL.FromNumber(obj.dictionaryFieldIDDestination)
+                );
+            }
+
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, !isEdit, transactionID);
+            res.ThrowExceptionIfError();
+
+            return new ResponsePackage() { resultID = isEdit ? obj.ID : res.resultID };
+        }
+        public static ResponsePackage DeleteForeignKey(RequestPackage request, IDbConnection connectionID)
+        {
+            return DeleteForeignKey(request, connectionID, null);
+        }
+        public static ResponsePackage DeleteForeignKey(RequestPackage request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            int id = request.requestID;
+            string sql = string.Format(
+                "delete from DICTIONARY_FOREIGN_KEYS " + Environment.NewLine +
+                "where ID = {0} ",
+                id
+            );
+            DBUtils.ExecuteSQL(sql, connectionID, false, transactionID).ThrowExceptionIfError();
+            return new ResponsePackage();
+        }
+
     }
 }

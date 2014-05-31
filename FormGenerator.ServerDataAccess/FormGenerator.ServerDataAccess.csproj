@@ -53,8 +53,11 @@
     <Compile Include="Queries\FormEditor\QueryEditorDataCRUD.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlsRepository.cs" />
+    <Compile Include="Queries\FormGenerator\DictionaryTypesAdministrator.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlTypeRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlTypeGroupRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\DomainValueTypesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Forms\FormOutParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Forms\FormsRepository.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryPrimaryKeysRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryForeignKeysRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Properties\ControlPropertiesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Forms\FormInParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Properties\ControlTypePropertyTypeRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Properties\ControlPropertyTypeRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryTypesRepository.cs" />

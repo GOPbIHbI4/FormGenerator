@@ -12,5 +12,6 @@ namespace FormGenerator.Models
         public int? controlID { get; set; }
         public int? queryID { get; set; }
         public int? queryOutParameterID { get; set; }
+        public int? queryMappingRoleID { get; set; }
     }
 }

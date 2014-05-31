@@ -18,6 +18,11 @@ namespace FormGenerator.Models
             this.fields = fields_;
         }
         public List<DictionaryField> fields { get; set; }
-        
+
+        public DictionaryField GetPrimaryKey() 
+        {
+            return this.fields.Where(e => e.primaryKey).First();
+        }
+
     }
 }

@@ -40,8 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormGenerator\Controls\ControlsLogic.cs" />
+    <Compile Include="Controls\ControlsLogic.cs" />
     <Compile Include="FormEditor\FormEditorLogic.cs" />
     <Compile Include="FormEditor\QueryEditorLogic.cs" />
+    <Compile Include="FormGenerator\Dictionaries\Administrator\DictionaryTypesAdministratorLogic.cs" />
     <Compile Include="FormGenerator\Controls\ControlTypesLogic.cs" />
     <Compile Include="FormGenerator\Controls\ControlTypeGroupLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionariesDataLogic.cs" />
@@ -51,15 +53,18 @@
     <Compile Include="FormGenerator\Dictionaries\DictionaryForeignKeysLogic.cs" />
     <Compile Include="FormGenerator\FormControls\ControlPropertiesLogic.cs" />
     <Compile Include="FormGenerator\Property\ControlTypePropertyTypeLogic.cs" />
+    <Compile Include="FormGenerator\FormControls\FormActionLogic.cs" />
     <Compile Include="FormGenerator\Property\ControlPropertyTypeLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueriesLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueryInParametersLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueryOutParametersLogic.cs" />
     <Compile Include="FormGenerator\Queries\QueryTypesLogic.cs" />
     <Compile Include="FormGenerator\Forms\FormsLogic.cs" />
+    <Compile Include="Forms\FormsLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryFieldsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormGenerator\Property\ControlPropertyLogic.cs" />
+    <Compile Include="Property\PropertyLogic.cs" />
     <Compile Include="Test\DataTest.cs" />
   </ItemGroup>
   <ItemGroup>

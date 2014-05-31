@@ -66,6 +66,14 @@ namespace FormGenerator.ServerBusinessLogic
             ResponseObjectPackage<List<ControlQueryMappingModel>> response = new ResponseObjectPackage<List<ControlQueryMappingModel>>() { resultData = mappings };
             return response;
         }
+        public ResponseObjectPackage<FormModel> GetFormByID(int formID)
+        {
+            RequestPackage request = new RequestPackage() { requestID = formID };
+            FormModel form = new DBUtils().RunSqlAction(new FormsRepository().GetFormByID, request).GetDataOrExceptionIfError();
+            ResponseObjectPackage<FormModel> response = new ResponseObjectPackage<FormModel>() { resultData = form };
+            return response;
+        }
+
 
         public ResponseObjectPackage<Control> BuildWindow(int formID)
         {
@@ -89,26 +97,6 @@ namespace FormGenerator.ServerBusinessLogic
 
 
             return new ResponseObjectPackage<Control>() { resultData = root };
-        }
-
-        public ResponseObjectPackage<Form> BuildForm(int formID)
-        {
-            List<int> queryIDs = this.GetControlQueryMappingByFormID(formID).GetDataOrExceptionIfError()
-                .Select(e => e.queryID).Distinct().ToList();
-            Control window = this.BuildWindow(formID).GetDataOrExceptionIfError();
-            List<QueryType> queries = new List<QueryType>();
-            foreach (int queryID in queryIDs)
-            {
-                List<QueryQueryInParameterModel> mapping = new QueryInParametersLogic().GetQueryQueryInParametersByQueryID(queryID).GetDataOrExceptionIfError();
-                queries.Add(new QueryType() { queryID = queryID, inParametersMapping = mapping });
-            }
-            Form form = new Form() 
-            {
-                ID = formID,
-                queries = queries,
-                window = window
-            };
-            return new ResponseObjectPackage<Form>() { resultData = form };
         }
     }
 }
