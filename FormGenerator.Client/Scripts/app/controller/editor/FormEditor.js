@@ -6,15 +6,20 @@
     ],
 
     models: [
-        'FormGenerator.model.editor.FormEditor'
+        'FormGenerator.model.editor.FormEditor',
+        'FormGenerator.model.editor.query.FormQuery',
+        'FormGenerator.model.editor.query.QueryFrom'
     ],
 
     stores: [
-        'FormGenerator.store.editor.FormEditor'
+        'FormGenerator.store.editor.FormEditor',
+        'FormGenerator.store.editor.query.FormQuery',
+        'FormGenerator.store.editor.query.QueryFrom'
     ],
 
     requires: [
-        'FormGenerator.editor.Focused'
+        'FormGenerator.editor.Focused',
+        'FormGenerator.editor.Queries'
     ],
 
     components: undefined,
@@ -25,7 +30,9 @@
                 afterrender: this.onLoad
             },
             'FormEditor menuitem[action=onSaveForm], button[action=onSaveForm]': {
-                click: this.onSaveForm
+                click: function(btn){
+                    this.onSaveForm(btn, false);
+                }
             },
             'FormEditor menuitem[action=onNewForm], button[action=onNewForm]': {
                 click: this.onNewFormQuestion
@@ -57,7 +64,13 @@
             'FormEditor button[action=onAddQuery]': {
                 click: this.onAddQuery
             },
-            'FormEditor button[action=onClose]': {
+            'FormEditor button[action=onSetParam]': {
+                click: this.onSetParam
+            },
+            'FormEditor combobox[name=query]': {
+                change: this.onQueryTypeSelectionChange
+            },
+            'FormEditor button[action=onClose], menuitem[action=onClose]': {
                 click: this.onClose
             }
         });
@@ -85,16 +98,25 @@
         var propertiesGrid = win.down('propertygrid[name=properties]');
         var propertiesOwner = win.down('panel[name=propertiesOwner]');
         var form = win.down('form[name=mainPanel]');
+        var dictionaryField = win.down('combobox[name=dictionaryField]');
         var tree = win.down('treepanel');
         var btnCode = win.down('button[action=onCode]');
         var btnDesign = win.down('button[action=onDesign]');
         var btnCopyToClipboard = win.down('button[action=onCopyToClipboard]');
         var btnSaveOnFile = win.down('button[action=onSaveOnFile]');
         var btnLabel = win.down('button[action=onLabel]');
+        // данные
+        var dataPanel = win.down('panel[action=data]');
+        var query = win.down('combobox[name=query]');
+        var queryField = win.down('combobox[name=queryField]');
+        var queryKeyField = win.down('combobox[name=queryKeyField]');
 
         // disable компоненты
         componentsPanel.setDisabled(true);
         projectPanel.setDisabled(true);
+        btnDesign.toggle(true);
+        // запросы на форме
+        FormGenerator.editor.Queries.init();
 
         // Добавить функцию startsWith классу String
         /**
@@ -111,7 +133,7 @@
         componentGroupGrid.getStore().load({
             callback: function () {
                 componentsGrid.getStore().load({
-                    callback:function(){
+                    callback: function () {
                         // выделяем группу "Все"
                         _this.components = componentsGrid.getStore().data.items;
                         componentGroupGrid.getSelectionModel().select(componentGroupGrid.getStore().findRecord('ID', '99'));
@@ -119,8 +141,6 @@
                 });
             }
         });
-
-        btnDesign.toggle(true);
 
         // Фокус элементов основной формы
         FormGenerator.editor.Focused.clearFocusedCmp();
@@ -158,6 +178,44 @@
                     tree.getSelectionModel().select(treeEl);
                 }
                 propertiesPanel.setDisabled(false);
+                // данные
+                var panel = win.down('panel[name=data]');
+                var loaded1 = false, loaded2 = false;
+                if (panel.el) panel.el.mask('Загрузка...');
+                if (focused.xtype == 'combobox') {
+                    queryKeyField.show();
+                } else {
+                    queryKeyField.hide();
+                }
+                var data = focused.record.get('data');
+                query.setValue(data['queryID']);
+                if (!query.getValue()) {
+                    queryField.getStore().loadData([], false);
+                    queryKeyField.getStore().loadData([], false);
+                    if (panel.el) panel.el.unmask();
+                } else {
+                    queryField.getStore().load({
+                        params: {
+                            ID: query.findRecordByValue(query.getValue()).get('queryTypeID')
+                        },
+                        callback: function () {
+                            if (data['queryOutValueID']) queryField.setValue(data['queryOutValueID']);
+                            loaded1 = true;
+                            if (panel.el && loaded2) panel.el.unmask();
+                        }
+                    });
+                    queryKeyField.getStore().load({
+                        params: {
+                            ID: query.findRecordByValue(query.getValue()).get('queryTypeID')
+                        },
+                        callback: function () {
+                            if (data['queryOutKeyID']) queryKeyField.setValue(data['queryOutKeyID']);
+                            loaded2 = true;
+                            if (panel.el && loaded1) panel.el.unmask();
+                        }
+                    });
+                }
+                dictionaryField.setValue(data['saveField']);
             } else if (!FormGenerator.editor.Focused.getFocusedCmp()) {
                 propertiesGrid.setSource([]);
                 propertiesGrid.customEditors = [];
@@ -165,6 +223,36 @@
                 propertiesFilter.setValue('');
                 tree.getSelectionModel().deselectAll();
                 propertiesPanel.setDisabled(true);
+                queryField.clearValue();
+                queryKeyField.clearValue();
+                query.clearValue();
+                dictionaryField.clearValue();
+            }
+        });
+
+        // При изменении данных синхранизировать вкладку "Данные" с компонентом
+        query.on('change', function (comboChanged) {
+            var focused = FormGenerator.editor.Focused.getFocusedCmp();
+            if (focused) {
+                focused.record.get('data')['queryID'] = query.getValue();
+            }
+        });
+        queryField.on('change', function (comboChanged) {
+            var focused = FormGenerator.editor.Focused.getFocusedCmp();
+            if (focused) {
+                focused.record.get('data')['queryOutValueID'] = queryField.getValue();
+            }
+        });
+        queryKeyField.on('change', function (comboChanged) {
+            var focused = FormGenerator.editor.Focused.getFocusedCmp();
+            if (focused) {
+                focused.record.get('data')['queryOutKeyID'] = queryKeyField.getValue();
+            }
+        });
+        dictionaryField.on('change', function (comboChanged) {
+            var focused = FormGenerator.editor.Focused.getFocusedCmp();
+            if (focused) {
+                focused.record.get('data')['saveField'] = dictionaryField.getValue();
             }
         });
 
@@ -183,57 +271,62 @@
      * Функция сохранения формы.
      * @param btn
      */
-    onSaveForm: function (btn) {
+    onSaveForm: function (btn, close) {
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
+        var dictionaryField = win.down('combobox[name=dictionaryField]');
+        var _this = this;
         // получить объект, хранящий в себе описание формы
         var obj = this.getJsonForm(form);
-        if (!win.form_name){
+        if (!win.form_name) {
             var error = 'Форма еще не создана.';
             FormGenerator.utils.MessageBox.show(error, null, -1);
             return;
         }
-//        if (!win.form_dictionary_id){
-//            var error = 'Форме не задан словарь.';
-//            FormGenerator.utils.MessageBox.show(error, null, -1);
-//            return;
-//        }
         if (obj == null || typeof obj == 'undefined') {
             var error = 'Форма пустая.';
             FormGenerator.utils.MessageBox.show(error, null, -1);
             return;
         }
+
+        var queryInParams = FormGenerator.editor.Queries.getInParams();
+        var queries = FormGenerator.editor.Queries.get();
+
         // рекурсивная функция сохранения
         var orderNumber = 0;
+        var deleteID = [];
         var fn = function (item, parent) {
             orderNumber++;
             var current = {
-                control:{
-                    ID:item.id ? item.id + '' : '-1',
-                    controlTypeID:item['controlTypeID'] ? item['controlTypeID'] + '' : '',
-                    controlIDParent:parent ? parent['id'] + '' : '',
-                    formID:win.form_id ? win.form_id + '' : '',
-                    orderNumber:orderNumber + ''
+                control: {
+                    ID: item.id ? item.id + '' : '-1',
+                    controlTypeID: item['controlTypeID'] ? item['controlTypeID'] + '' : '',
+                    controlIDParent: parent ? parent['id'] + '' : '',
+                    formID: win.form_id ? win.form_id + '' : '',
+                    orderNumber: orderNumber + ''
                 },
-                name:item['name'],
-                items:[],
-                properties:[]
+                name: item['name'],
+                items: [],
+                properties: [],
+                queries: queries,
+                queryInParams: queryInParams,
+                data: item['data']
             };
             // сохраняем свойства объекта
             for (var prop in item) {
-                if (!(item[prop] instanceof Array) && prop != 'controlTypeID') {
+                if (!(item[prop] instanceof Array) && prop != 'controlTypeID' && prop != 'data') {
                     var property = {
-                        controlID:item.id ? item.id + '' : '',
-                        controlTypeID:item['controlTypeID'] ? item['controlTypeID'] + '' : '',
+                        controlID: item.id ? item.id + '' : '',
+                        controlTypeID: item['controlTypeID'] ? item['controlTypeID'] + '' : '',
                         property: prop,
-                        value:item[prop]
+                        value: item[prop]
                     };
                     current.properties.push(property);
                 }
             }
             for (var prop in item) {
                 if (item[prop] instanceof Array) {
-                    item[prop].forEach(function(x){
+                    item[prop].forEach(function (x) {
                         current.items.push(fn(x, item));
                     });
                 }
@@ -242,13 +335,14 @@
         };
 
         // Функция задания id компонентам после сохранения, т.к все на сервере происходит
+        // @deprecated
         var setID = function (item) {
             var el = form.query('component[name=' + item['name'] + ']')[0];
-            if (el){
+            if (el) {
                 el.record.get('properties')['id'] = item.control['ID'];
             }
-            if (item.items && item.items instanceof Array){
-                item.items.forEach(function(x){
+            if (item.items && item.items instanceof Array) {
+                item.items.forEach(function (x) {
                     setID(x);
                 });
             }
@@ -272,7 +366,7 @@
             },
             success: function (objServerResponse) {
                 var jsonResp = Ext.decode(objServerResponse.responseText);
-                if (jsonResp.resultCode == 0){
+                if (jsonResp.resultCode == 0) {
                     // Форма сохранена
                     win.form_id = jsonResp.resultID;
                     var newFormObj = fn(obj, null);
@@ -281,14 +375,28 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         jsonData: {
-                            form: newFormObj
+                            form: newFormObj,
+                            formID: win.form_id + ''
                         },
                         success: function (objServerResponse) {
                             var jsonResp = Ext.decode(objServerResponse.responseText);
-                            if (jsonResp.resultCode == 0){
+                            if (jsonResp.resultCode == 0) {
+                                if (close){
+                                    win.body.unmask();
+                                    win.close();
+                                    return;
+                                }
                                 var newForm = jsonResp.resultData;
-                                setID(newForm);
+                                // Удаляем компоненты с формы
+                                if (form.down('[name=senchawin]')) {
+                                    form.fireEvent('ComponentRemoved', form, form, form.down('[name=senchawin]'));
+                                }
+                                form.removeAll();
+                                form.doLayout();
+                                FormGenerator.editor.Queries.clear();
                                 win.body.unmask();
+                                // открываем текущую форму
+                                _this.openForm(win);
                             } else {
                                 win.body.unmask();
                                 FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
@@ -317,7 +425,7 @@
      * Функция создания диалога "Сохранить форму?" при открытии формы
      * @param btn
      */
-    onOpenFormQuestion:function(btn){
+    onOpenFormQuestion: function (btn) {
         var _this = this;
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
@@ -347,42 +455,67 @@
     onOpenForm: function (btn) {
         var _this = this;
         var win = btn.up('window');
-        var form = win.down('form[name=mainPanel]');
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.OpenFormDialog');
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.dialog.OpenFormDialog');
         var openFormDialog = FormGenerator.utils.Windows.open('OpenFormDialog', {}, null, true);
         openFormDialog.on('FormIsReadyToOpen', function (winDialog, form_id, form_name, form_dictionary_id) {
-            // Ajax запрос на получение формы
-            win.body.mask('Загрузка...');
-            Ext.Ajax.request({
-                url: 'FormEditor/GetFormByID',
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                params: {
-                    id: form_id
-                },
-                success: function (objServerResponse) {
-                    var jsonResp = Ext.decode(objServerResponse.responseText);
-                    if (jsonResp.resultCode == 0) {
-                        var res = jsonResp.resultData;
-                        // воссоздание формы с помощью рекурсивной функции
-                        _this.drawForm(win, res);
-                        win.form_id = form_id;
-                        win.form_name = form_name;
-                        win.form_dictionary_id = form_dictionary_id;
-                        win.setTitle('Визуальный редактор форм. ' + win.form_name);
-                        _this.setEnabledComponents(win);
-                        win.body.unmask();
-                    } else {
-                        FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
-                        win.body.unmask();
-                    }
-                },
-                failure: function (objServerResponse) {
-                    win.body.unmask();
-                    FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
-                }
-            });
+            win.form_id = form_id;
+            win.form_name = form_name;
+            win.form_dictionary_id = form_dictionary_id;
+            _this.openForm(win);
         })
+    },
+
+    /**
+     * Функция, открывающая форму
+     * @param win
+     */
+    openForm:function(win){
+        var _this = this;
+        var form = win.down('form[name=mainPanel]');
+        var dictionaryField = win.down('combobox[name=dictionaryField]');
+        var dictionaryFieldSet = dictionaryField.up('fieldset');
+        // Ajax запрос на получение формы
+        win.body.mask('Загрузка...');
+        Ext.Ajax.request({
+            url: 'FormEditor/GetFormByID',
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            params: {
+                id: win.form_id + ''
+            },
+            success: function (objServerResponse) {
+                var jsonResp = Ext.decode(objServerResponse.responseText);
+                if (jsonResp.resultCode == 0) {
+                    var res = jsonResp.resultData;
+                    // воссоздание формы с помощью рекурсивной функции
+                    _this.drawForm(win, res);
+                    win.setTitle('Визуальный редактор форм. ' + win.form_name);
+                    _this.setEnabledComponents(win);
+                    // загрузить комбо "Поле" во вкладке "Данные"
+                    if (win.form_dictionary_id) {
+                        dictionaryFieldSet.expand();
+                        dictionaryField.setReadOnly(false);
+                        dictionaryField.getStore().load({
+                            params: {
+                                dictionaryID: win.form_dictionary_id + ''
+                            }
+                        });
+                    } else {
+                        dictionaryField.setReadOnly(true);
+                        dictionaryField.clearValue();
+                        dictionaryFieldSet.collapse();
+                    }
+                    win.body.unmask();
+                } else {
+                    FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
+                    win.body.unmask();
+                }
+            },
+            failure: function (objServerResponse) {
+                win.body.unmask();
+                FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
+            }
+        });
     },
 
     //==============================================Новая форма==============================================
@@ -391,7 +524,7 @@
      * Функция создания новой формы
      * @param btn
      */
-    onNewFormQuestion:function(btn){
+    onNewFormQuestion: function (btn) {
         var _this = this;
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
@@ -418,16 +551,33 @@
      * Функция, вызывающаяся после диалога "Сохранить форму?" при создании новой формы
      * @param btn
      */
-    onNewForm:function(btn){
+    onNewForm: function (btn) {
         var _this = this;
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.CreateFormDialog');
+        var dictionaryField = win.down('combobox[name=dictionaryField]');
+        var dictionaryFieldSet = dictionaryField.up('fieldset');
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.dialog.CreateFormDialog');
         var createFormDialog = FormGenerator.utils.Windows.open('CreateFormDialog', {}, null, true);
-        createFormDialog.on('FormIsReadyToCreate', function (winDialog, form_name) {
+        createFormDialog.on('FormIsReadyToCreate', function (winDialog, form_name, dictionary_id) {
             win.form_name = form_name;
             win.form_id = undefined;
+            win.form_dictionary_id = dictionary_id;
             _this.setEnabledComponents(win);
+            // загрузить комбо "Поле" во вкладке "Данные"
+            if (win.form_dictionary_id) {
+                dictionaryFieldSet.expand();
+                dictionaryField.setReadOnly(false);
+                dictionaryField.getStore().load({
+                    params: {
+                        dictionaryID: win.form_dictionary_id + ''
+                    }
+                });
+            } else {
+                dictionaryField.setReadOnly(true);
+                dictionaryField.clearValue();
+                dictionaryFieldSet.collapse();
+            }
             win.setTitle('Визуальный редактор форм. ' + form_name);
         });
     },
@@ -438,17 +588,17 @@
      * Функция, переименовывающая форму
      * @param btn
      */
-    onRenameForm:function(btn){
+    onRenameForm: function (btn) {
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
-        if (!win.form_name){
+        if (!win.form_name) {
             var error = 'Форма еще не создана.';
             FormGenerator.utils.MessageBox.show(error, null, -1);
             return;
         }
         // открываем окно переименования формы
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.RenameFormDialog');
-        var createFormDialog = FormGenerator.utils.Windows.open('RenameFormDialog', { form_id: win.form_id, form_name:win.form_name }, null, true);
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.dialog.RenameFormDialog');
+        var createFormDialog = FormGenerator.utils.Windows.open('RenameFormDialog', { form_id: win.form_id, form_name: win.form_name }, null, true);
         createFormDialog.on('FormIsReadyToRename', function (winDialog, form_name) {
             win.form_name = form_name;
             win.setTitle('Визуальный редактор форм. ' + form_name);
@@ -497,7 +647,9 @@
             }
             // create obj
             var obj = JSON.parse(JSON.stringify(item.record.get('properties')));
+            var data = JSON.parse(JSON.stringify(item.record.get('data')));
             obj.controlTypeID = item.record.get('ID');
+            obj.data = data;
 
             // recursion
             if (items.length > 0) {
@@ -538,7 +690,9 @@
         }
         form.removeAll();
         form.doLayout();
+        FormGenerator.editor.Queries.clear();
         win.form_id = undefined;
+        win.form_dictionary_id = undefined;
         win.form_name = undefined;
         win.setTitle('Визуальный редактор форм');
     },
@@ -596,28 +750,66 @@
         }
     },
 
+    //================================================== Запросы ==================================================
 
-    onAddQuery:function(btn){
+    /**
+     * Функция добавления нового запроса к существующим
+     * @param btn Кнопка "+", вызвавшая событие
+     */
+    onAddQuery: function (btn) {
         var win = btn.up('window');
         var query = win.down('combobox[name=query]');
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.CreateQuery');
-        var createQuery = FormGenerator.utils.Windows.open('CreateQuery',
-            {
-                dictionary_id:win.form_dictionary_id,
-                form_id:win.form_id
-            }, null, true);
-        createQuery.on('QuerySaved', function (winQuery, query_id, query) {
+        var form = win.down('form[name=mainPanel]');
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.query.FormQueries');
+        var createQuery = FormGenerator.utils.Windows.open('FormQueries', {
+            form: form
+        }, null, true);
+        createQuery.on('FormQuerySaved', function (winQuery, obj) {
+//        obj = {
+//            _ID:getRandomInt(),
+//            queryTypeID:query.getValue(),
+//            queryType:query.getRawValue(),
+//            queryInParams:inParams.getStore().data.items
+//        };
+            FormGenerator.editor.Queries.add(obj);
             // перегрузить комбо с запросами
-            query.getStore().load({
-                callback:function(){
-                    var newQuery = query.getStore().findRecord('ID', query_id);
-                    if (newQuery) {
-                        query.getSelectionModel().select(query);
-                    }
-                }
-            });
+            query.getStore().loadData(FormGenerator.editor.Queries.get(), false);
+            var newQuery = query.getStore().findRecord('_ID', obj._ID);
+            if (newQuery) {
+                query.select(newQuery);
+            }
         });
     },
+
+    /**
+     * Перегрузить таблицу параметров при выборе запроса
+     * @param combo Комбо запрос
+     */
+    onQueryTypeSelectionChange: function (combo) {
+        var win = combo.up('window');
+        var query = win.down('combobox[name=query]');
+        var queryField = win.down('combobox[name=queryField]');
+        var queryKeyField = win.down('combobox[name=queryKeyField]');
+        queryField.clearValue();
+        queryKeyField.clearValue();
+        if (!query.getValue()) {
+            queryField.getStore().loadData([], false);
+            queryKeyField.getStore().loadData([], false);
+        } else {
+            queryField.getStore().load({
+                params: {
+                    ID: query.findRecordByValue(query.getValue()).get('queryTypeID')
+                }
+            });
+            queryKeyField.getStore().load({
+                params: {
+                    ID: query.findRecordByValue(query.getValue()).get('queryTypeID')
+                }
+            });
+        }
+    },
+
+    //===================================================Левые функции==================================================
 
     /**
      * Нарисовать форму, полученную в виде JSON объекта (res)
@@ -629,7 +821,7 @@
         var form = win.down('form[name=mainPanel]');
         var components = win.down('gridpanel[name=components]');
         var store = deepCloneStore(components.getStore());
-        if (!res.root){
+        if (!res.root) {
             var error = 'Форма пуста.';
             console.warn(error);
             return;
@@ -643,11 +835,11 @@
                 return;
             }
             var xtype, layout;
-            obj.properties.forEach(function(x){
-                if (x.property.toLowerCase() == 'xtype'){
+            obj.properties.forEach(function (x) {
+                if (x.property.toLowerCase() == 'xtype') {
                     xtype = x.value.toLowerCase();
                 }
-                if (x.property.toLowerCase() == 'layout'){
+                if (x.property.toLowerCase() == 'layout') {
                     layout = x.value.toLowerCase();
                 }
             });
@@ -661,8 +853,7 @@
             var selectedRecord = store.findRecord('component', controlType.toLowerCase());
             var item;
             // создаем объект с помощью фабрик объектов
-            debugger;
-            if (xtype == 'container'){
+            if (xtype == 'container') {
                 item = eval(xtype.toLowerCase() + 'Factory(win, parent, selectedRecord, layout);');
             } else {
                 item = eval(controlType.toLowerCase() + 'Factory(win, parent, selectedRecord);');
@@ -677,19 +868,18 @@
             } else {
                 parent.add(item);
             }
-            parent.add(item);
             parent.doLayout();
             form.doLayout();
             form.fireEvent('ComponentAdded', form, parent, item);
             // изменяем свойства объекта
             FormGenerator.editor.Focused.setFocusedCmp(item);
-            obj.properties.forEach(function(prop){
+            obj.properties.forEach(function (prop) {
                 _this.onProperyChange(null, prop['property'], prop['_value']);
             });
             FormGenerator.editor.Focused.clearFocusedCmp();
             // рекурсия
             if (obj.items && obj.items instanceof Array && obj.items.length > 0) {
-                obj.items.forEach(function(i){
+                obj.items.forEach(function (i) {
                     fn(i, item);
                 });
             }
@@ -713,9 +903,11 @@
             return;
         }
         // delete empty properties function
-        var fnDeleteEmptyProperties = function(item) {
+        var fnDeleteEmptyProperties = function (item) {
+            debugger;
+            delete item['data'];
             for (var prop in item) {
-                if (!(obj[prop] instanceof Array)) {
+                if (!(item[prop] instanceof Array)) {
                     if (item[prop] == null || typeof item[prop] == 'undefined' || item[prop].toString().trim() == ''
                         || prop == 'controlTypeID' || prop == 'id') {
                         delete item[prop];
@@ -723,9 +915,9 @@
                 }
             }
             for (var prop in item) {
-                if (obj[prop] instanceof Array) {
+                if (item[prop] instanceof Array) {
                     if (item[prop] != null || item[prop].length > 0) {
-                        item[prop].forEach(function(x){
+                        item[prop].forEach(function (x) {
                             fnDeleteEmptyProperties(x);
                         });
                     }
@@ -815,6 +1007,11 @@
                     focused.flex = value;
                     break;
                 case 'hidden':
+                    if (value) {
+                        focused.hide();
+                    } else {
+                        focused.show();
+                    }
                     break;
                 case 'invalidText':
                     break;
@@ -904,6 +1101,11 @@
                     focused.hideable = value;
                     break;
                 case 'hidden':
+                    if (value) {
+                        focused.hide();
+                    } else {
+                        focused.show();
+                    }
                     break;
                 case 'locked':
                     focused.locked = value;
@@ -1011,6 +1213,11 @@
                     }
                     break;
                 case 'hidden':
+                    if (value) {
+                        focused.hide();
+                    } else {
+                        focused.show();
+                    }
                     break;
                 case 'hideHeaders':
                     break;
@@ -1148,11 +1355,34 @@
      * Функция, открывающая панели "Компоненты" и "Инспектор проекта"
      * @param win Окно редактора форм
      */
-    setEnabledComponents:function(win){
+    setEnabledComponents: function (win) {
         var componentsPanel = win.down('panel[name=componentsPanel]');
         var projectPanel = win.down('panel[name=projectPanel]');
         componentsPanel.setDisabled(false);
         projectPanel.setDisabled(false);
+    },
+
+    onNewFormQuestion: function (btn) {
+        var _this = this;
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        if (win.form_name || win.form_id) {
+            FormGenerator.utils.MessageBox.question('Сохранить форму ' + (win.form_name ? ('"' + win.form_name + '"') : '') + '?', function (res) {
+                if (res == 'yes') {
+                    _this.onSaveForm(res);
+                    _this.clearCurrentForm(form);
+                    _this.onNewForm(btn);
+                } else if (res == 'no') {
+                    _this.clearCurrentForm(form);
+                    _this.onNewForm(btn);
+                } else {
+                    return;
+                }
+            }, Ext.Msg.YESNOCANCEL);
+        } else {
+            _this.clearCurrentForm(form);
+            _this.onNewForm(btn);
+        }
     },
 
     /**
@@ -1160,8 +1390,21 @@
      * @param btn Кнопка "Закрыть", вызвавшая событие закрытия формы
      */
     onClose: function (btn) {
-        if (btn && btn.up('FormEditor') && btn.up('FormEditor').close) {
-            btn.up('FormEditor').close();
+        var _this = this;
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        if (win.form_name || win.form_id) {
+            FormGenerator.utils.MessageBox.question('Сохранить форму ' + (win.form_name ? ('"' + win.form_name + '"') : '') + '?', function (res) {
+                if (res == 'yes') {
+                    _this.onSaveForm(res, true);
+                } else if (res == 'no') {
+                    win.close();
+                } else {
+                    return;
+                }
+            }, Ext.Msg.YESNOCANCEL);
+        } else {
+            win.close();
         }
     }
 

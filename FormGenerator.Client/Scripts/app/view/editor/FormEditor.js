@@ -3,7 +3,7 @@
 });
 
 Ext.override(Ext.view.DragZone, {
-    getDragText:function () {
+    getDragText: function () {
         if (this.dragField) {
             var fieldValue = this.dragData.records[0].get(this.dragField);
             var iconValue = renderIcon(this.dragData.records[0].get(this.iconField));
@@ -15,24 +15,24 @@ Ext.override(Ext.view.DragZone, {
 });
 
 Ext.override(Ext.grid.plugin.DragDrop, {
-    onViewRender:function (view) {
+    onViewRender: function (view) {
         var me = this;
 
         if (me.enableDrag) {
             me.dragZone = Ext.create('Ext.view.DragZone', {
-                view:view,
-                ddGroup:me.dragGroup || me.ddGroup,
-                dragText:me.dragText,
-                dragField:me.dragField,
-                iconField:me.iconField
+                view: view,
+                ddGroup: me.dragGroup || me.ddGroup,
+                dragText: me.dragText,
+                dragField: me.dragField,
+                iconField: me.iconField
             });
             view.dragZone = me.dragZone;
         }
 
         if (me.enableDrop) {
             me.dropZone = Ext.create('Ext.grid.ViewDropZone', {
-                view:view,
-                ddGroup:me.dropGroup || me.ddGroup
+                view: view,
+                ddGroup: me.dropGroup || me.ddGroup
             });
             view.dragZone = me.dropZone;
         }
@@ -56,44 +56,48 @@ Ext.define('My.App.Overrides', {}, function () {
 });
 
 Ext.define('FormGenerator.view.editor.FormEditor', {
-    extend:'Ext.window.Window',
-    alias:'widget.FormEditor',
-    name:'FormEditor',
-    id:'winFormEditor',
+    extend: 'Ext.window.Window',
+    alias: 'widget.FormEditor',
+    name: 'FormEditor',
+    id: 'winFormEditor',
 
-    modal:true,
-    constrain:true,
-    title:'Визуальный редактор форм',
+    modal: true,
+    constrain: true,
+    title: 'Визуальный редактор форм',
 
-    height:750,
-    width:1200,
-    minHeight:750,
-    minWidth:1200,
+    height: 800,
+    width: 1200,
+    minHeight: 800,
+    minWidth: 1200,
 
     mousedComponents: [],
 
-    form_id:undefined,
-    form_name:undefined,
-    form_dictionary_id:undefined,
+    form_id: undefined,
+    form_name: undefined,
+    form_dictionary_id: undefined,
 
-    layout:{
-        type:'border'
+    queries:undefined,
+
+    layout: {
+        type: 'border'
     },
 
-    requires:[
+    requires: [
         'Scripts.app.utils.ux.ClearButton'
     ],
 
-    initComponent:function () {
+    initComponent: function () {
         var me = this;
 
         var componentsStore = Ext.create('FormGenerator.store.editor.Components');
         var groupsStore = Ext.create('FormGenerator.store.editor.Groups');
         var treeStore = Ext.create('FormGenerator.store.editor.TreeStore');
-        var dataBindingStore = Ext.create('FormGenerator.store.editor.DataBinding');
-        var queryStore = Ext.create('FormGenerator.store.editor.Query');
+        var queryStore = Ext.create('FormGenerator.store.editor.query.FormQuery');
         var queryFieldStore = Ext.create('FormGenerator.store.editor.QueryField');
+        var queryKeyFieldStore = Ext.create('FormGenerator.store.editor.QueryField');
         var dictionaryFieldStore = Ext.create('FormGenerator.store.editor.DictionaryField');
+        var eventsStore = Ext.create('FormGenerator.store.editor.Events');
+        var paramsStore = Ext.create('FormGenerator.store.editor.Params');
 
         Ext.applyIf(me, {
 
@@ -110,8 +114,8 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             border: true,
                             icon: 'Scripts/resources/icons/form.png',
                             iconAlign: 'top',
-                            width:80,
-                            arrowAlign:'right',
+                            width: 80,
+                            arrowAlign: 'right',
                             menu: [
                                 {
                                     xtype: 'menuitem',
@@ -148,6 +152,15 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     iconAlign: 'left',
                                     scale: 'medium',
                                     text: 'Переименовать форму'
+                                },
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onClose',
+                                    icon: 'Scripts/resources/icons/close_16.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Закрыть'
                                 }
                             ]
                         },
@@ -190,18 +203,6 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                         {
                             xtype: 'tbfill'
                         },
-//                        {
-//                            xtype: 'button',
-//                            scale: 'medium',
-//                            text: 'Настройки',
-//                            action: 'onEdit',
-//                            border: true,
-//                            icon: 'Scripts/resources/icons/edit.png',
-//                            iconAlign: 'top'
-//                        },
-//                        {
-//                            xtype: 'tbseparator'
-//                        },
                         {
                             xtype: 'button',
                             scale: 'medium',
@@ -215,99 +216,99 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                 }
             ],
 
-            items:[
+            items: [
 //======================================================================================================================
 //                                               Компоненты
 //======================================================================================================================
                 {
-                    xtype:'panel',
-                    name:'componentsPanel',
-                    title:'Компоненты',
-                    region:'west',
-                    collapsible:true,
-                    collapsed:false,
-                    split:true,
-                    width:300,
-                    layout:'border',
-                    items:[
+                    xtype: 'panel',
+                    name: 'componentsPanel',
+                    title: 'Компоненты',
+                    region: 'west',
+                    collapsible: true,
+                    collapsed: false,
+                    split: true,
+                    width: 300,
+                    layout: 'border',
+                    items: [
 //------------------------------------------------Фильтр----------------------------------------------------------------
                         {
-                            xtype:'panel',
-                            padding:5,
-                            region:'north',
-                            layout:'fit',
-                            items:[
+                            xtype: 'panel',
+                            padding: 5,
+                            region: 'north',
+                            layout: 'fit',
+                            items: [
                                 {
-                                    xtype:'textfield',
-                                    name:'filter',
-                                    emptyText:'Фильтр...',
-                                    plugins:['clearbutton']
+                                    xtype: 'textfield',
+                                    name: 'filter',
+                                    emptyText: 'Фильтр...',
+                                    plugins: ['clearbutton']
                                 }
                             ]
                         },
 //------------------------------------------------Группы компонентов----------------------------------------------------
                         {
-                            xtype:'gridpanel',
-                            name:'componentsGroups',
-                            region:'west',
-                            split:true,
-                            width:110,
-                            hideHeaders:true,
+                            xtype: 'gridpanel',
+                            name: 'componentsGroups',
+                            region: 'west',
+                            split: true,
+                            width: 110,
+                            hideHeaders: true,
 
-                            collapsible:true,
-                            collapsed:false,
-                            collapseMode:'mini',
-                            animCollapse:true,
-                            header:false,
-                            hideCollapseTool:true,
+                            collapsible: true,
+                            collapsed: false,
+                            collapseMode: 'mini',
+                            animCollapse: true,
+                            header: false,
+                            hideCollapseTool: true,
 
-                            store:groupsStore,
-                            requires:[
+                            store: groupsStore,
+                            requires: [
                                 'Ext.grid.feature.Grouping'
                             ],
-                            features:[
+                            features: [
                                 {
-                                    ftype:'grouping',
-                                    groupHeaderTpl:'{groupValue}',
-                                    startCollapsed:false,
-                                    collapsible:false,
-                                    id:'groupsGrouping'
+                                    ftype: 'grouping',
+                                    groupHeaderTpl: '{groupValue}',
+                                    startCollapsed: false,
+                                    collapsible: false,
+                                    id: 'groupsGrouping'
                                 }
                             ],
 
-                            columns:[
+                            columns: [
                                 {
-                                    flex:1,
-                                    dataIndex:'name'
+                                    flex: 1,
+                                    dataIndex: 'name'
                                 }
                             ]
                         },
 //------------------------------------------------Компоненты------------------------------------------------------------
                         {
-                            xtype:'gridpanel',
-                            name:'components',
-                            region:'center',
-                            split:true,
-                            hideHeaders:true,
-                            flex:1,
+                            xtype: 'gridpanel',
+                            name: 'components',
+                            region: 'center',
+                            split: true,
+                            hideHeaders: true,
+                            flex: 1,
 
                             // Драг и Дроп
-                            enableDragDrop:true,
-                            viewConfig:{
-                                plugins:[
+                            enableDragDrop: true,
+                            viewConfig: {
+                                plugins: [
                                     {
-                                        ptype:'gridviewdragdrop',
-                                        dragText:'{0}',
-                                        dragField:'component',
-                                        iconField:'icon',
-                                        enableDrop:false,
-                                        ddGroup:'grid-to-window'
+                                        ptype: 'gridviewdragdrop',
+                                        dragText: '{0}',
+                                        dragField: 'component',
+                                        iconField: 'icon',
+                                        enableDrop: false,
+                                        ddGroup: 'grid-to-window'
                                     }
                                 ]
                             },
 
                             // выбор строки, изменение dragZone
-                            store:componentsStore,
+                            store: componentsStore,
                             selModel: Ext.create('Ext.selection.RowModel', { mode: "SINGLE", ignoreRightMouseSelection: true }),
                             listeners: {
                                 beforeselect: function (_grid, record, index, eOpts) {
@@ -320,38 +321,38 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             },
 
                             // группы
-                            requires:[
+                            requires: [
                                 'Ext.grid.feature.Grouping'
                             ],
-                            features:[
+                            features: [
                                 {
-                                    ftype:'grouping',
-                                    groupHeaderTpl:'{groupValue}',
-                                    startCollapsed:false,
-                                    id:'componentsGrouping'
+                                    ftype: 'grouping',
+                                    groupHeaderTpl: '{groupValue}',
+                                    startCollapsed: false,
+                                    id: 'componentsGrouping'
                                 }
                             ],
                             // колонки
-                            infoIcon:'Scripts/resources/icons/editor/info.png',
-                            columns:[
+                            infoIcon: 'Scripts/resources/icons/editor/info.png',
+                            columns: [
                                 {
-                                    width:25,
-                                    dataIndex:'icon',
-                                    align:'left',
-                                    renderer:renderIcon
+                                    width: 25,
+                                    dataIndex: 'icon',
+                                    align: 'left',
+                                    renderer: renderIcon
                                 },
                                 {
-                                    flex:1,
-                                    dataIndex:'component',
-                                    renderer:function (val) {
+                                    flex: 1,
+                                    dataIndex: 'component',
+                                    renderer: function (val) {
                                         return '<span style="vertical-align: bottom;">' + val + '</span>';
                                     }
                                 },
                                 {
-                                    width:30,
-                                    dataIndex:'infoIcon',
-                                    align:'center',
-                                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                                    width: 30,
+                                    dataIndex: 'infoIcon',
+                                    align: 'center',
+                                    renderer: function (value, metaData, record, row, col, store, gridView) {
                                         var grid = this;
                                         var name = '<b>Компонент:&nbsp</b> ' + record.get('component') + '<br>';
                                         var group = '<b>Группа:&nbsp</b> ' + record.get('group') + '<br>';
@@ -368,33 +369,33 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 //                                   Главная панель
 //======================================================================================================================
                 {
-                    xtype:'form',
-                    name:'mainContainer',
-                    region:'center',
-                    split:true,
-                    flex:1,
-                    layout:'anchor',
+                    xtype: 'form',
+                    name: 'mainContainer',
+                    region: 'center',
+                    split: true,
+                    flex: 1,
+                    layout: 'anchor',
                     dockedItems: [
                         {
                             xtype: 'toolbar',
                             dock: 'top',
-                            defaults:{
-                                style:{
-                                    'border-color':'#9FC6F9'
+                            defaults: {
+                                style: {
+                                    'border-color': '#9FC6F9'
                                 }
                             },
                             items: [
                                 {
-                                    xtype:'button',
+                                    xtype: 'button',
                                     scale: 'small',
                                     action: 'onLabel',
-                                    text:'Сгенерированное JSON представление',
-                                    hidden:true,
-                                    readOnly:true,
-                                    border:false
+                                    text: 'Сгенерированное JSON представление',
+                                    hidden: true,
+                                    readOnly: true,
+                                    border: false
                                 },
                                 {
-                                    xtype:'tbfill'
+                                    xtype: 'tbfill'
                                 },
                                 {
                                     xtype: 'button',
@@ -402,7 +403,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     text: 'Дизайн',
                                     action: 'onDesign',
                                     enableToggle: true,
-                                    toggleGroup:'DesignOrCode',
+                                    toggleGroup: 'DesignOrCode',
                                     border: true
                                 },
                                 {
@@ -411,19 +412,19 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     text: 'Код',
                                     action: 'onCode',
                                     enableToggle: true,
-                                    toggleGroup:'DesignOrCode',
+                                    toggleGroup: 'DesignOrCode',
                                     border: true
                                 }
                             ]
                         }
                     ],
-                    items:[
+                    items: [
                         {
-                            xtype:'form',
-                            name:'mainPanel',
-                            border:false,
-                            anchor:'0 0',
-                            autoScroll:true,
+                            xtype: 'form',
+                            name: 'mainPanel',
+                            border: false,
+                            anchor: '0 0',
+                            autoScroll: true,
                             listeners: {
                                 render: function (form) {
                                     var _this = this;
@@ -434,10 +435,11 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     _this.formPanelDropTarget = new Ext.dd.DropTarget(body, {
                                         ddGroup: 'grid-to-window',
                                         allowDrop: true,
-                                        notifyOver:function(ddSource, e, data){
-                                            var isOK = true; var target = null;
+                                        notifyOver: function (ddSource, e, data) {
+                                            var isOK = true;
+                                            var target = null;
                                             var draggedCmp = ddSource.dragData.records[0];
-                                            if (draggedCmp.get('component').toLowerCase() == 'window' && form.down('[name=senchawin]')){
+                                            if (draggedCmp.get('component').toLowerCase() == 'window' && form.down('[name=senchawin]')) {
                                                 isOK = false;
                                             }
                                             if (isOK) {
@@ -474,15 +476,15 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                             } // end of listeners
                         },
                         {
-                            xtype:'textareafield',
-                            hidden:true,
-                            readOnly:true,
-                            border:false,
-                            margin:'-3 0 -3 0',
-                            fieldLabel:'',
-                            grow:true,
-                            name:'codeText',
-                            anchor:'0 0'
+                            xtype: 'textareafield',
+                            hidden: true,
+                            readOnly: true,
+                            border: false,
+                            margin: '-3 0 -3 0',
+                            fieldLabel: '',
+                            grow: true,
+                            name: 'codeText',
+                            anchor: '0 0'
                         }
                     ]
                 },
@@ -491,25 +493,25 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
 //                                   Инспектор проекта
 //======================================================================================================================
                 {
-                    xtype:'panel',
-                    name:'projectPanel',
-                    title:'Инспектор проекта',
-                    region:'east',
-                    layout:'border',
-                    split:true,
-                    width:270,
-                    items:[
+                    xtype: 'panel',
+                    name: 'projectPanel',
+                    title: 'Инспектор проекта',
+                    region: 'east',
+                    layout: 'border',
+                    split: true,
+                    width: 270,
+                    items: [
                         {
-                            xtype:'treepanel',
-                            name:'projectTree',
-                            region:'center',
-                            split:true,
+                            xtype: 'treepanel',
+                            name: 'projectTree',
+                            region: 'center',
+                            split: true,
                             useArrows: true,
-                            flex:1,
-                            rootVisible:true,
-                            store:treeStore,
+                            flex: 1,
+                            rootVisible: true,
+                            store: treeStore,
                             listeners: {
-                                itemclick: function(tree, record, item, index, e, eOpts) {
+                                itemclick: function (tree, record, item, index, e, eOpts) {
                                     try {
                                         var name = record.get('id');
                                         var win = tree.up('window[name=FormEditor]');
@@ -518,85 +520,51 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                         if (element) {
                                             Ext.FocusManager.fireEvent('componentfocus', Ext.FocusManager, element);
                                         }
-                                    } catch(ex) {
+                                    } catch (ex) {
                                         console.log('Tree item click error. Element to focus :' + element + ' Error info: ' + ex);
                                     }
                                 }
                             }
-
-//                            // Drag and Drop
-//                            viewConfig:{
-//                                plugins:{
-//                                    ddGroup:'grid-to-panel',
-//                                    ptype:'treeviewdragdrop'
-//                                },
-//                                listeners:{
-//                                    beforedrop:function (nodeEl, data) {
-//                                        debugger;
-//                                        var record = data.records[0];
-//                                        if (record.store !== this.getStore()) {
-//                                            // Record from the grid. Take a copy ourselves
-//                                            // because the built-in copying messes it up.
-//                                            var copy = {children: []};
-//
-//                                            record.fields.each(function(field) {
-//                                                copy[field.name] = record.get(field.name);
-//                                            });
-//
-//                                            data.records = [copy];
-//                                        }
-////                                        var selectedRecord = data.records[0];
-////                                        OSO.utils.MessageBox.show('Dragged ' + selectedRecord.get('component'));
-//                                        return true;
-//                                    }
-//                                }
-//                            },
-
-//                            listeners:{
-//                                itemclick:function (tree, record, item, index, e, options) {
-//
-//                                }
-//                            }
                         },
 //------------------------------------------------Свойства--------------------------------------------------------------
                         {
-                            xtype:'panel',
-                            name:'propertiesPanel',
-                            region:'south',
-                            split:true,
-                            frame:false,
-                            height:350,
-                            layout:'anchor',
-                            items:[
+                            xtype: 'panel',
+                            name: 'propertiesPanel',
+                            region: 'south',
+                            split: true,
+                            frame: false,
+                            height: 370,
+                            layout: 'anchor',
+                            items: [
 //------------------------------------------------Фильтр----------------------------------------------------------------
                                 {
-                                    xtype:'panel',
-                                    name:'propertiesOwner',
-                                    anchor:'0',
-                                    layout:'fit',
-                                    minHeight:23,
-                                    style:{
-                                        background:'#dfe8f6'
+                                    xtype: 'panel',
+                                    name: 'propertiesOwner',
+                                    anchor: '0',
+                                    layout: 'fit',
+                                    minHeight: 23,
+                                    style: {
+                                        background: '#dfe8f6'
                                     },
-                                    bodyStyle:{
-                                        'background-color':'#dfe8f6',
-                                        'border-width':'0 0 1 0'
+                                    bodyStyle: {
+                                        'background-color': '#dfe8f6',
+                                        'border-width': '0 0 1 0'
                                     }
                                 },
                                 {
-                                    xtype:'panel',
-                                    padding:5,
-                                    anchor:'0',
-                                    layout:'fit',
-                                    style:{
-                                        background:'#dfe8f6'
+                                    xtype: 'panel',
+                                    padding: 5,
+                                    anchor: '0',
+                                    layout: 'fit',
+                                    style: {
+                                        background: '#dfe8f6'
                                     },
-                                    items:[
+                                    items: [
                                         {
-                                            xtype:'textfield',
-                                            name:'propertyFilter',
-                                            emptyText:'Фильтр...',
-                                            plugins:['clearbutton']
+                                            xtype: 'textfield',
+                                            name: 'propertyFilter',
+                                            emptyText: 'Фильтр...',
+                                            plugins: ['clearbutton']
                                         }
                                     ]
                                 },
@@ -604,75 +572,153 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                 {
                                     xtype: 'tabpanel',
                                     activeTab: 0,
-                                    anchor:'0 -57',
-                                    flex:1,
+                                    anchor: '0 -57',
+                                    flex: 1,
                                     name: 'propertiesTabpanel',
-                                    items:[
+                                    items: [
                                         {
-                                            xtype:'propertygrid',
-                                            name:'properties',
-                                            title:'Свойства',
-                                            flex:1,
-                                            bodyStyle:{
-                                                'border-width':'1 0 0 0'
+                                            xtype: 'propertygrid',
+                                            name: 'properties',
+                                            title: 'Свойства',
+                                            flex: 1,
+                                            bodyStyle: {
+                                                'border-width': '1 0 0 0'
                                             },
-                                            source:{},
-                                            listeners : {
-                                                beforerender : function() {
+                                            source: {},
+                                            listeners: {
+                                                beforerender: function () {
                                                     var cols = this.getView().getHeaderCt().getGridColumns();
                                                     cols[0].setText("Свойство");
                                                     cols[1].setText("Значение");
+                                                },
+                                                'beforeedit': {
+                                                    fn: function (e) {
+                                                        var readOnlyCtrls = ['name', 'id', 'xtype'];
+                                                        if (Ext.Array.contains(readOnlyCtrls, e.cmp.getSelectionModel().getSelection()[0].get('name'))) {
+                                                            return false;
+                                                        } else {
+                                                            return true;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         },
+//------------------------------------------------События---------------------------------------------------------
                                         {
-                                            xtype:'panel',
-                                            padding:2,
-                                            flex:1,
-                                            title:'Данные',
-                                            name:'data',
-                                            layout:'anchor',
-                                            items:[
+                                            xtype: 'gridpanel',
+                                            name: 'events',
+                                            title: 'События',
+                                            flex: 1,
+                                            bodyStyle: {
+                                                'border-width': '1 0 0 0'
+                                            },
+                                            store:eventsStore,
+                                            columns:[
                                                 {
-                                                    xtype:'fieldset',
-                                                    title: 'Запрос',
-                                                    anchor: '0',
-                                                    margin:5,
-                                                    padding:2,
-                                                    layout:'anchor',
-                                                    checkboxToggle: true,
+                                                    xtype:'gridcolumn',
+                                                    flex:1,
+                                                    text:'Событие',
+                                                    dataIndex:'event'
+                                                },
+                                                {
+                                                    xtype:'gridcolumn',
+                                                    flex:1,
+                                                    text:'Обработчик',
+                                                    dataIndex:'handler'
+                                                }
+                                            ],
+                                            dockedItems:[
+                                                {
+                                                    xtype:'toolbar',
+                                                    dock:'right',
                                                     items:[
                                                         {
-                                                            xtype:'container',
-                                                            anchor:'0',
-                                                            layout:{
-                                                                align:'stretch',
-                                                                type:'hbox'
+                                                            xtype:'button',
+                                                            scale:'small',
+                                                            border:true,
+                                                            icon:'Scripts/resources/icons/add_16.png',
+                                                            action: 'onAddEventHandler'
+                                                        },
+                                                        {
+                                                            xtype:'tbseparator'
+                                                        },
+                                                        {
+                                                            xtype:'button',
+                                                            scale:'small',
+                                                            border:true,
+                                                            icon:'Scripts/resources/icons/edit_16.png',
+                                                            action: 'onEditEventHandler'
+                                                        },
+                                                        {
+                                                            xtype:'tbseparator'
+                                                        },
+                                                        {
+                                                            xtype:'button',
+                                                            scale:'small',
+                                                            border:true,
+                                                            icon:'Scripts/resources/icons/delete_16.png',
+                                                            action: 'onDeleteEventHandler'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+//------------------------------------------------Данные---------------------------------------------------------
+                                        {
+                                            xtype: 'panel',
+                                            padding: 2,
+                                            flex: 1,
+                                            title: 'Данные',
+                                            name: 'data',
+                                            layout: 'anchor',
+                                            items: [
+                                                {
+                                                    xtype: 'fieldset',
+                                                    title: 'Запрос',
+                                                    anchor: '0',
+                                                    margin: 5,
+                                                    padding: 2,
+                                                    layout: 'anchor',
+                                                    checkboxToggle: true,
+                                                    items: [
+                                                        {
+                                                            xtype: 'container',
+                                                            anchor: '0',
+                                                            layout: {
+                                                                align: 'stretch',
+                                                                type: 'hbox'
                                                             },
-                                                            items:[
+                                                            items: [
                                                                 {
                                                                     xtype: 'combobox',
-                                                                    flex:1,
-                                                                    margin: '5 5 5 5',
-                                                                    labelSeparator:'',
-                                                                    valueField: 'ID',
-                                                                    displayField: 'name',
+                                                                    flex: 1,
+                                                                    margin: '0 5 5 5',
+                                                                    labelSeparator: '',
+                                                                    valueField: '_ID',
+                                                                    displayField: 'sqlText',
                                                                     queryMode: 'local',
                                                                     editable: false,
                                                                     fieldLabel: 'Запрос',
                                                                     labelWidth: 50,
                                                                     name: 'query',
-                                                                    store: queryStore
+                                                                    store: queryStore,
+                                                                    //триггеры
+                                                                    trigger1Cls:'x-form-arrow-trigger',
+                                                                    trigger2Cls:'x-form-clear-trigger',
+                                                                    //триггер отмены всего
+                                                                    onTrigger2Click:function () {
+                                                                        this.clearValue();
+                                                                    }
                                                                 },
                                                                 {
-                                                                    xtype:'button',
-                                                                    width:22,
-                                                                    height:22,
-                                                                    action:'onAddQuery',
-                                                                    margin:'5 5 5 0',
-                                                                    border:true,
-                                                                    iconAlign:'top',
-                                                                    icon:'Scripts/resources/icons/add_16.png'
+                                                                    xtype: 'button',
+                                                                    width: 22,
+                                                                    height: 22,
+                                                                    action: 'onAddQuery',
+                                                                    margin: '0 5 5 0',
+                                                                    border: true,
+                                                                    iconAlign: 'top',
+                                                                    icon: 'Scripts/resources/icons/add_16.png'
                                                                 }
                                                             ]
                                                         },
@@ -680,32 +726,61 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                                             xtype: 'combobox',
                                                             anchor: '0',
                                                             margin: '0 5 5 5',
-                                                            labelSeparator:'',
+                                                            labelSeparator: '',
                                                             valueField: 'ID',
                                                             displayField: 'name',
                                                             queryMode: 'local',
                                                             editable: false,
-                                                            fieldLabel: 'Поле',
+                                                            fieldLabel: 'Значение',
                                                             labelWidth: 50,
                                                             name: 'queryField',
-                                                            store: queryFieldStore
+                                                            store: queryFieldStore,
+                                                            //триггеры
+                                                            trigger1Cls:'x-form-arrow-trigger',
+                                                            trigger2Cls:'x-form-clear-trigger',
+                                                            //триггер отмены всего
+                                                            onTrigger2Click:function () {
+                                                                this.clearValue();
+                                                            }
+                                                        },
+                                                        {
+                                                            xtype: 'combobox',
+                                                            anchor: '0',
+                                                            margin: '0 5 5 5',
+                                                            labelSeparator: '',
+                                                            valueField: 'ID',
+                                                            displayField: 'name',
+                                                            queryMode: 'local',
+                                                            editable: false,
+                                                            fieldLabel: 'Ключ',
+                                                            labelWidth: 50,
+                                                            hidden:true,
+                                                            name: 'queryKeyField',
+                                                            store: queryKeyFieldStore,
+                                                            //триггеры
+                                                            trigger1Cls:'x-form-arrow-trigger',
+                                                            trigger2Cls:'x-form-clear-trigger',
+                                                            //триггер отмены всего
+                                                            onTrigger2Click:function () {
+                                                                this.clearValue();
+                                                            }
                                                         }
                                                     ]
                                                 },
                                                 {
-                                                    xtype:'fieldset',
+                                                    xtype: 'fieldset',
                                                     title: 'Словарь',
                                                     anchor: '0',
-                                                    layout:'anchor',
-                                                    margin:5,
-                                                    padding:2,
+                                                    layout: 'anchor',
+                                                    margin: 5,
+                                                    padding: 2,
                                                     checkboxToggle: true,
-                                                    items:[
+                                                    items: [
                                                         {
                                                             xtype: 'combobox',
                                                             anchor: '0',
                                                             margin: '5 5 5 5',
-                                                            labelSeparator:'',
+                                                            labelSeparator: '',
                                                             valueField: 'ID',
                                                             displayField: 'name',
                                                             queryMode: 'local',
@@ -713,27 +788,17 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                                             fieldLabel: 'Поле',
                                                             labelWidth: 50,
                                                             name: 'dictionaryField',
-                                                            store: dictionaryFieldStore
+                                                            store: dictionaryFieldStore,
+                                                            //триггеры
+                                                            trigger1Cls:'x-form-arrow-trigger',
+                                                            trigger2Cls:'x-form-clear-trigger',
+                                                            //триггер отмены всего
+                                                            onTrigger2Click:function () {
+                                                                this.clearValue();
+                                                            }
                                                         }
                                                     ]
-                                                },
-
-
-
-//                                                {
-//                                                    xtype: 'combobox',
-//                                                    anchor: '0',
-//                                                    margin: '10 5 5 10',
-//                                                    labelSeparator:'',
-//                                                    valueField: 'ID',
-//                                                    displayField: 'name',
-//                                                    queryMode: 'local',
-//                                                    editable: false,
-//                                                    fieldLabel: 'Привязка к данным',
-//                                                    labelWidth: 50,
-//                                                    name: 'dataBinding',
-//                                                    store: dataBindingStore
-//                                                }
+                                                }
                                             ]
                                         }
                                     ]

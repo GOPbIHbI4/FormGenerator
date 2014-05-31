@@ -12,6 +12,7 @@ namespace FormGenerator.ServerDataAccess
 {
     public class FormEditorDataCRUD
     {
+
         #region Сохранение
 
         /// <summary>
@@ -25,78 +26,26 @@ namespace FormGenerator.ServerDataAccess
             FormModel obj = request.requestData;
             string sql = string.Empty;
 
-            sql = string.Format(
-                " select id from forms where name = '{0}' ",
-                obj.name ?? ""
-            );
-            List<PropertyTypeListEntity> list = DBOrmUtils.OpenSqlList<PropertyTypeListEntity>(sql, FormEditorDataCRUD.idMapping, connectionID);
-            if (list.Count > 0)
+            if (obj.ID <= 0)
             {
-                throw new Exception("Форма с названием \"" + obj.name ?? "" + "\" уже существует.");
+                sql = string.Format(
+                    " select id from forms where name = '{0}' ",
+                    obj.name ?? ""
+                );
+                List<PropertyTypeListEntity> list = DBOrmUtils.OpenSqlList<PropertyTypeListEntity>(sql, FormEditorDataCRUD.idMapping, connectionID);
+                if (list.Count > 0)
+                {
+                    throw new Exception("Форма с названием \"" + obj.name + "\" уже существует.");
+                }
             }
 
-            if (obj.ID > 0)
-            {
-                sql = string.Format(
-                    " update forms set (name, dictionary_id) = " +
-                    " ('{0}', {1}) where id = {2} returning id ",
-                    obj.name ?? "", obj.dictionaryID, obj.ID
-                );
-            }
-            else
-            {
-                sql = string.Format(
-                    " insert into forms (name, dictionary_id) " +
-                    " values ('{0}', {1}) returning id ",
-                    obj.name ?? "", obj.dictionaryID == null ? "null" : obj.dictionaryID.ToString()
-                );
-            }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
-            res.ThrowExceptionIfError();
-            return new ResponsePackage() { resultID = res.resultID };
+            ResponsePackage result = new FormsRepository().SaveForm(request, connectionID);
+            result.ThrowExceptionIfError();
+            return result;
         }
 
         /// <summary>
-        /// Функция сохранения контрола формы для редактора форм.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="connectionID"></param>
-        /// <returns></returns>
-        public ResponsePackage SaveControl(RequestObjectPackage<ControlModel> request, IDbConnection connectionID)
-        {
-            ControlModel obj = request.requestData;
-            string sql = string.Empty;
-
-            if (obj.ID > 0)
-            {
-                sql = string.Format(
-                    " update controls set (control_type_id, control_id_parent, form_id, order_number) = " +
-                    " ({0}, {1}, {2}, {3}) where id = {4} returning id ",
-                    obj.controlTypeID,
-                    obj.controlIDParent == null ? "null" : obj.controlIDParent.ToString(),
-                    obj.formID == null ? "null" : obj.formID.ToString(),
-                    obj.orderNumber, 
-                    obj.ID
-                );
-            }
-            else
-            {
-                sql = string.Format(
-                    " insert into controls (control_type_id, control_id_parent, form_id, order_number) " +
-                    " values ({0}, {1}, {2}, {3}) returning id ",
-                    obj.controlTypeID,
-                    obj.controlIDParent == null ? "null" : obj.controlIDParent.ToString(),
-                    obj.formID == null ? "null" : obj.formID.ToString(),
-                    obj.orderNumber
-                );
-            }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
-            res.ThrowExceptionIfError();
-            return new ResponsePackage() { resultID = res.resultID };
-        }
-
-        /// <summary>
-        /// Функция сохранения свойства контрола формы для редактора форм.
+        /// Функция сохранения свойства контрола формы по имени для редактора форм.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="connectionID"></param>
@@ -104,32 +53,13 @@ namespace FormGenerator.ServerDataAccess
         public ResponsePackage SaveProperty(RequestObjectPackage<ControlPropertyViewModel> request, IDbConnection connectionID)
         {
             ControlPropertyModel obj = GetPropertyByName(request, connectionID).GetDataOrExceptionIfError();
-            string sql = string.Empty;
-
-            if (obj.ID > 0)
+            RequestObjectPackage<ControlPropertyModel> saveReq = new RequestObjectPackage<ControlPropertyModel>()
             {
-                sql = string.Format(
-                    " update control_properties set (control_id, control_property_type_id, value_) = " +
-                    " ({0}, {1}, '{2}') where id = {3} returning id ",
-                    obj.controlID,
-                    obj.controlPropertyTypeID,
-                    obj.value == null ? "" : obj.value.TrimIfNotNull(),
-                    obj.ID
-                );
-            }
-            else
-            {
-                sql = string.Format(
-                    " insert into control_properties (control_id, control_property_type_id, value_) " +
-                    " values ({0}, {1}, '{2}') returning id ",
-                    obj.controlID,
-                    obj.controlPropertyTypeID,
-                    obj.value == null ? "" : obj.value.TrimIfNotNull()
-                );
-            }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
-            res.ThrowExceptionIfError();
-            return new ResponsePackage() { resultID = res.resultID };
+                requestData = obj
+            };
+            ResponsePackage result = new ControlPropertiesRepository().SaveProperty(saveReq, connectionID);
+            result.ThrowExceptionIfError();
+            return result;
         }
 
         /// <summary>

@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,17 +50,22 @@
     <Compile Include="Infrastructure\DBOrmUtils.cs" />
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\FormEditor\QueryEditorDataCRUD.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
-    <Compile Include="Repositories\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Controls\ControlsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Controls\ControlTypeRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Controls\ControlTypeGroupRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlDictionaryMappingRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Mapping\ControlQueryMappingRepository.cs" />
-    <Compile Include="Repositories\Forms\FormsRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionariesRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryFieldsRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryGroupsRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryPrimaryKeysRepository.cs" />
-    <Compile Include="Repositories\FormGemerator\Dicctionaries\DictionaryForeignKeysRepository.cs" />
-    <Compile Include="Repositories\Properties\PropertiesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Forms\FormsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dictionaries\DictionariesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryFieldsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryGroupsRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryPrimaryKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Dictionaries\DictionaryForeignKeysRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Properties\ControlPropertiesRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Properties\ControlTypePropertyTypeRepository.cs" />
+    <Compile Include="Repositories\FormGemerator\Properties\ControlPropertyTypeRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryTypesRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryInParametersRepository.cs" />
     <Compile Include="Repositories\FormGemerator\Queries\QueryOutParametersRepository.cs" />

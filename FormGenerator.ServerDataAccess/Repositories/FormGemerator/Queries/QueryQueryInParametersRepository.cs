@@ -19,6 +19,45 @@ namespace FormGenerator.ServerDataAccess
             {"controlID","CONTROL_ID"},
         };
 
+        /// <summary>
+        /// Функция сохранения
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="connectionID"></param>
+        /// <returns></returns>
+        public static ResponsePackage SaveQueryQueryInParameter(RequestObjectPackage<QueryQueryInParameterModel> package, IDbConnection connectionID)
+        {
+            QueryQueryInParameterModel obj = package.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                // изменение
+                sql = string.Format(
+                    " update QUERY_QUERY_IN_PARAMETER set QUERY_ID = {0), QUERY_IN_PARAMETER_ID = {1}, CONTROL_ID = {2} " + Environment.NewLine +
+                    " where ID = {3} returning ID",
+                    obj.queryID,
+                    obj.queryInParameterID,
+                    obj.controlID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                // сохранение
+                sql = string.Format(
+                    " insert into QUERY_QUERY_IN_PARAMETER (QUERY_ID, QUERY_IN_PARAMETER_ID, CONTROL_ID) " + Environment.NewLine +
+                    " values ({0}, {1}, {2}) returning ID",
+                    obj.queryID,
+                    obj.queryInParameterID,
+                    obj.controlID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+
         public static ResponseObjectPackage<List<QueryQueryInParameterModel>> GetBySearchTemplate(RequestObjectPackage<QueryQueryInParameterSearchTemplate> package, IDbConnection connectionID)
         {
             QueryQueryInParameterSearchTemplate obj = package.requestData;

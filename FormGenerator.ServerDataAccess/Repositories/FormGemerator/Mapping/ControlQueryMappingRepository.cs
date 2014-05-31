@@ -19,6 +19,45 @@ namespace FormGenerator.ServerDataAccess
             {"queryID","QUERY_ID"},
         };
 
+        /// <summary>
+        /// Сохранить маппинг
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="connectionID"></param>
+        /// <returns></returns>
+        public static ResponsePackage SaveControlQueryMapping(RequestObjectPackage<ControlQueryMappingModel> package, IDbConnection connectionID)
+        {
+            ControlQueryMappingModel obj = package.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                // изменение
+                sql = string.Format(
+                    " update CONTROL_QUERY_MAPPING set CONTROL_ID = {0), QUERY_OUT_PARAMETER_ID = {1}, QUERY_ID = {2} " + Environment.NewLine +
+                    " where ID = {3} returning ID",
+                    obj.controlID,
+                    obj.queryOutParameterID,
+                    obj.queryID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                // сохранение
+                sql = string.Format(
+                    " insert into CONTROL_QUERY_MAPPING (CONTROL_ID, QUERY_OUT_PARAMETER_ID, QUERY_ID) " + Environment.NewLine +
+                    " values ({0}, {1}, {2}) returning ID",
+                    obj.controlID,
+                    obj.queryOutParameterID,
+                    obj.queryID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+
         public static ResponseObjectPackage<List<ControlQueryMappingModel>> GetBySearchTemplate(RequestObjectPackage<ControlQueryMappingSearchTemplate> package, IDbConnection connectionID)
         {
             ControlQueryMappingSearchTemplate obj = package.requestData;

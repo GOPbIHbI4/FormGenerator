@@ -13,7 +13,7 @@ numberfieldFactory = function (win, cmp, selectedRecord) {
         minValue: 0,
         allowExponential:false,
         allowBlank:true,
-        margin:'5 5 0 5',
+        margin:'0 5 5 5',
         fieldLabel:'Мое число',
         labelWidth:100,
         keyNavEnabled:false,

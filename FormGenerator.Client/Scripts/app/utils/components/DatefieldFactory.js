@@ -8,7 +8,7 @@ datefieldFactory = function (win, cmp, selectedRecord) {
     return Ext.create('Ext.form.field.Date', {
         xtype:'datefield',
         allowBlank:true,
-        margin:'5 5 0 5',
+        margin:'0 5 5 5',
         fieldLabel:'Моя дата',
         labelWidth:100,
         labelSeparator:'',
@@ -18,8 +18,6 @@ datefieldFactory = function (win, cmp, selectedRecord) {
         name:'sencha' + 'datefield' + getRandomInt(),
         width: 195,
         readOnly:true,
-//        height:20,
-//        minWidth: 120,
         form:form,
         record:selectedRecord,
         listeners:{
@@ -34,11 +32,9 @@ datefieldFactory = function (win, cmp, selectedRecord) {
                 var iBody = item.body || item;
                 iBody.el.on('mouseover', function(){
                     win.mousedComponents.push(selectedRecord);
-//                    console.log(win.mousedComponents);
                 });
                 iBody.el.on('mouseout', function(){
                     win.mousedComponents.pop(selectedRecord);
-//                    console.log(win.mousedComponents);
                 });
                 iBody.el.on('contextmenu', function(e) {
                     var focused = FormGenerator.editor.Focused.getFocusedCmp();

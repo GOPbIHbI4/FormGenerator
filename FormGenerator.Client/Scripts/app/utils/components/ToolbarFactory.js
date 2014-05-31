@@ -12,6 +12,7 @@ toolbarFactory = function (win, cmp, selectedRecord) {
         width: 50,
         minWidth:20,
         minHeight:20,
+        resizable:true,
         dock:'right',
         name:'sencha' + 'toolbar' + getRandomInt(),
         form:form,

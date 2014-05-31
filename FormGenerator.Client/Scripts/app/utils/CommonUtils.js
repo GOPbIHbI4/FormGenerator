@@ -91,3 +91,11 @@ function capitalizeFirstLetter(string){
     if (!string) return string;
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function replaceBrucket(string){
+    if (!string) return string;
+    if (string[0] == '{') {
+        return string.substring(1, string.length - 1);
+    }
+    return string;
+}

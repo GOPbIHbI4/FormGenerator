@@ -14,12 +14,14 @@ namespace FormGenerator.Models
         public List<string> childComponents { get; set; }
         public string group { get; set; }
         public string icon { get; set; }
-        public Dictionary<string, object> properties { get; set; }
+        public Dictionary<string, object> properties { get; set; } // свойства
+        public QueryData data { get; set; } // данные
 
         public ControlTypeListEntity()
         {
             this.childComponents = new List<string>();
             this.properties = new Dictionary<string, object>();
+            this.data = new QueryData();
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ textfieldFactory = function (win, cmp, selectedRecord) {
     return Ext.create('Ext.form.field.Text', {
         xtype:'textfield',
         allowBlank:true,
-        margin:'5 5 0 5',
+        margin:'0 5 5 5',
         fieldLabel:'Мой текст',
         labelWidth:100,
         readOnly:true,

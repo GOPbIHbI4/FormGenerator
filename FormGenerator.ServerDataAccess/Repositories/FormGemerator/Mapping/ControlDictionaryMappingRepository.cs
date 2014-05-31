@@ -34,6 +34,37 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<ControlDictionaryMappingModel>>() { resultData = list };
         }
 
+        public static ResponsePackage SaveControlDictionaryMapping(RequestObjectPackage<ControlDictionaryMappingModel> package, IDbConnection connectionID)
+        {
+            ControlDictionaryMappingModel obj = package.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                // изменение
+                sql = string.Format(
+                    " update CONTROL_DICTIONARY_MAPPING set CONTROL_ID = {0), DICTIONARY_FIELD_ID = {1} " + Environment.NewLine +
+                    " where ID = {2} returning ID",
+                    obj.controlID,
+                    obj.dictionaryFieldID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                // сохранение
+                sql = string.Format(
+                    " insert into CONTROL_DICTIONARY_MAPPING (CONTROL_ID, DICTIONARY_FIELD_ID) " + Environment.NewLine +
+                    " values ({0}, {1}) returning ID",
+                    obj.controlID,
+                    obj.dictionaryFieldID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+
         public static ResponseObjectPackage<List<ControlDictionaryMappingModel>> GetByFormID(RequestPackage package, IDbConnection connectionID)
         {
             int formID = package.requestID;

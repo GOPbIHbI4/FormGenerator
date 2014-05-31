@@ -1,5 +1,6 @@
 ﻿using FormGenerator.Models;
 using FormGenerator.Server;
+using FormGenerator.ServerBusinessLogic;
 using FormGenerator.Utilities;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,7 @@ namespace FormGenerator.Client.Controllers
         {
             try
             {
-                RequestPackage request = new RequestPackage()
-                {
-                    requestID = dictionaryID
-                };
-                ResponseObjectPackage<OpenFormModel> response = new FormEditorLogic().GetFormByID(request).GetSelfOrExceptionIfError();
+                ResponseObjectPackage<List<DictionaryField>> response = new DictionaryFieldsLogic().GetDictionaryFieldsViewModel(dictionaryID).GetSelfOrExceptionIfError();
                 return Json(response);
             }
             catch (Exception ex)
@@ -106,6 +103,37 @@ namespace FormGenerator.Client.Controllers
         #region Сохранение
 
         /// <summary>
+        /// Функция сохранения компонентов формы и их свойств.
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns>Объект-оболочку ResponsePackage в формате JSON, хранящего в поле resultData объект типа SaveControlModel, 
+        /// содержащий в себе исходный объект формы, но с информацией об ID вставленных компонентов</returns>
+        [JsonRequestBehavior]
+        public JsonResult SaveAllForm(SaveControlModel form, int formID)
+        {
+            try
+            {
+                RequestObjectPackage<SaveControlModel> request = new RequestObjectPackage<SaveControlModel>()
+                {
+                    requestData = form,
+                    requestID = formID
+                };
+                // удалить старые контролы
+                ResponsePackage responseDelete = new FormEditorLogic().DeleteOldControls(request).GetSelfOrExceptionIfError();
+                // сохранить запросы
+                RequestObjectPackage<List<QueryViewModel>> req = new RequestObjectPackage<List<QueryViewModel>>() { requestData = form.queries };
+                ResponsePackage responseQuery = new FormEditorLogic().SaveQueries(req).GetSelfOrExceptionIfError();
+                // сохранить всю форму
+                ResponsePackage response = new FormEditorLogic().SaveAllForm(request).GetSelfOrExceptionIfError();
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+        /// <summary>
         /// Функция сохранения формы для редактора форм
         /// </summary>
         /// <param name="form">Объект типа FormModel для вставки/изменения в БД</param>
@@ -142,7 +170,7 @@ namespace FormGenerator.Client.Controllers
                 {
                     requestData = control
                 };
-                ResponsePackage response = new FormEditorLogic().SaveControl(request).GetSelfOrExceptionIfError();
+                ResponsePackage response = new ControlsLogic().SaveControl(request).GetSelfOrExceptionIfError();
                 return Json(response);
             }
             catch (Exception ex)
@@ -150,31 +178,6 @@ namespace FormGenerator.Client.Controllers
                 return this.HandleException(ex);
             }
         }
-
-        /// <summary>
-        /// Функция сохранения компонентов формы и их свойств.
-        /// </summary>
-        /// <param name="form"></param>
-        /// <returns>Объект-оболочку ResponsePackage в формате JSON, хранящего в поле resultData объект типа SaveControlModel, 
-        /// содержащий в себе исходный объект формы, но с информацией об ID вставленных компонентов</returns>
-        [JsonRequestBehavior]
-        public JsonResult SaveAllForm(SaveControlModel form)
-        {
-            try
-            {
-                RequestObjectPackage<SaveControlModel> request = new RequestObjectPackage<SaveControlModel>()
-                {
-                    requestData = form
-                };
-                ResponsePackage response = new FormEditorLogic().SaveAllForm(request).GetSelfOrExceptionIfError();
-                return Json(response);
-            }
-            catch (Exception ex)
-            {
-                return this.HandleException(ex);
-            }
-        }
-
 
         /// <summary>
         /// Функция сохранения свойства контрола формы для редактора форм. 

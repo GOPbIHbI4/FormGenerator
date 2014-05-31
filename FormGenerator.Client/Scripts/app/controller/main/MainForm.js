@@ -17,18 +17,19 @@
                 click: this.onTest1
             },
             'MainForm button[action=onTest2]': {
-                click: this.onTest2
+                click: this.onTest
             }
         });
     },
 
     onTest: function (button) {
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.Test');
-        FormGenerator.utils.Windows.open('Test', {}, null, true);
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.query.FormQueries');
+        var queryFrom = FormGenerator.utils.Windows.open('FormQueries', { }, null, true);
     },
 
     onTest2: function (button) {
-        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(25);
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.FormEditor');
+        FormGenerator.utils.Windows.open('FormEditor', {}, null, true);
     },
 
     onTest1: function (button) {

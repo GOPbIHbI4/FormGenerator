@@ -14,7 +14,7 @@ namespace FormGenerator.ServerBusinessLogic
         public ResponseObjectPackage<List<ControlProperty>> GetControlPropertiesByFormID(int formID)
         {
             RequestPackage request = new RequestPackage() { requestID = formID };
-            List<ControlPropertyViewModel> properties = new DBUtils().RunSqlAction(new PropertiesRepository().GetPropertiesByFormID, request).GetDataOrExceptionIfError();
+            List<ControlPropertyViewModel> properties = new DBUtils().RunSqlAction(new ControlPropertiesRepository().GetPropertiesByFormID, request).GetDataOrExceptionIfError();
             List<ControlProperty> propertiesList = properties.Select(e =>
                 new ControlProperty()
                 {

@@ -1,14 +1,8 @@
-﻿//-----------------------------------------------------------------------------------------
-// Фиктивная модель
-//-----------------------------------------------------------------------------------------
-Ext.define('FormGenerator.model.editor.FormEditor', {
+﻿Ext.define('FormGenerator.model.editor.FormEditor', {
     extend: 'Ext.data.Model',
     fields: []
 });
 
-//-----------------------------------------------------------------------------------------
-// Модель для компонентов
-//-----------------------------------------------------------------------------------------
 Ext.define('FormGenerator.model.editor.Components', {
     extend: 'Ext.data.Model',
     fields: [
@@ -20,13 +14,11 @@ Ext.define('FormGenerator.model.editor.Components', {
         'path',
         'properties',
         'queryParams',
-        'childComponents'
+        'childComponents',
+        'data' // данные
     ]
 });
 
-//-----------------------------------------------------------------------------------------
-// Модель для групп компонентов
-//-----------------------------------------------------------------------------------------
 Ext.define('FormGenerator.model.editor.Groups', {
     extend: 'Ext.data.Model',
     fields: [
@@ -40,7 +32,7 @@ Ext.define('FormGenerator.model.editor.Query', {
     extend: 'Ext.data.Model',
     fields: [
         'ID',
-        'name'
+        'sqlText'
     ]
 });
 
@@ -48,7 +40,9 @@ Ext.define('FormGenerator.model.editor.QueryField', {
     extend: 'Ext.data.Model',
     fields: [
         'ID',
-        'name'
+        'name',
+        'queryTypeID',
+        'domainValueTypeID'
     ]
 });
 
@@ -57,5 +51,25 @@ Ext.define('FormGenerator.model.editor.DictionaryField', {
     fields: [
         'ID',
         'name'
+    ]
+});
+
+Ext.define('FormGenerator.model.editor.Events', {
+    extend: 'Ext.data.Model',
+    fields: [
+        'ID',
+        'name'
+    ]
+});
+
+Ext.define('FormGenerator.model.editor.Params', {
+    extend: 'Ext.data.Model',
+    fields: [
+        'ID',
+        'name',
+        'queryTypeID',
+        'domainValueTypeID',
+        'value',
+        'rawValue'
     ]
 });

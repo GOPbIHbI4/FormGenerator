@@ -35,6 +35,43 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<QueryOutParameterModel>>() { resultData = list };
         }
 
+        /// <summary>
+        /// Сохранение выходных параметров запроса
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="connectionID"></param>
+        /// <returns></returns>
+        public static ResponsePackage SaveQueryOutParameter(RequestObjectPackage<QueryOutParameterModel> package, IDbConnection connectionID)
+        {
+            QueryOutParameterModel obj = package.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                sql = string.Format(
+                    " update QUERY_OUT_PARAMETERS set NAME = '{0}', QUERY_TYPE_ID = {1}, DOMAIN_VALUE_TYPE_ID = {2) " + Environment.NewLine +
+                    " where ID = {3} returning ID",
+                    obj.name.TrimIfNotNull() ?? "",
+                    obj.queryTypeID,
+                    obj.domainValueTypeID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                sql = string.Format(
+                    " insert into QUERY_OUT_PARAMETERS (NAME, QUERY_TYPE_ID, DOMAIN_VALUE_TYPE_ID) " + Environment.NewLine +
+                    " values ('{0}', {1}, {2}) returning ID",
+                    obj.name.TrimIfNotNull() ?? "",
+                    obj.queryTypeID,
+                    obj.domainValueTypeID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+
         public static string ToSqlWhere(QueryOutParameterSearchTemplate obj)
         {
             string where = " 1 = 1";

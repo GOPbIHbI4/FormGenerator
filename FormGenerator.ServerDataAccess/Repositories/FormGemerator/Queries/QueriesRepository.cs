@@ -33,6 +33,40 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<QueryModel>>() { resultData = list };
         }
 
+        /// <summary>
+        /// Сохранение запроса
+        /// </summary>
+        /// <param name="package"></param>
+        /// <param name="connectionID"></param>
+        /// <returns></returns>
+        public static ResponsePackage SaveQuery(RequestObjectPackage<QueryModel> package, IDbConnection connectionID)
+        {
+            QueryModel obj = package.requestData;
+            string sql = string.Empty;
+            
+            if (obj.ID > 0)
+            {
+                sql = string.Format(
+                    " update QUERIES set QUERY_TYPE_ID = {0} " + Environment.NewLine +
+                    " where ID = {1} returning ID",
+                    obj.queryTypeID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                sql = string.Format(
+                    " insert into QUERIES (QUERY_TYPE_ID) " + Environment.NewLine +
+                    " values ({0}) returning ID",
+                    obj.queryTypeID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+
+        
         public static string ToSqlWhere(QuerySearchTemplate obj)
         {
             string where = " 1 = 1";

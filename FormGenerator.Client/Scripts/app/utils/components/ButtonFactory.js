@@ -11,8 +11,6 @@ buttonFactory = function (win, cmp, selectedRecord) {
         scale:'small',
         border:true,
         icon:'Scripts/resources/icons/save_16.png',
-//        width:22,
-//        height:22,
         name: 'sencha' + 'button' + num,
         padding:2,
         margin:5,

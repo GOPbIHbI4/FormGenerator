@@ -12,5 +12,8 @@ namespace FormGenerator.Models
         public string name { get; set; }
         public List<ControlPropertyViewModel> properties { get; set; }
         public List<SaveControlModel> items { get; set; }
+        public QueryData data { get; set; }
+        public List<QueryViewModel> queries { get; set; }
+        public List<QueryInParam> queryInParams { get; set; }
     }
 }
