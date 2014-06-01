@@ -17,7 +17,7 @@
                 click: this.onTest1
             },
             'MainForm button[action=onTest2]': {
-                click: this.onTest
+                click: this.onTest2
             },
             'MainForm button[action=onTest3]': {
                 click: this.onTest3
@@ -36,9 +36,9 @@
     },
 
     onTest2: function (button) {
-        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(29, [
+        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(58, [
             {
-                ID:1,
+                name:'PersonID',
                 value:1
             }
         ]);

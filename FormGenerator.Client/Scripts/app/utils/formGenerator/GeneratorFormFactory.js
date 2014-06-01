@@ -1,5 +1,8 @@
 ﻿Ext.define('FormGenerator.utils.formGenerator.GeneratorFormFactory', {
     singleton: true,
+    requires:[
+        'FormGenerator.utils.formGenerator.GeneratorEventsFactory'
+    ],
 
     createWindow: function (formID, formInParameters) {
         var _this = this;
@@ -21,6 +24,7 @@
                     window.query('combobox, textfield, datefield, gridpanel').forEach(function (item) {
                         _this._initializeControl(window, item);
                     });
+                    FormGenerator.utils.formGenerator.GeneratorEventsFactory.addEvents(window);
                     window.show();
                 } else {
                     FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, jsonResp.resultCode);
@@ -44,7 +48,7 @@
         WindowObject.IN_PARAMETERS.forEach(function (item) {
             item.value = null;
             formInParameters.forEach(function (param) {
-                if (item.ID == param.ID) {
+                if (item.name == param.name) {
                     item.value = param.value;
                 }
             });
@@ -70,6 +74,7 @@
         result.CONTROL_TYPE_ID = control.controlTypeID;
         result.QUERY_MAPPINGS = control.controlQueryMappings;
         result.DICTIONARY_MAPPINGS = control.controlDictionaryMappings;
+        result.EVENTS = control.events;
         result.items = [];
         result.dockedItems = [];
         result.columns = [];

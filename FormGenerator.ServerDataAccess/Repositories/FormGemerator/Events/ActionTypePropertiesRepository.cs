@@ -23,13 +23,11 @@ namespace FormGenerator.ServerDataAccess
         {
             ActionTypePropertySearchTemplate obj = request.requestData;
             string sql = string.Format(
-                "select ID, VALUE, ACTION_TYPE_ID, ACTION_KIND_PROPERTY_ID " + Environment.NewLine +
+                "select ID, \"VALUE\", ACTION_TYPE_ID, ACTION_KIND_PROPERTY_ID " + Environment.NewLine +
                 "from ACTION_TYPE_PROPERTIES " + Environment.NewLine +
                 "where {0}",
                     ToSqlWhere(obj)
             );
-            ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
-            res.ThrowExceptionIfError();
 
             List<ActionTypePropertyModel> list = DBOrmUtils.OpenSqlList<ActionTypePropertyModel>(sql, mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<ActionTypePropertyModel>>() { resultData = list };
@@ -56,7 +54,7 @@ namespace FormGenerator.ServerDataAccess
             if (obj.ID > 0)
             {
                 sql = string.Format(
-                    " update ACTION_TYPE_PROPERTIES set VALUE = {0}, ACTION_TYPE_ID = {1}, ACTION_KIND_PROPERTY_ID = {2} " + Environment.NewLine +
+                    " update ACTION_TYPE_PROPERTIES set \"VALUE\" = {0}, ACTION_TYPE_ID = {1}, ACTION_KIND_PROPERTY_ID = {2} " + Environment.NewLine +
                     " where ID = {3} returning ID",
                     SQL.FromNumber(obj.ID),
                     SQL.FromNumber(obj.actionTypeID),
@@ -67,7 +65,7 @@ namespace FormGenerator.ServerDataAccess
             else
             {
                 sql = string.Format(
-                    " insert into ACTION_KINDS (VALUE, ACTION_TYPE_ID, ACTION_KIND_PROPERTY_ID) " + Environment.NewLine +
+                    " insert into ACTION_KINDS (\"VALUE\", ACTION_TYPE_ID, ACTION_KIND_PROPERTY_ID) " + Environment.NewLine +
                     " values ({0}, {1}, {2}) returning ID",
                     SQL.FromNumber(obj.ID),
                     SQL.FromNumber(obj.actionTypeID),

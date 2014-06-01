@@ -18,5 +18,7 @@ namespace FormGenerator.Models
         public List<Control> children { get; set; }
         public List<ControlQueryMappingModel> controlQueryMappings { get; set; }
         public List<ControlDictionaryMappingModel> controlDictionaryMappings { get; set; }
+
+        public List<Event> events { get; set; }
     }
 }

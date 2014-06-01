@@ -27,8 +27,6 @@ namespace FormGenerator.ServerDataAccess
                 "where {0}",
                     ToSqlWhere(obj)
             );
-            ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
-            res.ThrowExceptionIfError();
 
             List<ActionKindPropertyModel> list = DBOrmUtils.OpenSqlList<ActionKindPropertyModel>(sql, mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<ActionKindPropertyModel>>() { resultData = list };
