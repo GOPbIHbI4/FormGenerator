@@ -74,7 +74,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="request"></param>
         /// <param name="connectionID"></param>
         /// <returns></returns>
-        public ResponsePackage SaveProperty(RequestObjectPackage<ControlPropertyModel> request, IDbConnection connectionID)
+        public ResponsePackage SaveProperty(RequestObjectPackage<ControlPropertyModel> request, IDbConnection connectionID, IDbTransaction transactionID)
         {
             ControlPropertyModel obj = request.requestData;
             string sql = string.Empty;
@@ -100,9 +100,13 @@ namespace FormGenerator.ServerDataAccess
                     obj.value == null ? "" : obj.value.TrimIfNotNull()
                 );
             }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
             res.ThrowExceptionIfError();
             return new ResponsePackage() { resultID = res.resultID };
+        }
+        public ResponsePackage SaveProperty(RequestObjectPackage<ControlPropertyModel> request, IDbConnection connectionID)
+        {
+            return this.SaveProperty(request, connectionID, null);
         }
 
         /// <summary>
@@ -111,14 +115,18 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="request">Объект-оболочка RequestPackage, содержащая в поле requestID ID компонента</param>
         /// <param name="connectionID">Объект подключения к базе данных</param>
         /// <returns>Объект-оболочка ResponsePackagе</returns>
-        public ResponsePackage DeletePropertiesByControlID(RequestPackage request, IDbConnection connectionID)
+        public ResponsePackage DeletePropertiesByControlID(RequestPackage request, IDbConnection connectionID, IDbTransaction transactionID)
         {
             string sql = string.Format(
                 " delete from control_properties where control_id = {0} ",
                 request.requestID
             );
-            DBUtils.ExecuteSQL(sql, connectionID).ThrowExceptionIfError();
+            DBUtils.ExecuteSQL(sql, connectionID, false, transactionID).ThrowExceptionIfError();
             return new ResponsePackage();
+        }
+        public ResponsePackage DeletePropertiesByControlID(RequestPackage request, IDbConnection connectionID)
+        {
+            return this.DeletePropertiesByControlID(request, connectionID, null);
         }
 
         /// <summary>

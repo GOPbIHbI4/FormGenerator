@@ -92,12 +92,16 @@
     <Compile Include="ViewModels\FormEditor\ControlTypeList.cs" />
     <Compile Include="ViewModels\FormEditor\ControlTypeDependenciesList.cs" />
     <Compile Include="ViewModels\FormEditor\ControlTypeGroup.cs" />
+    <Compile Include="ViewModels\FormEditor\Event\EventType.cs" />
+    <Compile Include="ViewModels\FormEditor\Event\SaveEvent.cs" />
+    <Compile Include="ViewModels\FormEditor\Event\OpenEvent.cs" />
     <Compile Include="ViewModels\FormEditor\OpenForm\Control.cs" />
     <Compile Include="ViewModels\FormEditor\PropertyTypeListEntity.cs" />
     <Compile Include="ViewModels\FormEditor\ControlProperty.cs" />
     <Compile Include="ViewModels\FormEditor\Query\QueryData.cs" />
     <Compile Include="ViewModels\FormEditor\Query\QueryViewModel.cs" />
     <Compile Include="ViewModels\FormEditor\Query\QueryType.cs" />
+    <Compile Include="ViewModels\FormEditor\Query\OpenQuery.cs" />
     <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
     <Compile Include="ViewModels\FormGenerator\Dictionaries\Administrator\DictionaryField.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\ControlProperty.cs" />

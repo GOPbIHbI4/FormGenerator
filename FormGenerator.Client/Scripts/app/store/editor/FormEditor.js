@@ -119,13 +119,6 @@ Ext.define('FormGenerator.store.editor.DictionaryField', {
     }
 });
 
-Ext.define('FormGenerator.store.editor.Events', {
-    extend:'Ext.data.Store',
-    model:'FormGenerator.model.editor.Events',
-    autoLoad: false,
-    data:[]
-});
-
 Ext.define('FormGenerator.store.editor.Params', {
     extend:'Ext.data.Store',
     model:'FormGenerator.model.editor.Params',

@@ -8,17 +8,20 @@
     models: [
         'FormGenerator.model.editor.FormEditor',
         'FormGenerator.model.editor.query.FormQuery',
+        'FormGenerator.model.editor.event.ComponentEvent',
         'FormGenerator.model.editor.query.QueryFrom'
     ],
 
     stores: [
         'FormGenerator.store.editor.FormEditor',
         'FormGenerator.store.editor.query.FormQuery',
+        'FormGenerator.store.editor.event.ComponentEvent',
         'FormGenerator.store.editor.query.QueryFrom'
     ],
 
     requires: [
         'FormGenerator.editor.Focused',
+        'FormGenerator.editor.Random',
         'FormGenerator.editor.Queries'
     ],
 
@@ -61,11 +64,23 @@
             'FormEditor propertygrid[name=properties]': {
                 propertychange: this.onProperyChange
             },
+            'FormEditor button[action=onEditEvent]': {
+                click: this.onEditEvent
+            },
+            'FormEditor button[action=onShowEvent]': {
+                click: this.onShowEvent
+            },
+            'FormEditor button[action=onDeleteEvent]': {
+                click: this.onDeleteEvent
+            },
             'FormEditor button[action=onAddQuery]': {
                 click: this.onAddQuery
             },
             'FormEditor button[action=onSetParam]': {
                 click: this.onSetParam
+            },
+            'FormEditor menuitem[action=onFormParams]': {
+                click: this.onFormParams
             },
             'FormEditor combobox[name=query]': {
                 change: this.onQueryTypeSelectionChange
@@ -105,6 +120,8 @@
         var btnCopyToClipboard = win.down('button[action=onCopyToClipboard]');
         var btnSaveOnFile = win.down('button[action=onSaveOnFile]');
         var btnLabel = win.down('button[action=onLabel]');
+        // события
+        var eventPanel = win.down('gridpanel[name=events]');
         // данные
         var dataPanel = win.down('panel[action=data]');
         var query = win.down('combobox[name=query]');
@@ -117,6 +134,9 @@
         btnDesign.toggle(true);
         // запросы на форме
         FormGenerator.editor.Queries.init();
+        FormGenerator.editor.Random.init();
+        win.inParams = [];
+        win.outParams = [];
 
         // Добавить функцию startsWith классу String
         /**
@@ -216,6 +236,9 @@
                     });
                 }
                 dictionaryField.setValue(data['saveField']);
+                // события
+                var events = focused.record.get('events');
+                eventPanel.getStore().loadData(events, false);
             } else if (!FormGenerator.editor.Focused.getFocusedCmp()) {
                 propertiesGrid.setSource([]);
                 propertiesGrid.customEditors = [];
@@ -227,6 +250,19 @@
                 queryKeyField.clearValue();
                 query.clearValue();
                 dictionaryField.clearValue();
+                eventPanel.getStore().loadData([], false);
+            }
+        });
+
+        // При изменении данных синхранизировать вкладку "События" с компонентом
+        eventPanel.on('RecordChanged', function(grid){
+            var focused = FormGenerator.editor.Focused.getFocusedCmp();
+            if (focused) {
+                var newEvents = [];
+                eventPanel.getStore().data.items.forEach(function(item){
+                    newEvents.push(item.data);
+                });
+                focused.record.set('events', newEvents);
             }
         });
 
@@ -299,10 +335,10 @@
             orderNumber++;
             var current = {
                 control: {
-                    ID: item.id ? item.id + '' : '-1',
+                    ID: undefined,
                     controlTypeID: item['controlTypeID'] ? item['controlTypeID'] + '' : '',
-                    controlIDParent: parent ? parent['id'] + '' : '',
-                    formID: win.form_id ? win.form_id + '' : '',
+                    controlIDParent: undefined,
+                    formID: undefined,
                     orderNumber: orderNumber + ''
                 },
                 name: item['name'],
@@ -310,13 +346,14 @@
                 properties: [],
                 queries: queries,
                 queryInParams: queryInParams,
-                data: item['data']
+                data: item['data'],
+                events: item['events']
             };
             // сохраняем свойства объекта
             for (var prop in item) {
-                if (!(item[prop] instanceof Array) && prop != 'controlTypeID' && prop != 'data') {
+                if (!(item[prop] instanceof Array) && prop != 'controlTypeID' && prop != 'data' && prop != 'events') {
                     var property = {
-                        controlID: item.id ? item.id + '' : '',
+                        controlID: undefined,
                         controlTypeID: item['controlTypeID'] ? item['controlTypeID'] + '' : '',
                         property: prop,
                         value: item[prop]
@@ -325,7 +362,7 @@
                 }
             }
             for (var prop in item) {
-                if (item[prop] instanceof Array) {
+                if (item[prop] instanceof Array && prop != 'events') {
                     item[prop].forEach(function (x) {
                         current.items.push(fn(x, item));
                     });
@@ -349,19 +386,25 @@
         };
 
         win.body.mask('Сохранение...');
+        var newFormObj = fn(obj, null);
         // AJAX запрос на сохранение формы
         // Происходит проверка существования данного названия формы и сохранение формы
         Ext.Ajax.timeout = 1000000;
         Ext.Ajax.request({
-            url: 'FormEditor/SaveForm',
+            url: 'FormEditor/SaveFormInTransaction',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             timeout: 1000000,
             jsonData: {
-                form: {
-                    ID: win.form_id ? win.form_id + '' : '',
-                    name: win.form_name,
-                    dictionaryID: win.form_dictionary_id ? win.form_dictionary_id + '' : ''
+                formModel:{
+                    inParams:win.inParams,
+                    outParams:win.outParams,
+                    form: {
+                        ID: win.form_id ? win.form_id + '' : '',
+                        name: win.form_name,
+                        dictionaryID: win.form_dictionary_id ? win.form_dictionary_id + '' : ''
+                    },
+                    control:newFormObj
                 }
             },
             success: function (objServerResponse) {
@@ -369,44 +412,24 @@
                 if (jsonResp.resultCode == 0) {
                     // Форма сохранена
                     win.form_id = jsonResp.resultID;
-                    var newFormObj = fn(obj, null);
-                    Ext.Ajax.request({
-                        url: 'FormEditor/SaveAllForm',
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        jsonData: {
-                            form: newFormObj,
-                            formID: win.form_id + ''
-                        },
-                        success: function (objServerResponse) {
-                            var jsonResp = Ext.decode(objServerResponse.responseText);
-                            if (jsonResp.resultCode == 0) {
-                                if (close){
-                                    win.body.unmask();
-                                    win.close();
-                                    return;
-                                }
-                                var newForm = jsonResp.resultData;
-                                // Удаляем компоненты с формы
-                                if (form.down('[name=senchawin]')) {
-                                    form.fireEvent('ComponentRemoved', form, form, form.down('[name=senchawin]'));
-                                }
-                                form.removeAll();
-                                form.doLayout();
-                                FormGenerator.editor.Queries.clear();
-                                win.body.unmask();
-                                // открываем текущую форму
-                                _this.openForm(win);
-                            } else {
-                                win.body.unmask();
-                                FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
-                            }
-                        },
-                        failure: function (objServerResponse) {
-                            win.body.unmask();
-                            FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
-                        }
-                    });
+                    if (close){
+                        win.body.unmask();
+                        win.close();
+                        return;
+                    }
+                    // Удаляем компоненты с формы
+                    if (form.down('[name=senchawin]')) {
+                        form.fireEvent('ComponentRemoved', form, form, form.down('[name=senchawin]'));
+                    }
+                    form.removeAll();
+                    form.doLayout();
+                    FormGenerator.editor.Queries.clear();
+                    FormGenerator.editor.Random.clear();
+                    win.inParams = [];
+                    win.outParams = [];
+                    win.body.unmask();
+                    // открываем текущую форму
+                    _this.openForm(win);
                 } else {
                     win.body.unmask();
                     FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
@@ -474,6 +497,7 @@
         var form = win.down('form[name=mainPanel]');
         var dictionaryField = win.down('combobox[name=dictionaryField]');
         var dictionaryFieldSet = dictionaryField.up('fieldset');
+        var query = win.down('combobox[name=query]');
         // Ajax запрос на получение формы
         win.body.mask('Загрузка...');
         Ext.Ajax.request({
@@ -489,6 +513,8 @@
                     var res = jsonResp.resultData;
                     // воссоздание формы с помощью рекурсивной функции
                     _this.drawForm(win, res);
+                    FormGenerator.editor.Queries.queries = res.queries;
+                    query.getStore().loadData(FormGenerator.editor.Queries.get(), false);
                     win.setTitle('Визуальный редактор форм. ' + win.form_name);
                     _this.setEnabledComponents(win);
                     // загрузить комбо "Поле" во вкладке "Данные"
@@ -648,8 +674,10 @@
             // create obj
             var obj = JSON.parse(JSON.stringify(item.record.get('properties')));
             var data = JSON.parse(JSON.stringify(item.record.get('data')));
+            var events = JSON.parse(JSON.stringify(item.record.get('events')));
             obj.controlTypeID = item.record.get('ID');
             obj.data = data;
+            obj.events = events;
 
             // recursion
             if (items.length > 0) {
@@ -691,6 +719,9 @@
         form.removeAll();
         form.doLayout();
         FormGenerator.editor.Queries.clear();
+        FormGenerator.editor.Random.clear();
+        win.inParams = [];
+        win.outParams = [];
         win.form_id = undefined;
         win.form_dictionary_id = undefined;
         win.form_name = undefined;
@@ -765,12 +796,6 @@
             form: form
         }, null, true);
         createQuery.on('FormQuerySaved', function (winQuery, obj) {
-//        obj = {
-//            _ID:getRandomInt(),
-//            queryTypeID:query.getValue(),
-//            queryType:query.getRawValue(),
-//            queryInParams:inParams.getStore().data.items
-//        };
             FormGenerator.editor.Queries.add(obj);
             // перегрузить комбо с запросами
             query.getStore().loadData(FormGenerator.editor.Queries.get(), false);
@@ -859,6 +884,8 @@
                 item = eval(controlType.toLowerCase() + 'Factory(win, parent, selectedRecord);');
             }
             item.name = obj['name'];
+            item.record.set('events', obj.events);
+            item.record.set('data', obj.data);
 
             if (item.xtype == 'toolbar') {
                 parent.addDocked(item);
@@ -906,6 +933,7 @@
         var fnDeleteEmptyProperties = function (item) {
             debugger;
             delete item['data'];
+            delete item['events'];
             for (var prop in item) {
                 if (!(item[prop] instanceof Array)) {
                     if (item[prop] == null || typeof item[prop] == 'undefined' || item[prop].toString().trim() == ''
@@ -1362,26 +1390,102 @@
         projectPanel.setDisabled(false);
     },
 
-    onNewFormQuestion: function (btn) {
+    /**
+     * Функция просмотра события у компонента
+     * @param btn Кнопка "Посмотреть", вызвавшая событие
+     */
+    onShowEvent:function(btn){
         var _this = this;
         var win = btn.up('window');
         var form = win.down('form[name=mainPanel]');
-        if (win.form_name || win.form_id) {
-            FormGenerator.utils.MessageBox.question('Сохранить форму ' + (win.form_name ? ('"' + win.form_name + '"') : '') + '?', function (res) {
-                if (res == 'yes') {
-                    _this.onSaveForm(res);
-                    _this.clearCurrentForm(form);
-                    _this.onNewForm(btn);
-                } else if (res == 'no') {
-                    _this.clearCurrentForm(form);
-                    _this.onNewForm(btn);
-                } else {
-                    return;
-                }
-            }, Ext.Msg.YESNOCANCEL);
+        var eventsGrid = win.down('gridpanel[name=events]');
+        var selected = eventsGrid.getSelectionModel().getSelection()[0];
+        if (!selected){
+            FormGenerator.utils.MessageBox.show('Выберите событие.', null, -1);
+            return;
+        }
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.event.EventAction');
+        var eventAction = FormGenerator.utils.Windows.open('EventAction', {
+            form:form,
+            isShowOnly:true,
+            actions:selected.get('actions')
+        }, null, true);
+    },
+
+    /**
+     * Функция редактирования события у компонента
+     * @param btn Кнопка "Редактировать", вызвавшая событие
+     */
+    onEditEvent:function(btn){
+        var _this = this;
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        var eventsGrid = win.down('gridpanel[name=events]');
+        var selected = eventsGrid.getSelectionModel().getSelection()[0];
+        if (!selected){
+            FormGenerator.utils.MessageBox.show('Выберите событие.', null, -1);
+            return;
+        }
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.event.EventAction');
+        var eventAction = FormGenerator.utils.Windows.open('EventAction', {
+            form:form,
+            isShowOnly:false,
+            actions:selected.get('actions')
+        }, null, true);
+        eventAction.on('EventActionIsReadyToSave', function (winDialog, action) {
+            // изменить грид
+            selected.set('actions', action);
+            selected.commit();
+            // бросить событие об изменении
+            eventsGrid.fireEvent('RecordChanged', eventsGrid);
+        });
+    },
+
+    /**
+     * Функция удаления события у компонента
+     * @param btn Кнопка "Удалить", вызвавшая событие
+     */
+    onDeleteEvent:function(btn){
+        var _this = this;
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        var eventsGrid = win.down('gridpanel[name=events]');
+        var selected = eventsGrid.getSelectionModel().getSelection()[0];
+        if (!selected){
+            FormGenerator.utils.MessageBox.show('Выберите событие.', null, -1);
+            return;
+        }
+        FormGenerator.utils.MessageBox.question('Очистить обработчик события' + (selected.get('name') ? (' "' + selected.get('name') + '"') : '') + '?', function (res) {
+            if (res == 'yes') {
+                // изменить грид
+                selected.set('actions', null);
+                selected.commit();
+                // бросить событие об изменении
+                eventsGrid.fireEvent('RecordChanged', eventsGrid);
+            }
+        }, Ext.Msg.YESNO);
+    },
+
+    /**
+     * Функция редактирования входных и выходных параметров окна
+     * @param btn Кнопка "Параметры"
+     */
+    onFormParams:function(btn){
+        var win = btn.up('window');
+        var form = win.down('form[name=mainPanel]');
+        if (!win.form_id){
+            FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.dialog.FormParameters');
+            var paramsForm = FormGenerator.utils.Windows.open('FormParameters', {
+                inParams:win.inParams,
+                outParams:win.outParams,
+                form:form
+            }, null, true);
+            paramsForm.on('ParamsAreReadyToSave', function(winParams, inParams, outParams){
+                win.inParams = inParams;
+                win.outParams = outParams;
+            });
         } else {
-            _this.clearCurrentForm(form);
-            _this.onNewForm(btn);
+            console.log('Невозможно задать параметры формы сохраненной форме.');
         }
     },
 

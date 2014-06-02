@@ -162,7 +162,7 @@
         // Сгененировать событие, сообщающее основной форме о том,
         // что условие готово к сохранению
         var newWhere = {
-            ID:getRandomInt(),
+            ID:FormGenerator.editor.Random.get(),
             firstField:{
                 table:{
                     ID:addDict.getValue(),

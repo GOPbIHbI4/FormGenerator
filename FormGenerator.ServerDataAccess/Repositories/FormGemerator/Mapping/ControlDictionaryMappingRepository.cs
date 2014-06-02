@@ -34,7 +34,7 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<ControlDictionaryMappingModel>>() { resultData = list };
         }
 
-        public static ResponsePackage SaveControlDictionaryMapping(RequestObjectPackage<ControlDictionaryMappingModel> package, IDbConnection connectionID)
+        public static ResponsePackage SaveControlDictionaryMapping(RequestObjectPackage<ControlDictionaryMappingModel> package, IDbConnection connectionID, IDbTransaction transactionID)
         {
             ControlDictionaryMappingModel obj = package.requestData;
             string sql = string.Empty;
@@ -60,9 +60,13 @@ namespace FormGenerator.ServerDataAccess
                     obj.dictionaryFieldID
                 );
             }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
             res.ThrowExceptionIfError();
             return new ResponsePackage() { resultID = res.resultID };
+        }
+        public static ResponsePackage SaveControlDictionaryMapping(RequestObjectPackage<ControlDictionaryMappingModel> package, IDbConnection connectionID)
+        {
+            return SaveControlDictionaryMapping(package, connectionID, null);
         }
 
         public static ResponseObjectPackage<List<ControlDictionaryMappingModel>> GetByFormID(RequestPackage package, IDbConnection connectionID)

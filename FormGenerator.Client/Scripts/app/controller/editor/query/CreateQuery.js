@@ -147,6 +147,7 @@
      * Функция сохранения запроса
      */
     onSave:function (btn) {
+        var _this = this;
         var win = btn.up('window');
         var fieldsGrid = win.down('gridpanel[name=selectGrid]');
         var dictsGrid = win.down('gridpanel[name=fromGrid]');
@@ -182,7 +183,7 @@
                     // Сгененировать событие, сообщающее основной форме о том,
                     // что запрос сохранен
                     win.fireEvent('QuerySaved', win, jsonResp.resultID);
-                    this.onClose(btn);
+                    _this.onClose(btn);
                 } else {
                     FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, -1);
                 }

@@ -44,13 +44,13 @@ namespace FormGenerator.ServerDataAccess
             return where;
         }
 
-        public static ResponsePackage Save(RequestObjectPackage<ActionModel> request, IDbConnection connectionID)
+        public static ResponsePackage Save(RequestObjectPackage<ActionParameterModel> request, IDbConnection connectionID)
         {
             return Save(request, connectionID, null);
         }
-        public static ResponsePackage Save(RequestObjectPackage<ActionModel> request, IDbConnection connectionID, IDbTransaction transactionID)
+        public static ResponsePackage Save(RequestObjectPackage<ActionParameterModel> request, IDbConnection connectionID, IDbTransaction transactionID)
         {
-            ActionModel obj = request.requestData;
+            ActionParameterModel obj = request.requestData;
             string sql = string.Empty;
 
             if (obj.ID > 0)
@@ -58,9 +58,9 @@ namespace FormGenerator.ServerDataAccess
                 sql = string.Format(
                     " update ACTION_PARAMETERS set ACTION_ID = {0}, ACTION_PARAMETER_TYPE_ID = {1}, CONTROL_ID = {2} " + Environment.NewLine +
                     " where ID = {3} returning ID",
-                    SQL.FromNumber(obj.eventID),
-                    SQL.FromNumber(obj.orderNumber),
-                    SQL.FromNumber(obj.actionTypeID),
+                    SQL.FromNumber(obj.actionID),
+                    SQL.FromNumber(obj.actionParameterTypeID),
+                    SQL.FromNumber(obj.controlID),
                     SQL.FromNumber(obj.ID)
                 );
             }
@@ -69,9 +69,9 @@ namespace FormGenerator.ServerDataAccess
                 sql = string.Format(
                     " insert into ACTION_PARAMETERS (ACTION_ID, ACTION_PARAMETER_TYPE_ID, CONTROL_ID) " + Environment.NewLine +
                     " values ({0}, {1}, {2}) returning ID",
-                    SQL.FromNumber(obj.eventID),
-                    SQL.FromNumber(obj.orderNumber),
-                    SQL.FromNumber(obj.actionTypeID)
+                    SQL.FromNumber(obj.actionID),
+                    SQL.FromNumber(obj.actionParameterTypeID),
+                    SQL.FromNumber(obj.controlID)
                 );
             }
             ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);

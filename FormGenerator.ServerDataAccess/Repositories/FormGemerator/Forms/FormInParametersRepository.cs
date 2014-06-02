@@ -52,6 +52,55 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<FormInParameterModel>>() { resultData = list };
         }
 
+        public static ResponsePackage SaveInParam(RequestObjectPackage<FormInParameterModel> request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            FormInParameterModel obj = request.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                sql = string.Format(
+                    " update FORM_IN_PARAMETERS set NAME = '{0}', CONTROL_ID = {1} " +
+                    " where ID = {2} returning id ",
+                    obj.name ?? "",
+                    obj.controlID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                sql = string.Format(
+                    " insert into FORM_IN_PARAMETERS (NAME, CONTROL_ID) " +
+                    " values ('{0}', {1}) returning id ",
+                    obj.name ?? "",
+                    obj.controlID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+        public static ResponsePackage SaveInParam(RequestObjectPackage<FormInParameterModel> request, IDbConnection connectionID)
+        {
+            return SaveInParam(request, connectionID, null);
+        }
+
+        public static ResponsePackage DeleteByFormID(RequestPackage request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            int formID = request.requestID;
+            string sql = string.Format(
+                " delete from FORM_IN_PARAMETERS " +
+                " where control_id in (" +
+                "   select control_id from controls where form_id = {0} " +
+                ") ",
+                formID
+            );
+            DBUtils.ExecuteSQL(sql, connectionID, false, transactionID).ThrowExceptionIfError();
+
+            return new ResponsePackage();
+        }
+
+
         public static string ToSqlWhere(FormInParameterSearchTemplate obj)
         {
             string where = " 1 = 1";

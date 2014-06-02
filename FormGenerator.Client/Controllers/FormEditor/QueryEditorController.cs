@@ -61,6 +61,10 @@ namespace FormGenerator.Client.Controllers
             {
                 RequestPackage req = new RequestPackage();
                 ResponseObjectPackage<List<QueryTypeModel>> response = new QueryEditorLogic().GetQueryTypeList(req).GetSelfOrExceptionIfError();
+                response.resultData.ForEach(x => {
+                    x.sqlText = x.sqlText.Replace(System.Environment.NewLine, ""); 
+                    x.sqlText = x.sqlText.Replace("\n", "");
+                });
                 return Json(response);
             }
             catch (Exception ex)

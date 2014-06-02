@@ -5,7 +5,7 @@ tabFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
     var propertiesGrid = win.down('propertygrid[name=properties]');
-    var num = getRandomInt();
+    var num = FormGenerator.editor.Random.get();
     //шаблоны
     return Ext.create('Ext.panel.Panel', {
         xtype: 'panel',

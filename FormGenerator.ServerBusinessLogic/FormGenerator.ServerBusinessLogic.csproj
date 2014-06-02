@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormEditor\EventEditorLogic.cs" />
     <Compile Include="FormGenerator\Controls\ControlsLogic.cs" />
     <Compile Include="FormEditor\FormEditorLogic.cs" />
     <Compile Include="FormEditor\QueryEditorLogic.cs" />

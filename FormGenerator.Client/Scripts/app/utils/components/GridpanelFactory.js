@@ -29,7 +29,7 @@ gridpanelFactory = function (win, cmp, selectedRecord) {
 //            id: 'summ',
 //            showSummaryRow: false
 //        }],
-        name:'sencha' + 'gridpanel' + getRandomInt(),
+        name:'sencha' + 'gridpanel' + FormGenerator.editor.Random.get(),
         form:form,
         store:store,
         record:selectedRecord,

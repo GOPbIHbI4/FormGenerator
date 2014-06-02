@@ -14,7 +14,7 @@ toolbarFactory = function (win, cmp, selectedRecord) {
         minHeight:20,
         resizable:true,
         dock:'right',
-        name:'sencha' + 'toolbar' + getRandomInt(),
+        name:'sencha' + 'toolbar' + FormGenerator.editor.Random.get(),
         form:form,
         record:selectedRecord,
         listeners:{

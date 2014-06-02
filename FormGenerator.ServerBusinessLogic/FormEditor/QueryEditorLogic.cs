@@ -22,7 +22,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponseObjectPackage<List<QueryTypeModel>> GetQueryTypeList(RequestPackage package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryTypeList, package);
+            ResponseObjectPackage<List<QueryTypeModel>> response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryTypeList, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         /// <summary>
@@ -51,7 +53,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponseObjectPackage<QueryTypeModel> GetQueryType(RequestPackage package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryType, package);
+            ResponseObjectPackage<QueryTypeModel> response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryType, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         /// <summary>
@@ -61,7 +65,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponseObjectPackage<List<QueryInParameterModel>> GetQueryInParamsList(RequestPackage package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryInParamsList, package);
+            ResponseObjectPackage<List<QueryInParameterModel>> response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryInParamsList, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         /// <summary>
@@ -71,7 +77,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponseObjectPackage<List<QueryOutParameterModel>> GetQueryOutParamsList(RequestPackage package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryOutParamsList, package);
+            ResponseObjectPackage<List<QueryOutParameterModel>> response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().GetQueryOutParamsList, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         #endregion
@@ -85,7 +93,13 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponsePackage SaveQueryType(RequestObjectPackage<QueryTypeModel> package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryType, package);
+            string sqlText = package.requestData.sqlText;
+            sqlText = sqlText.Replace(System.Environment.NewLine, "");
+            sqlText = sqlText.Replace("\n", "");
+            package.requestData.sqlText = sqlText;
+            ResponsePackage response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryType, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         /// <summary>
@@ -95,7 +109,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponsePackage SaveQueryInParameter(RequestObjectPackage<QueryInParameterModel> package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryInParameter, package);
+            ResponsePackage response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryInParameter, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         /// <summary>
@@ -105,7 +121,9 @@ namespace FormGenerator.Server
         /// <returns></returns>
         public ResponsePackage SaveQueryOutParameter(RequestObjectPackage<QueryOutParameterModel> package)
         {
-            return new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryOutParameter, package);
+            ResponsePackage response = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new QueryEditorDataCRUD().SaveQueryOutParameter, package);
+            response.ThrowExceptionIfError();
+            return response;
         }
 
         #endregion

@@ -7,20 +7,6 @@ Ext.define('FormGenerator.editor.Queries', {
     get: function () {
         return this.queries;
     },
-    getFreeID:function(){
-        var IDs = [];
-        this.queries.forEach(function(item){
-            IDs.push(item['ID']);
-        });
-        var num;
-        while(true){
-            num = getRandomInt();
-            if (!Ext.Array.contains(num)){
-                break;
-            }
-        }
-        return num;
-    },
     getInParams:function(){
         var array = [];
         if (this.queries){
@@ -35,8 +21,8 @@ Ext.define('FormGenerator.editor.Queries', {
         return array;
     },
     add: function (query) {
+        var array = [];
         if (query.queryInParams){
-            var array = [];
             query.queryInParams.forEach(function(item){
                 var i = {
                     ID:undefined,
@@ -45,19 +31,18 @@ Ext.define('FormGenerator.editor.Queries', {
                     queryTypeID:item.get('queryTypeID'),
                     queryID:undefined,
                     query_ID:query['_ID'], // случайный не настоящий ID
-                    controlName:item.get('value'),
-                    controlString:item.get('rawValue')
+                    controlName:item.get('value')
                 };
                 array.push(i);
             });
-            var obj = {
-                ID:undefined,
-                _ID:query['_ID'], // случайный не настоящий ID
-                queryTypeID:query['queryTypeID'],
-                sqlText:query['queryType'],
-                queryInParams:array
-            };
         }
+        var obj = {
+            ID:undefined,
+            _ID:query['_ID'], // случайный не настоящий ID
+            queryTypeID:query['queryTypeID'],
+            sqlText:query['sqlText'],
+            queryInParams:array
+        };
         this.queries.push(obj);
     },
     clear: function () {

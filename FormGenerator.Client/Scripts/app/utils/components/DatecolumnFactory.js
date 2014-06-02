@@ -5,7 +5,7 @@ datecolumnFactory = function (win, cmp, selectedRecord) {
     var body = cmp.body || cmp;
     var form = win.down('form[name=mainPanel]');
     var propertiesGrid = win.down('propertygrid[name=properties]');
-    var num = getRandomInt();
+    var num = FormGenerator.editor.Random.get();
     return Ext.create('Ext.grid.column.Date', {
         xtype:'datecolumn',
         header: 'Моя колонка',

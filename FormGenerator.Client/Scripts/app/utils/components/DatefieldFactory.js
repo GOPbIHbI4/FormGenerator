@@ -15,7 +15,7 @@ datefieldFactory = function (win, cmp, selectedRecord) {
         value:new Date(),
         format:'d.m.Y',
         submitFormat:'Y-m-dTH:i:s',
-        name:'sencha' + 'datefield' + getRandomInt(),
+        name:'sencha' + 'datefield' + FormGenerator.editor.Random.get(),
         width: 195,
         readOnly:true,
         form:form,

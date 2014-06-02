@@ -100,6 +100,29 @@ namespace FormGenerator.Client.Controllers
             }
         }
 
+        /// <summary>
+        /// Полное сохранение формы в транзакции
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        [JsonRequestBehavior]
+        public JsonResult SaveFormInTransaction(SaveFormModel formModel)
+        {
+            try
+            {
+                RequestObjectPackage<SaveFormModel> request = new RequestObjectPackage<SaveFormModel>()
+                {
+                    requestData = formModel
+                };
+                ResponsePackage response = new FormEditorLogic().SaveFormInTransaction(request).GetSelfOrExceptionIfError();
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
         #region Сохранение
 
         /// <summary>
@@ -125,7 +148,11 @@ namespace FormGenerator.Client.Controllers
                 ResponsePackage responseQuery = new FormEditorLogic().SaveQueries(req).GetSelfOrExceptionIfError();
                 // сохранить всю форму
                 ResponsePackage response = new FormEditorLogic().SaveAllForm(request).GetSelfOrExceptionIfError();
-                return Json(response);
+                // задать controlID евентам
+                ResponsePackage responseSetControlID = new FormEditorLogic().SetEventControlID(request).GetSelfOrExceptionIfError();
+                // сохранить евенты
+                ResponsePackage responseEvents = new FormEditorLogic().SaveAllEvents(request).GetSelfOrExceptionIfError();
+                return Json(responseEvents);
             }
             catch (Exception ex)
             {
@@ -133,6 +160,7 @@ namespace FormGenerator.Client.Controllers
             }
         }
 
+        
         /// <summary>
         /// Функция сохранения формы для редактора форм
         /// </summary>

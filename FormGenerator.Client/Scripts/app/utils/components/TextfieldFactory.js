@@ -13,7 +13,7 @@ textfieldFactory = function (win, cmp, selectedRecord) {
         fieldLabel:'Мой текст',
         labelWidth:100,
         readOnly:true,
-        name:'sencha' + 'textfield' + getRandomInt(),
+        name:'sencha' + 'textfield' + FormGenerator.editor.Random.get(),
         width: 200,
         form:form,
         record:selectedRecord,

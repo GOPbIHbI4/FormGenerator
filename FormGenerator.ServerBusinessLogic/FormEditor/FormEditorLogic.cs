@@ -26,7 +26,7 @@ namespace FormGenerator.Server
             int formID = package.requestID;
             OpenFormModel result = new OpenFormModel();
             // форма
-            result.form = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new FormsRepository().GetFormByID, package).GetDataOrExceptionIfError();
+            result.form = new DBUtils().RunSqlAction(new FormsRepository().GetFormByID, package).GetDataOrExceptionIfError();
             // все контролы формы
             List<ControlListEntity> controls = new ControlsLogic().GetControlsByFormID(package).GetDataOrExceptionIfError();
             // все свойства формы
@@ -37,6 +37,9 @@ namespace FormGenerator.Server
             {
                 OpenControlModel o = new OpenControlModel();
                 o.control = ctrl;
+                // получить для контрола события
+                RequestPackage eventRequest = new RequestPackage(){ requestID =ctrl.ID };
+                o.events = new DBUtils().RunSqlAction(new EventEditorDataCRUD().GetEventsByControlID, eventRequest).GetDataOrExceptionIfError();
                 foreach (ControlPropertyViewModel prop in properties)
                 {
                     if (prop.controlID == ctrl.ID)
@@ -48,6 +51,8 @@ namespace FormGenerator.Server
                         }
                     }
                 }
+                RequestPackage controlPack = new RequestPackage() { requestID = o.control.ID };
+                o.data = new DBUtils().RunSqlAction(new QueryEditorDataCRUD().GetQueryDataByControlID, controlPack).GetDataOrExceptionIfError();
                 openControls.Add(o);
             }
 
@@ -72,7 +77,19 @@ namespace FormGenerator.Server
             }
 
             result.root = root;
+            result.queries = new DBUtils().RunSqlAction(new QueryEditorDataCRUD().GetQueriesByFormID, package).GetDataOrExceptionIfError();
+
             return new ResponseObjectPackage<OpenFormModel>() { resultData = result };
+        }
+
+        /// <summary>
+        /// Функция полного сохранения формы в транзакции
+        /// </summary>
+        /// <param name="package"></param>
+        /// <returns></returns>
+        public ResponsePackage SaveFormInTransaction(RequestObjectPackage<SaveFormModel> package)
+        {
+            return new DBUtils().RunSqlAction(new FormEditorDataCRUD().SaveFormInTransaction, package);
         }
 
         #region Сохранение
@@ -245,6 +262,144 @@ namespace FormGenerator.Server
         }
 
         /// <summary>
+        /// Задать параметрам событий ControlID после сохранения контролов
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public ResponsePackage SetEventControlID(RequestObjectPackage<SaveControlModel> obj)
+        {
+            SaveControlModel root = obj.requestData;
+            List<SaveControlModel> controls = new List<SaveControlModel>();
+            Action<SaveControlModel> GetControlsList = null;
+            GetControlsList = delegate(SaveControlModel cur)
+            {
+                controls.Add(cur);
+                // рекурсия
+                if (cur.items != null)
+                {
+                    foreach (SaveControlModel item in cur.items)
+                    {
+                        GetControlsList(item);
+                    }
+                }
+            };
+            GetControlsList(root);
+
+            Action<SaveControlModel> SetControlID = null;
+            SetControlID = delegate(SaveControlModel cur)
+            {
+                // заполняем для эвентов controlID
+                if (cur.events != null)
+                {
+                    foreach (SaveEvent _event in cur.events)
+                    {
+                        if (_event.actions != null)
+                        {
+                            foreach (SaveAction action in _event.actions)
+                            {
+                                if (action.parameters != null)
+                                {
+                                    foreach (SaveActionParam param in action.parameters)
+                                    {
+                                        foreach (SaveControlModel control in controls)
+                                        {
+                                            if (control.properties.FindAll(x => x.property == "name").FirstOrDefault().value == param.controlName)
+                                            {
+                                                param.controlID = control.control.ID;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // рекурсия
+                if (cur.items != null)
+                {
+                    foreach (SaveControlModel item in cur.items)
+                    {
+                        SetControlID(item);
+                    }
+                }
+            };
+            SetControlID(root);
+
+            return new ResponsePackage();
+        }
+
+        /// <summary>
+        /// Сохранить евенты после сохранения формы
+        /// </summary>
+        /// <param name="package"></param>
+        /// <returns></returns>
+        public ResponseObjectPackage<SaveControlModel> SaveAllEvents(RequestObjectPackage<SaveControlModel> package)
+        {
+            // сохранить евенты
+            if (package.requestData.events != null)
+            {
+                foreach (SaveEvent _event in package.requestData.events)
+                {
+                    RequestObjectPackage<EventModel> requestEvent = new RequestObjectPackage<EventModel>()
+                    {
+                        requestData = new EventModel()
+                        {
+                            controlID = package.requestData.control.ID,
+                            eventTypeID = _event.eventTypeID
+                        }
+                    };
+                    ResponsePackage respEvent = new DBUtils().RunSqlAction(EventsRepository.Save, requestEvent).GetSelfOrExceptionIfError();
+                    _event.ID = respEvent.GetIdOrExceptionIfError();
+                    if (_event.actions != null)
+                    {
+                        foreach (SaveAction action in _event.actions)
+                        {
+                            RequestObjectPackage<ActionModel> requestAction = new RequestObjectPackage<ActionModel>()
+                            {
+                                requestData = new ActionModel()
+                                {
+                                    eventID = (int)_event.ID,
+                                    orderNumber = action.orderNumber,
+                                    actionTypeID = action.actionTypeID
+                                }
+                            };
+                            ResponsePackage respAction = new DBUtils().RunSqlAction(ActionsRepository.Save, requestAction).GetSelfOrExceptionIfError();
+                            action.ID = respAction.GetIdOrExceptionIfError();
+                            if (action.parameters != null)
+                            {
+                                foreach (SaveActionParam param in action.parameters)
+                                {
+                                    RequestObjectPackage<ActionParameterModel> requestParam = new RequestObjectPackage<ActionParameterModel>()
+                                    {
+                                        requestData = new ActionParameterModel()
+                                        {
+                                            actionID = (int)action.ID,
+                                            actionParameterTypeID = param.actionInParamTypeID,
+                                            controlID = (int)param.controlID
+                                        }
+                                    };
+                                    ResponsePackage respParam = new DBUtils().RunSqlAction(ActionParametersRepository.Save, requestParam).GetSelfOrExceptionIfError();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // рекурсия
+            if (package.requestData.items != null)
+            {
+                foreach (SaveControlModel item in package.requestData.items)
+                {
+                    RequestObjectPackage<SaveControlModel> propItem = new RequestObjectPackage<SaveControlModel>() { requestData = item };
+                    ResponsePackage saveItemResponse = SaveAllEvents(propItem).GetSelfOrExceptionIfError();
+                }
+            }
+
+            return new ResponseObjectPackage<SaveControlModel>() { resultData = package.requestData };
+        }
+
+        /// <summary>
         /// Функция сохранения свойства контрола формы для редактора форм.
         /// </summary>
         /// <param name="package"></param>
@@ -281,6 +436,11 @@ namespace FormGenerator.Server
                 }
             };
             action(package.requestData);
+            // Для контролов удалить все евенты
+            RequestPackage delEvents = new RequestPackage() { requestID = package.requestID };
+            ResponsePackage responseDelEvents = new DBUtils().RunSqlAction(new EventEditorDataCRUD().DeleteAllEvents, delEvents);
+            responseDelEvents.ThrowExceptionIfError();
+            // ID контролов для удаления
             List<int> IDsToDelete = oldControls.FindAll(x => newIDs.Contains(x.ID) == false).OrderByDescending(x => x.orderNumber).Select(x => x.ID).ToList();
             if (IDsToDelete != null && IDsToDelete.Count > 0)
             {
@@ -342,7 +502,9 @@ namespace FormGenerator.Server
             List<ControlTypeDependenciesListEntity> depRes = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new FormEditorDataCRUD().GetControlTypeDependenciesList, package).GetDataOrExceptionIfError();
             // получим список свойств
             List<PropertyTypeListEntity> propRes = new DBUtils(new FireBirdConnectionFactory()).RunSqlAction(new FormEditorDataCRUD().GetPropertyTypeList, package).GetDataOrExceptionIfError();
-            
+            // получим список свойств
+            List<EventType> eventRes = new EventEditorLogic().GetEventTypeList(package).GetDataOrExceptionIfError();
+            // устанавливаем свойства
             foreach (ControlTypeListEntity type in res)
             {
                 type.SetComponentIcon();
@@ -358,6 +520,13 @@ namespace FormGenerator.Server
                     if (type.ID == prop.controlTypeID)
                     {
                         type.properties.Add(prop.property, prop.GetRightDefaultValue());
+                    }
+                }
+                foreach (EventType ev in eventRes)
+                {
+                    if (type.ID == ev.controlTypeID)
+                    {
+                        type.events.Add(ev);
                     }
                 }
             }

@@ -12,6 +12,8 @@ namespace FormGenerator.Models
         public string name { get; set; }
         public List<ControlPropertyViewModel> properties { get; set; }
         public List<OpenControlModel> items { get; set; }
+        public List<OpenEvent> events { get; set; }
+        public QueryData data { get; set; }
 
         public OpenControlModel()
         {
@@ -24,5 +26,6 @@ namespace FormGenerator.Models
     {
         public FormListEntity form { get; set; }
         public OpenControlModel root { get; set; }
+        public List<OpenQuery> queries { get; set; }
     }
 }

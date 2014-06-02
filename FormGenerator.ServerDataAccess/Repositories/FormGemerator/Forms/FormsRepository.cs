@@ -69,7 +69,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="request">Объект-оболочка RequestPackage с формой в requestData</param>
         /// <param name="connectionID">Объект подключения к базе данных</param>
         /// <returns>Объект-оболочка ResponsePackage</returns>
-        public ResponsePackage SaveForm(RequestObjectPackage<FormModel> request, IDbConnection connectionID)
+        public ResponsePackage SaveForm(RequestObjectPackage<FormModel> request, IDbConnection connectionID, IDbTransaction transactionID)
         {
             FormModel obj = request.requestData;
             string sql = string.Empty;
@@ -93,9 +93,13 @@ namespace FormGenerator.ServerDataAccess
                     obj.dictionaryID == null ? "null" : obj.dictionaryID.ToString()
                 );
             }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
             res.ThrowExceptionIfError();
             return new ResponsePackage() { resultID = res.resultID };
+        }
+        public ResponsePackage SaveForm(RequestObjectPackage<FormModel> request, IDbConnection connectionID)
+        {
+            return this.SaveForm(request, connectionID, null);
         }
 
         /// <summary>
@@ -112,6 +116,30 @@ namespace FormGenerator.ServerDataAccess
             );
             DBUtils.ExecuteSQL(sql, connectionID).ThrowExceptionIfError();
             return new ResponsePackage();
+        }
+
+        /// <summary>
+        /// Удалить свойства по ID формы
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="connectionID"></param>
+        /// <param name="transactionID"></param>
+        /// <returns></returns>
+        public ResponsePackage DeletePropertiesByFormID(RequestPackage request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            int formID = request.requestID;
+            string sql = string.Format(
+                " delete from control_properties where control_id in (" +
+                "   select control_id from controls where form_id = {0} " +
+                ") ",
+                formID
+            );
+            DBUtils.ExecuteSQL(sql, connectionID, false, transactionID).ThrowExceptionIfError();
+            return new ResponsePackage();
+        }
+        public ResponsePackage DeletePropertiesByControlID(RequestPackage request, IDbConnection connectionID)
+        {
+            return this.DeletePropertiesByFormID(request, connectionID, null);
         }
     }
 }

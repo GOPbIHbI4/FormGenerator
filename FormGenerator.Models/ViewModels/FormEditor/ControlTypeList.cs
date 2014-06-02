@@ -16,12 +16,14 @@ namespace FormGenerator.Models
         public string icon { get; set; }
         public Dictionary<string, object> properties { get; set; } // свойства
         public QueryData data { get; set; } // данные
+        public List<EventType> events { get; set; } // события
 
         public ControlTypeListEntity()
         {
             this.childComponents = new List<string>();
             this.properties = new Dictionary<string, object>();
             this.data = new QueryData();
+            this.events = new List<EventType>();
         }
 
         /// <summary>

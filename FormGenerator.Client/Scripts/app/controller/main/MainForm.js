@@ -45,7 +45,7 @@
     },
 
     onTest3: function (button) {
-        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.formGenerator.dictionaries.DictionaryTypesAdministrator');
-        FormGenerator.utils.Windows.open('DictionaryTypesAdministrator', {});
+        FormGenerator.utils.ControllerLoader.load('FormGenerator.controller.editor.event.EventAction');
+        FormGenerator.utils.Windows.open('EventAction', {});
     }
 });

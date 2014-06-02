@@ -51,6 +51,7 @@
     <Compile Include="Infrastructure\DBUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\FormEditor\QueryEditorDataCRUD.cs" />
+    <Compile Include="Queries\FormEditor\EventEditorDataCRUD.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlsRepository.cs" />
     <Compile Include="Queries\FormGenerator\DictionaryTypesAdministrator.cs" />

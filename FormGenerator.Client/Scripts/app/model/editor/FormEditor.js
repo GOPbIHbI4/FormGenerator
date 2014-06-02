@@ -15,7 +15,8 @@ Ext.define('FormGenerator.model.editor.Components', {
         'properties',
         'queryParams',
         'childComponents',
-        'data' // данные
+        'data',     // данные
+        'events'    // события
     ]
 });
 
@@ -47,14 +48,6 @@ Ext.define('FormGenerator.model.editor.QueryField', {
 });
 
 Ext.define('FormGenerator.model.editor.DictionaryField', {
-    extend: 'Ext.data.Model',
-    fields: [
-        'ID',
-        'name'
-    ]
-});
-
-Ext.define('FormGenerator.model.editor.Events', {
     extend: 'Ext.data.Model',
     fields: [
         'ID',

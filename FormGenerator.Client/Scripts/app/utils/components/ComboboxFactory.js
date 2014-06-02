@@ -17,7 +17,7 @@ comboboxFactory = function (win, cmp, selectedRecord) {
         fieldLabel:'Мой комбобокс',
         labelWidth:100,
         emptyText:'MyCombobox...',
-        name:'sencha' + 'combobox' + getRandomInt(),
+        name:'sencha' + 'combobox' + FormGenerator.editor.Random.get(),
         width: 300,
 
         //второй триггер очистки комбобокса

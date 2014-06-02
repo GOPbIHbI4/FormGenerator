@@ -26,7 +26,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="package"></param>
         /// <param name="connectionID"></param>
         /// <returns></returns>
-        public static ResponsePackage SaveControlQueryMapping(RequestObjectPackage<ControlQueryMappingModel> package, IDbConnection connectionID)
+        public static ResponsePackage SaveControlQueryMapping(RequestObjectPackage<ControlQueryMappingModel> package, IDbConnection connectionID, IDbTransaction transactionID)
         {
             ControlQueryMappingModel obj = package.requestData;
             string sql = string.Empty;
@@ -54,9 +54,13 @@ namespace FormGenerator.ServerDataAccess
                     obj.queryID
                 );
             }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
             res.ThrowExceptionIfError();
             return new ResponsePackage() { resultID = res.resultID };
+        }
+        public static ResponsePackage SaveControlQueryMapping(RequestObjectPackage<ControlQueryMappingModel> package, IDbConnection connectionID)
+        {
+            return SaveControlQueryMapping(package, connectionID, null);
         }
 
         public static ResponseObjectPackage<List<ControlQueryMappingModel>> GetBySearchTemplate(RequestObjectPackage<ControlQueryMappingSearchTemplate> package, IDbConnection connectionID)

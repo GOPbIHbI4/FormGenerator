@@ -75,15 +75,16 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
     form_id: undefined,
     form_name: undefined,
     form_dictionary_id: undefined,
-
-    queries:undefined,
+    inParams:undefined,
+    outParams:undefined,
 
     layout: {
         type: 'border'
     },
 
     requires: [
-        'Scripts.app.utils.ux.ClearButton'
+        'Scripts.app.utils.ux.ClearButton',
+        'Scripts.app.utils.ux.CheckColumn'
     ],
 
     initComponent: function () {
@@ -96,8 +97,7 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
         var queryFieldStore = Ext.create('FormGenerator.store.editor.QueryField');
         var queryKeyFieldStore = Ext.create('FormGenerator.store.editor.QueryField');
         var dictionaryFieldStore = Ext.create('FormGenerator.store.editor.DictionaryField');
-        var eventsStore = Ext.create('FormGenerator.store.editor.Events');
-        var paramsStore = Ext.create('FormGenerator.store.editor.Params');
+        var eventsStore = Ext.create('FormGenerator.store.editor.event.ComponentEvent');
 
         Ext.applyIf(me, {
 
@@ -152,6 +152,15 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                     iconAlign: 'left',
                                     scale: 'medium',
                                     text: 'Переименовать форму'
+                                },
+                                {
+                                    xtype: 'menuitem',
+                                    action: 'onFormParams',
+                                    icon: 'Scripts/resources/icons/up_down.png',
+                                    border: true,
+                                    iconAlign: 'left',
+                                    scale: 'medium',
+                                    text: 'Параметры формы'
                                 },
                                 {
                                     xtype: 'menuitem',
@@ -618,13 +627,22 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                                     xtype:'gridcolumn',
                                                     flex:1,
                                                     text:'Событие',
-                                                    dataIndex:'event'
+                                                    dataIndex:'name'
                                                 },
                                                 {
-                                                    xtype:'gridcolumn',
-                                                    flex:1,
                                                     text:'Обработчик',
-                                                    dataIndex:'handler'
+                                                    xtype:'gridcolumn',
+                                                    resizable:false,
+                                                    dataIndex:'hasHandler',
+                                                    width:70,
+                                                    sortable:false,
+                                                    renderer:function(val, meta, record){
+                                                        if (record.get('actions') && record.get('actions').length > 0){
+                                                            return 'есть';
+                                                        } else {
+                                                            return 'нет';
+                                                        }
+                                                    }
                                                 }
                                             ],
                                             dockedItems:[
@@ -634,30 +652,33 @@ Ext.define('FormGenerator.view.editor.FormEditor', {
                                                     items:[
                                                         {
                                                             xtype:'button',
-                                                            scale:'small',
+                                                            scale:'medium',
                                                             border:true,
-                                                            icon:'Scripts/resources/icons/add_16.png',
-                                                            action: 'onAddEventHandler'
+                                                            icon:'Scripts/resources/icons/find.png',
+                                                            tooltip:'Посмотреть событие',
+                                                            action: 'onShowEvent'
                                                         },
                                                         {
                                                             xtype:'tbseparator'
                                                         },
                                                         {
                                                             xtype:'button',
-                                                            scale:'small',
+                                                            scale:'medium',
                                                             border:true,
-                                                            icon:'Scripts/resources/icons/edit_16.png',
-                                                            action: 'onEditEventHandler'
+                                                            icon:'Scripts/resources/icons/edit.png',
+                                                            tooltip:'Редактировать событие',
+                                                            action: 'onEditEvent'
                                                         },
                                                         {
                                                             xtype:'tbseparator'
                                                         },
                                                         {
                                                             xtype:'button',
-                                                            scale:'small',
+                                                            scale:'medium',
                                                             border:true,
-                                                            icon:'Scripts/resources/icons/delete_16.png',
-                                                            action: 'onDeleteEventHandler'
+                                                            icon:'Scripts/resources/icons/delete.png',
+                                                            tooltip:'Удалить событие',
+                                                            action: 'onDeleteEvent'
                                                         }
                                                     ]
                                                 }

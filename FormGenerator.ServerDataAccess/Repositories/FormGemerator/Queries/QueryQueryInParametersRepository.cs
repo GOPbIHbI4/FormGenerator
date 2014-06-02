@@ -25,7 +25,7 @@ namespace FormGenerator.ServerDataAccess
         /// <param name="package"></param>
         /// <param name="connectionID"></param>
         /// <returns></returns>
-        public static ResponsePackage SaveQueryQueryInParameter(RequestObjectPackage<QueryQueryInParameterModel> package, IDbConnection connectionID)
+        public static ResponsePackage SaveQueryQueryInParameter(RequestObjectPackage<QueryQueryInParameterModel> package, IDbConnection connectionID, IDbTransaction transactionID)
         {
             QueryQueryInParameterModel obj = package.requestData;
             string sql = string.Empty;
@@ -53,9 +53,13 @@ namespace FormGenerator.ServerDataAccess
                     obj.controlID
                 );
             }
-            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true);
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
             res.ThrowExceptionIfError();
             return new ResponsePackage() { resultID = res.resultID };
+        }
+        public static ResponsePackage SaveQueryQueryInParameter(RequestObjectPackage<QueryQueryInParameterModel> package, IDbConnection connectionID)
+        {
+            return SaveQueryQueryInParameter(package, connectionID, null);
         }
 
         public static ResponseObjectPackage<List<QueryQueryInParameterModel>> GetBySearchTemplate(RequestObjectPackage<QueryQueryInParameterSearchTemplate> package, IDbConnection connectionID)

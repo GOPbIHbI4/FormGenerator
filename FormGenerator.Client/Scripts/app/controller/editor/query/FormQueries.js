@@ -18,9 +18,6 @@
             'FormQueries': {
                 afterrender: this.onLoad
             },
-            'FormQueries button[action=onAddDictionary]': {
-                click: this.onAddDictionary
-            },
             'FormQueries button[action=onSave]': {
                 click: this.onSave
             },
@@ -110,7 +107,7 @@
         } else {
             inParams.getStore().load({
                 params: {
-                    ID: query.getValue()
+                    ID: query.getValue() + ''
                 }
             });
         }
@@ -131,7 +128,7 @@
                 callback:function(){
                     var newQuery = query.getStore().findRecord('ID', query_id);
                     if (newQuery) {
-                        query.getSelectionModel().select(query);
+                        query.setValue(query_id);
                     }
                 }
             });
@@ -154,17 +151,6 @@
         var createQuery = FormGenerator.utils.Windows.open('CreateQuery',{
             queryTypeID:query.getValue()
         }, null, true);
-        createQuery.on('QuerySaved', function (winQuery, query_id) {
-            // перегрузить комбо с запросами
-            query.getStore().load({
-                callback:function(){
-                    var newQuery = query.getStore().findRecord('ID', query_id);
-                    if (newQuery) {
-                        query.getSelectionModel().select(query);
-                    }
-                }
-            });
-        });
     },
 
     /**
@@ -186,10 +172,12 @@
             return;
         }
 
+        var ID = FormGenerator.editor.Random.get(); // случайный не настоящий ID
         var obj = {
-            _ID:FormGenerator.editor.Queries.getFreeID(), //getRandomInt(), // случайный не настоящий ID   FormGenerator.editor.Queries.getFreeID()
+            ID:ID,
+            _ID:ID, // случайный не настоящий ID
             queryTypeID:query.getValue(),
-            queryType:query.getRawValue(),
+            sqlText:query.getRawValue(),
             queryInParams:inParams.getStore().data.items
         };
         // Сгененировать событие, сообщающее основной форме о том,

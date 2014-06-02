@@ -35,6 +35,39 @@ namespace FormGenerator.ServerDataAccess
             return new ResponseObjectPackage<List<FormOutParameterModel>>() { resultData = list };
         }
 
+        public static ResponsePackage SaveOutParam(RequestObjectPackage<FormOutParameterModel> request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            FormOutParameterModel obj = request.requestData;
+            string sql = string.Empty;
+
+            if (obj.ID > 0)
+            {
+                sql = string.Format(
+                    " update FORM_OUT_PARAMETERS set NAME = '{0}', CONTROL_ID = {1} " +
+                    " where ID = {2} returning id ",
+                    obj.name ?? "",
+                    obj.controlID,
+                    obj.ID
+                );
+            }
+            else
+            {
+                sql = string.Format(
+                    " insert into FORM_OUT_PARAMETERS (NAME, CONTROL_ID) " +
+                    " values ('{0}', {1}) returning id ",
+                    obj.name ?? "",
+                    obj.controlID
+                );
+            }
+            ResponseTablePackage res = DBUtils.ExecuteSQL(sql, connectionID, true, transactionID);
+            res.ThrowExceptionIfError();
+            return new ResponsePackage() { resultID = res.resultID };
+        }
+        public static ResponsePackage SaveOutParam(RequestObjectPackage<FormOutParameterModel> request, IDbConnection connectionID)
+        {
+            return SaveOutParam(request, connectionID, null);
+        }
+
         public static ResponseObjectPackage<List<FormOutParameterModel>> GetByFormID(RequestPackage package, IDbConnection connectionID)
         {
             int formID = package.requestID;
@@ -50,6 +83,21 @@ namespace FormGenerator.ServerDataAccess
 
             List<FormOutParameterModel> list = DBOrmUtils.OpenSqlList<FormOutParameterModel>(sql, FormOutParametersRepository.mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<FormOutParameterModel>>() { resultData = list };
+        }
+
+        public static ResponsePackage DeleteByFormID(RequestPackage request, IDbConnection connectionID, IDbTransaction transactionID)
+        {
+            int formID = request.requestID;
+            string sql = string.Format(
+                " delete from FORM_OUT_PARAMETERS " +
+                " where control_id in (" +
+                "   select control_id from controls where form_id = {0} " +
+                ") ",
+                formID
+            );
+            DBUtils.ExecuteSQL(sql, connectionID, false, transactionID).ThrowExceptionIfError();
+
+            return new ResponsePackage();
         }
 
         public static string ToSqlWhere(FormOutParameterSearchTemplate obj)

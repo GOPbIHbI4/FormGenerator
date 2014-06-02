@@ -12,7 +12,7 @@ fieldsetFactory = function (win, cmp, selectedRecord) {
         padding:2,
         collapsible: true,
         title:'Моя группа',
-        name:'sencha' + 'fieldset' + getRandomInt(),
+        name:'sencha' + 'fieldset' + FormGenerator.editor.Random.get(),
         width: 200,
         height:100,
         form:form,

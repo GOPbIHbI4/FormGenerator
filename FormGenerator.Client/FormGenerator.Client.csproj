@@ -122,6 +122,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\FormEditor\FormEditorController.cs" />
     <Compile Include="Controllers\FormEditor\QueryEditorController.cs" />
+    <Compile Include="Controllers\FormEditor\EventEditorController.cs" />
     <Compile Include="Controllers\FormGenerator\DictionariesController.cs" />
     <Compile Include="Controllers\FormGenerator\QueriesController.cs" />
     <Compile Include="Controllers\FormGenerator\FormsController.cs" />

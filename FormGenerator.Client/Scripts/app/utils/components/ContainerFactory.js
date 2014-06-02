@@ -18,7 +18,7 @@ containerFactory = function (win, cmp, selectedRecord, layout) {
         layout:{
             type: layout || 'hbox'
         },
-        name:'sencha' + 'container' + getRandomInt(),
+        name:'sencha' + 'container' + FormGenerator.editor.Random.get(),
         width: 200,
         height:100,
         resizable:true,
