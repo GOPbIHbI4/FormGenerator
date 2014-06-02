@@ -28,19 +28,19 @@ namespace FormGenerator.ServerBusinessLogic
             return response;
         }
 
-        public ResponsePackage SaveDictionaryData(Dictionary<string, string> row, int dictionaryID)
+        public ResponsePackage SaveDictionaryData(Dictionary<int, string> row, int dictionaryID)
         {
             DictionaryValue dictVal = this.FillDictionaryValue(row, dictionaryID);
             return this.SaveDictionaryData(dictVal, dictionaryID);
         }
 
-        public ResponsePackage DeleteDictionaryData(Dictionary<string, string> row, int dictionaryID)
+        public ResponsePackage DeleteDictionaryData(Dictionary<int, string> row, int dictionaryID)
         {
             DictionaryValue dictVal = this.FillDictionaryValue(row, dictionaryID);
             return this.DeleteDictionaryData(dictVal, dictionaryID);
         }
 
-        private DictionaryValue FillDictionaryValue(Dictionary<string, string> row, int dictionaryID)
+        private DictionaryValue FillDictionaryValue(Dictionary<int, string> row, int dictionaryID)
         {
             Dictionary dictionary = new DictionariesLogic().GetDictionaryViewModel(dictionaryID).GetDataOrExceptionIfError();
             DictionaryValue dictVal = new DictionaryValue(dictionary, row);

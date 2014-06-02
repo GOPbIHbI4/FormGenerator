@@ -52,6 +52,7 @@
     <Compile Include="FormGenerator\Dictionaries\DictionaryPrimaryKeysLogic.cs" />
     <Compile Include="FormGenerator\Dictionaries\DictionaryForeignKeysLogic.cs" />
     <Compile Include="FormGenerator\FormControls\ControlPropertiesLogic.cs" />
+    <Compile Include="FormGenerator\FormControls\EventActionsLogic.cs" />
     <Compile Include="FormGenerator\Property\ControlTypePropertyTypeLogic.cs" />
     <Compile Include="FormGenerator\FormControls\FormActionLogic.cs" />
     <Compile Include="FormGenerator\Property\ControlPropertyTypeLogic.cs" />
@@ -78,7 +79,9 @@
       <Name>FormGenerator.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="FormGenerator\Events\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

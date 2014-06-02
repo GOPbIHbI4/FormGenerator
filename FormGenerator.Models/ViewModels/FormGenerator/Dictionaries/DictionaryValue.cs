@@ -14,16 +14,16 @@ namespace FormGenerator.Models
             this.fields = fields_;
         }
 
-        public DictionaryValue(Dictionary dictionary_, Dictionary<string, string> row)
+        public DictionaryValue(Dictionary dictionary_, Dictionary<int, string> row)
         {
             this.dictionary = dictionary_;
             this.fields = new List<DictionaryFieldValue>();
             foreach (DictionaryField field in dictionary_.fields)
             {
                 DictionaryFieldValue item = null;
-                if (row.ContainsKey(field.columnName))
+                if (row.ContainsKey(field.ID))
                 {
-                    item = new DictionaryFieldValue(field, row[field.columnName]);
+                    item = new DictionaryFieldValue(field, row[field.ID]);
                 }
                 else
                 {

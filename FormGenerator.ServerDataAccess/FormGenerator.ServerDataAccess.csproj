@@ -53,6 +53,7 @@
     <Compile Include="Queries\FormEditor\QueryEditorDataCRUD.cs" />
     <Compile Include="Queries\FormEditor\EventEditorDataCRUD.cs" />
     <Compile Include="Queries\FormGenerator\DynamicCRUD.cs" />
+    <Compile Include="Queries\FormGenerator\EventActionsCRUD.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlsRepository.cs" />
     <Compile Include="Queries\FormGenerator\DictionaryTypesAdministrator.cs" />
     <Compile Include="Repositories\FormGemerator\Controls\ControlTypeRepository.cs" />

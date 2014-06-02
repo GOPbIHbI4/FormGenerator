@@ -58,7 +58,8 @@ namespace FormGenerator.Client
         {
             try
             {
-                ResponsePackage result = new DictionariesDataLogic().SaveDictionaryData(row, dictionaryID);
+                Dictionary<int, string> dict = row.ToDictionary(e => Int32.Parse(e.Key), e => e.Value);
+                ResponsePackage result = new DictionariesDataLogic().SaveDictionaryData(dict, dictionaryID);
                 return Json(result);
             }
             catch (Exception ex)
@@ -72,7 +73,8 @@ namespace FormGenerator.Client
         {
             try
             {
-                ResponsePackage result = new DictionariesDataLogic().DeleteDictionaryData(row, dictionaryID);
+                Dictionary<int, string> dict = row.ToDictionary(e => Int32.Parse(e.Key), e => e.Value);
+                ResponsePackage result = new DictionariesDataLogic().DeleteDictionaryData(dict, dictionaryID);
                 return Json(result);
             }
             catch (Exception ex)

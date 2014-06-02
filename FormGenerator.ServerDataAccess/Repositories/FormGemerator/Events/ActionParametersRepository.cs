@@ -28,8 +28,21 @@ namespace FormGenerator.ServerDataAccess
                 "where {0}",
                     ToSqlWhere(obj)
             );
-            ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
-            res.ThrowExceptionIfError();
+
+            List<ActionParameterModel> list = DBOrmUtils.OpenSqlList<ActionParameterModel>(sql, mappingDictionary, connectionID);
+            return new ResponseObjectPackage<List<ActionParameterModel>>() { resultData = list };
+        }
+
+        public static ResponseObjectPackage<List<ActionParameterModel>> GetByActionsList(RequestObjectPackage<List<ActionModel>> request, IDbConnection connectionID)
+        {
+            List<int> obj = (request.requestData ?? new List<ActionModel>()).Select(e => e.ID).ToList();
+            obj.Add(-1);
+            string sql = string.Format(
+                "select ID, ACTION_ID, ACTION_PARAMETER_TYPE_ID, CONTROL_ID " + Environment.NewLine +
+                "from ACTION_PARAMETERS " + Environment.NewLine +
+                "where ACTION_ID in ({0})",
+                    string.Join(", ", obj)
+            );
 
             List<ActionParameterModel> list = DBOrmUtils.OpenSqlList<ActionParameterModel>(sql, mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<ActionParameterModel>>() { resultData = list };

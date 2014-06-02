@@ -1,11 +1,16 @@
 ﻿Ext.define('FormGenerator.utils.formGenerator.GeneratorFormFactory', {
     singleton: true,
+    requires:[
+        'FormGenerator.utils.formGenerator.GeneratorEventsFactory'
+    ],
 
     createWindow: function (formID, formInParameters) {
         var _this = this;
+        var newWin = null;
         formInParameters = formInParameters || [];
         Ext.Ajax.request({
             url: 'Forms/BuildForm',
+            async:false,
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             params: {
@@ -21,7 +26,9 @@
                     window.query('combobox, textfield, datefield, gridpanel').forEach(function (item) {
                         _this._initializeControl(window, item);
                     });
+                    FormGenerator.utils.formGenerator.GeneratorEventsFactory.addEvents(window);
                     window.show();
+                    newWin = window;
                 } else {
                     FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, jsonResp.resultCode);
                 }
@@ -30,6 +37,7 @@
                 FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
             }
         });
+        return newWin;
     },
 
     _parseBuildFormResult: function (window, formInParameters) {
@@ -44,7 +52,7 @@
         WindowObject.IN_PARAMETERS.forEach(function (item) {
             item.value = null;
             formInParameters.forEach(function (param) {
-                if (item.ID == param.ID) {
+                if (item.name == param.name) {
                     item.value = param.value;
                 }
             });
@@ -70,6 +78,7 @@
         result.CONTROL_TYPE_ID = control.controlTypeID;
         result.QUERY_MAPPINGS = control.controlQueryMappings;
         result.DICTIONARY_MAPPINGS = control.controlDictionaryMappings;
+        result.EVENTS = control.events;
         result.items = [];
         result.dockedItems = [];
         result.columns = [];
@@ -196,7 +205,6 @@
         if (control.initialized) {
             return;
         }
-        debugger;
 
         if (control.QUERY_MAPPINGS != null && control.QUERY_MAPPINGS.length > 0) {
             switch (control.CONTROL_TYPE_ID) {

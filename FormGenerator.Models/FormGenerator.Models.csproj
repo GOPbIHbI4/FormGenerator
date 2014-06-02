@@ -104,6 +104,10 @@
     <Compile Include="ViewModels\FormEditor\Query\OpenQuery.cs" />
     <Compile Include="ViewModels\FormEditor\SaveForm\Control.cs" />
     <Compile Include="ViewModels\FormGenerator\Dictionaries\Administrator\DictionaryField.cs" />
+    <Compile Include="ViewModels\FormGenerator\Events\Event.cs" />
+    <Compile Include="ViewModels\FormGenerator\Events\EventActionParameter.cs" />
+    <Compile Include="ViewModels\FormGenerator\Events\EventAction.cs" />
+    <Compile Include="ViewModels\FormGenerator\Events\ActiontypeProperty.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\ControlProperty.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\Control.cs" />
     <Compile Include="ViewModels\FormGenerator\FormControls\Form.cs" />

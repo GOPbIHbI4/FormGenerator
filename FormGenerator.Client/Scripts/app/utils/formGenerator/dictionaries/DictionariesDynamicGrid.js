@@ -60,13 +60,19 @@
         grid.on('edit', function (editor, e) {
             var result = false;
             win.body.mask('Сохранение...');
+            var dataToSave = {};
+
+            grid.columns.forEach(function(column) {
+                dataToSave[column.dictionaryFieldID] = e.record.data[column.dataIndex];
+            });
+
             Ext.Ajax.request({
                 url: 'Dictionaries/SaveDictionaryData',
                 method: 'POST',
                 async:false,
                 headers: { 'Content-Type': 'application/json' },
                 jsonData: preparePostParameter({
-                    row: e.record.data,
+                    row: dataToSave,
                     dictionaryID: dictionaryID
                 }),
                 success: function (objServerResponse) {
@@ -164,6 +170,7 @@
         var textMetrics = new Ext.util.TextMetrics();
         var modelsFactory = FormGenerator.utils.formGenerator.GeneratorModelsFactory;
         var column = {
+            dictionaryFieldID:field.ID,
             xtype: modelsFactory._getColumnXtypeByValueTypeID(field.domainValueTypeID),
             minWidth: textMetrics.getWidth(field.name),
             header: field.name,

@@ -78,6 +78,7 @@ namespace FormGenerator.ServerBusinessLogic
         public ResponseObjectPackage<Control> BuildWindow(int formID)
         {
             List<Control> controls = this.GetControlsByFormID(formID).GetDataOrExceptionIfError();
+            controls = new EventActionsLogic().GetEventsbyControls(controls).GetDataOrExceptionIfError();
             List<ControlProperty> properties = this.GetControlPropertiesByFormID(formID).GetDataOrExceptionIfError();
             List<ControlDictionaryMappingModel> dictionaryMappings = this.GetControlDictionaryMappingByFormID(formID).GetDataOrExceptionIfError();
             List<ControlQueryMappingModel> queryMappings = this.GetControlQueryMappingByFormID(formID).GetDataOrExceptionIfError();

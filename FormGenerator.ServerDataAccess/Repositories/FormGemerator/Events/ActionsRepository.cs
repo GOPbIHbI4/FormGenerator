@@ -28,12 +28,26 @@ namespace FormGenerator.ServerDataAccess
                 "where {0}",
                     ToSqlWhere(obj)
             );
-            ResponseTablePackage res = DBUtils.OpenSQL(sql, connectionID);
-            res.ThrowExceptionIfError();
 
             List<ActionModel> list = DBOrmUtils.OpenSqlList<ActionModel>(sql, mappingDictionary, connectionID);
             return new ResponseObjectPackage<List<ActionModel>>() { resultData = list };
         }
+
+        public static ResponseObjectPackage<List<ActionModel>> GetByEventsList(RequestObjectPackage<List<EventModel>> request, IDbConnection connectionID)
+        {
+            List<int> obj = (request.requestData ?? new List<EventModel>()).Select(e => e.ID).ToList();
+            obj.Add(-1);
+            string sql = string.Format(
+                "select ID, EVENT_ID, ORDER_NUMBER, ACTION_TYPE_ID " + Environment.NewLine +
+                "from ACTIONS " + Environment.NewLine +
+                "where EVENT_ID in({0});",
+                    string.Join(", ", obj)
+            );
+
+            List<ActionModel> list = DBOrmUtils.OpenSqlList<ActionModel>(sql, mappingDictionary, connectionID);
+            return new ResponseObjectPackage<List<ActionModel>>() { resultData = list };
+        }
+
         public static string ToSqlWhere(ActionSearchTemplate obj)
         {
             string where = " 1 = 1";
