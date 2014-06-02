@@ -36,7 +36,7 @@
     },
 
     onTest2: function (button) {
-        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(58, [
+        FormGenerator.utils.formGenerator.GeneratorFormFactory.createWindow(30, [
             {
                 name:'PersonID',
                 value:1

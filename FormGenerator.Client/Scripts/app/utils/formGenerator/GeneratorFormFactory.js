@@ -6,9 +6,11 @@
 
     createWindow: function (formID, formInParameters) {
         var _this = this;
+        var newWin = null;
         formInParameters = formInParameters || [];
         Ext.Ajax.request({
             url: 'Forms/BuildForm',
+            async:false,
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             params: {
@@ -26,6 +28,7 @@
                     });
                     FormGenerator.utils.formGenerator.GeneratorEventsFactory.addEvents(window);
                     window.show();
+                    newWin = window;
                 } else {
                     FormGenerator.utils.MessageBox.show(jsonResp.resultMessage, null, jsonResp.resultCode);
                 }
@@ -34,6 +37,7 @@
                 FormGenerator.utils.MessageBox.show(objServerResponse.responseText, null, -1);
             }
         });
+        return newWin;
     },
 
     _parseBuildFormResult: function (window, formInParameters) {
@@ -201,7 +205,6 @@
         if (control.initialized) {
             return;
         }
-        debugger;
 
         if (control.QUERY_MAPPINGS != null && control.QUERY_MAPPINGS.length > 0) {
             switch (control.CONTROL_TYPE_ID) {

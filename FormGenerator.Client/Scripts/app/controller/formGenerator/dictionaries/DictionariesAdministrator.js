@@ -109,12 +109,17 @@
             FormGenerator.utils.MessageBox.show('Выберите удаляемую строку!', null, 1);
             return;
         }
+        var dataToSave = {};
+
+        grid_dictionary.columns.forEach(function(column) {
+            dataToSave[column.dictionaryFieldID] = row.data[column.dataIndex];
+        });
         Ext.Ajax.request({
             url: 'Dictionaries/DeleteDictionaryData',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             jsonData: preparePostParameter({
-                row: row.data,
+                row: dataToSave,
                 dictionaryID: dictionaryID
             }),
             success: function (objServerResponse) {
